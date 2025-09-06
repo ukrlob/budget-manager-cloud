@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Manager Cloud - Образовательный проект</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .card h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .status.planning {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tech-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 2s ease;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Budget Manager Cloud</h1>
+            <p>Образовательный проект для изучения современной разработки</p>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Статус проекта</h2>
+            <span class="status planning">В разработке</span>
+            <p><strong>Дата начала:</strong> 25 августа 2025</p>
+            <p><strong>Текущий этап:</strong> Этап 1 - Основы и архитектура</p>
+            <p><strong>Прогресс:</strong> 0% (план создан)</p>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🎯 Цели проекта</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>🌐 Веб-приложение</h3>
+                    <p>Создать приложение для управления финансами с доступом 24/7</p>
+                </div>
+                <div class="feature">
+                    <h3>📚 Обучение</h3>
+                    <p>Изучить современные технологии программирования</p>
+                </div>
+                <div class="feature">
+                    <h3>🏦 Банковские интеграции</h3>
+                    <p>Покрыть все банки через web scraping</p>
+                </div>
+                <div class="feature">
+                    <h3>🤖 AI-помощник</h3>
+                    <p>Автоматическая категоризация транзакций</p>
+                </div>
+                <div class="feature">
+                    <h3>☁️ Облачное развертывание</h3>
+                    <p>Развернуть в облаке бесплатно</p>
+                </div>
+                <div class="feature">
+                    <h3>🌐 Онлайн-разработка</h3>
+                    <p>Весь код на GitHub с самого начала</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🛠️ Технологии</h2>
+            <div class="tech-stack">
+                <span class="tech-tag">Python 3.11+</span>
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">SQLAlchemy</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">HTML5/CSS3/JS</span>
+                <span class="tech-tag">Bootstrap</span>
+                <span class="tech-tag">scikit-learn</span>
+                <span class="tech-tag">Selenium</span>
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">GitHub Actions</span>
+                <span class="tech-tag">Google Cloud</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📅 План разработки</h2>
+            <p><strong>Длительность:</strong> 12-16 недель</p>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li><strong>Этап 1:</strong> Основы и архитектура (3-4 недели)</li>
+                <li><strong>Этап 2:</strong> Backend разработка (4-5 недель)</li>
+                <li><strong>Этап 3:</strong> Банковские интеграции (3-4 недели)</li>
+                <li><strong>Этап 4:</strong> AI и аналитика (2-3 недели)</li>
+                <li><strong>Этап 5:</strong> Frontend и развертывание (2-3 недели)</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>🚀 Быстрый старт</h2>
+            <p>Проект разрабатывается онлайн с использованием GitHub Codespaces и современных инструментов разработки.</p>
+            
+            <div class="buttons">
+                <a href="https://github.com" class="btn btn-primary" target="_blank">
+                    📁 GitHub Repository
+                </a>
+                <a href="DEVELOPMENT_PLAN.md" class="btn btn-secondary">
+                    📋 План разработки
+                </a>
+                <a href="day1_python_basics.py" class="btn btn-secondary">
+                    🐍 День 1: Python
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Budget Manager Cloud | Образовательный проект</p>
+            <p>Создано с ❤️ для изучения современной разработки</p>
+        </div>
+    </div>
+    
+    <script>
+        // Анимация прогресс-бара
+        window.addEventListener('load', function() {
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = '0%';
+            setTimeout(() => {
+                progressBar.style.width = '0%';
+            }, 500);
+        });
+        
+        // Добавляем интерактивность
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
