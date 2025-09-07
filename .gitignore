@@ -168,3 +168,7 @@ credentials.json
 # Scrapers data
 scraped_data/
 screenshots/
+# Passwords and secrets
+passwords.txt
+*.env
+secrets.json
