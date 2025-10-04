@@ -129,10 +129,10 @@
             <!-- Навигация - ИДЕНТИЧНАЯ ГЛАВНОЙ СТРАНИЦЕ -->
             <div class="main-nav">
                 <div class="nav-tabs">
-                    <a href="https://ukrlob.github.io/budget-manager-cloud/" class="nav-tab" id="home">Главная</a>
+                    <button class="nav-tab" id="home" onclick="goToHome()">Главная</button>
                     <button class="nav-tab active" id="banks" onclick="showTab('banks')">Банки</button>
-                    <a href="https://ukrlob.github.io/budget-manager-cloud/transactions" class="nav-tab" id="transactions">Транзакции</a>
-                    <a href="https://ukrlob.github.io/budget-manager-cloud/advisor" class="nav-tab" id="advisor">Финконсультант</a>
+                    <button class="nav-tab" id="transactions" onclick="goToTransactions()">Транзакции</button>
+                    <button class="nav-tab" id="advisor" onclick="goToAdvisor()">Финконсультант</button>
                 </div>
             </div>
 
@@ -258,5 +258,46 @@
     </footer>
 
     <script src="static/app_new.js?v=1"></script>
+    
+    <script>
+        // Функции навигации для Plaid Management
+        function goToHome() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
+        function goToTransactions() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/transactions';
+        }
+        
+        function goToAdvisor() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/advisor';
+        }
+        
+        function showTab(tabName) {
+            // Для страницы Plaid Management кнопка "Банки" не должна ничего делать
+            // так как мы уже на странице управления банками
+            console.log('На странице Plaid Management, кнопка "Банки" неактивна');
+        }
+        
+        function openPlaidLink() {
+            // Mock функция для Plaid Link (временно)
+            alert('Функция Plaid Link будет реализована после решения CORS проблемы');
+        }
+        
+        function refreshBank(bankCode) {
+            console.log('Обновление банка:', bankCode);
+            alert('Обновление банка ' + bankCode + ' (функция будет реализована после решения CORS)');
+        }
+        
+        function viewAccounts(bankCode) {
+            console.log('Просмотр счетов банка:', bankCode);
+            alert('Просмотр счетов банка ' + bankCode + ' (функция будет реализована после решения CORS)');
+        }
+        
+        function viewTransactions(bankCode) {
+            console.log('Просмотр транзакций банка:', bankCode);
+            alert('Просмотр транзакций банка ' + bankCode + ' (функция будет реализована после решения CORS)');
+        }
+    </script>
 </body>
 </html>
