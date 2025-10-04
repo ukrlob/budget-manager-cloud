@@ -3,12 +3,20 @@ const API_BASE = 'http://127.0.0.1:8004';
 // URL Router - ДОПОЛНЕНИЕ к существующей навигации (НЕ ЗАМЕНА)
 class URLRouter {
     constructor() {
+        // Определяем базовый путь для GitHub Pages
+        this.basePath = window.location.pathname.includes('/budget-manager-cloud/') 
+            ? '/budget-manager-cloud' 
+            : '';
+        
         this.routes = {
-            '/': 'dashboard',
-            '/banks': 'banks', 
-            '/transactions': 'transactions',
-            '/advisor': 'advisor'
+            [this.basePath + '/']: 'dashboard',
+            [this.basePath + '/banks']: 'banks',
+            [this.basePath + '/transactions']: 'transactions',
+            [this.basePath + '/advisor']: 'advisor'
         };
+        
+        console.log('🔧 URLRouter: basePath =', this.basePath);
+        console.log('🔧 URLRouter: routes =', this.routes);
         this.init();
     }
 
@@ -38,10 +46,10 @@ class URLRouter {
     // Функция для программной навигации
     navigateToTab(tabName) {
         const routeMap = {
-            'dashboard': '/',
-            'banks': '/banks',
-            'transactions': '/transactions', 
-            'advisor': '/advisor'
+            'dashboard': this.basePath + '/',
+            'banks': this.basePath + '/banks',
+            'transactions': this.basePath + '/transactions', 
+            'advisor': this.basePath + '/advisor'
         };
         
         const path = routeMap[tabName];
@@ -590,9 +598,9 @@ function goHome() {
     console.log('🔍 goHome() - isOnGitHubPages:', isOnGitHubPages);
     
     if (isOnGitHubPages) {
-        // Мы на GitHub Pages - просто обновляем страницу
-        console.log('🔄 Обновляем страницу на GitHub Pages');
-        window.location.reload();
+        // Мы на GitHub Pages - переходим на правильный базовый путь
+        console.log('🏠 Переходим на главную страницу GitHub Pages');
+        window.location.href = '/budget-manager-cloud/';
     } else {
         // Мы на локальном сервере - переходим на главную
         console.log('🏠 Переходим на главную страницу (локальный сервер)');
