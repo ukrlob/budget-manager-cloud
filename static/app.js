@@ -521,25 +521,18 @@ function goHome() {
     // Определяем правильный путь к главной странице
     const currentPath = window.location.pathname;
     const isOnGitHubPages = currentPath.includes('/budget-manager-cloud/');
-    const basePath = isOnGitHubPages ? '/budget-manager-cloud/' : '/';
     
     console.log('🔍 goHome() - currentPath:', currentPath);
     console.log('🔍 goHome() - isOnGitHubPages:', isOnGitHubPages);
-    console.log('🔍 goHome() - basePath:', basePath);
     
-    // Проверяем, находимся ли мы уже на главной странице
-    const isOnMainPage = currentPath === basePath || 
-                        currentPath === basePath + 'index.html' ||
-                        currentPath === '/budget-manager-cloud/index.html';
-    
-    if (isOnMainPage) {
-        // Если уже на главной странице - обновляем
-        console.log('🔄 Обновляем главную страницу');
+    if (isOnGitHubPages) {
+        // Мы на GitHub Pages - просто обновляем страницу
+        console.log('🔄 Обновляем страницу на GitHub Pages');
         window.location.reload();
     } else {
-        // Переходим на главную страницу
-        console.log('🏠 Переходим на главную страницу:', basePath);
-        window.location.href = basePath;
+        // Мы на локальном сервере - переходим на главную
+        console.log('🏠 Переходим на главную страницу (локальный сервер)');
+        window.location.href = '/';
     }
 }
 
