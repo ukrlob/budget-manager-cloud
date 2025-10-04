@@ -52,8 +52,7 @@ class URLRouter {
     }
 }
 
-// Инициализация роутера
-const router = new URLRouter();
+// Роутер будет создан в конце файла после определения всех функций
 
 // Восстановление текущей страницы после обновления - ВЫПОЛНЯЕТСЯ ПЕРВЫМ
 (function() {
@@ -561,20 +560,20 @@ async function loadPlaidUsage() {
 
 // Обновление счетчика Plaid в UI
 function updatePlaidCounter(used, limit) {
-    const plaidUsedElement = document.getElementById('plaid-used');
-    const plaidLimitElement = document.getElementById('plaid-limit');
-    
-    if (plaidUsedElement) {
+        const plaidUsedElement = document.getElementById('plaid-used');
+        const plaidLimitElement = document.getElementById('plaid-limit');
+        
+        if (plaidUsedElement) {
         plaidUsedElement.textContent = used || 0;
         console.log(`✅ Обновлен счетчик: ${used}/${limit}`);
-    } else {
-        console.error('❌ Элемент plaid-used не найден!');
-    }
-    
-    if (plaidLimitElement) {
+        } else {
+            console.error('❌ Элемент plaid-used не найден!');
+        }
+        
+        if (plaidLimitElement) {
         plaidLimitElement.textContent = limit || 100;
-    } else {
-        console.error('❌ Элемент plaid-limit не найден!');
+        } else {
+            console.error('❌ Элемент plaid-limit не найден!');
     }
 }
 
@@ -749,9 +748,9 @@ let assetsLoading = false;
 async function loadAssets() {
     if (assetsLoading) {
         console.log('⏳ Загрузка активов уже выполняется, пропускаем...');
-        return;
-    }
-    
+            return;
+        }
+        
     assetsLoading = true;
     console.log('🚀 Начинаем загрузку активов из данных вкладки "Банки"...');
     try {
@@ -818,10 +817,10 @@ async function loadAssets() {
             
             bankInfo.totalBalance = bankInfo.accounts.reduce((sum, account) => {
                 const balance = parseFloat(account.balance) || 0;
-                return sum + balance;
-            }, 0);
+                            return sum + balance;
+                        }, 0);
             
-            console.log(`💵 Общий баланс ${bank.name}: ${bankInfo.totalBalance}`);
+                        console.log(`💵 Общий баланс ${bank.name}: ${bankInfo.totalBalance}`);
             
             // Определяем регион на основе названия банка
             if (bank.name.includes('Royal Bank of Canada') || bank.name.includes('RBC') || 
@@ -1386,3 +1385,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // loadExchangeRates(); // REMOVED - вызывается в loadDashboard()
 // loadAssets(); // REMOVED - вызывается в loadDashboard()
 // loadBanksForManagement(); // REMOVED - вызывается в showTab('banks')
+
+// Инициализация роутера ПОСЛЕ определения всех функций
+const router = new URLRouter();
