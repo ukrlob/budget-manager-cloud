@@ -515,10 +515,20 @@ function updatePlaidCounter(used, limit) {
 
 // Функция для перехода на главную страницу
 function goHome() {
-    if (window.location.pathname === '/') {
+    // Очищаем localStorage для корректного перехода
+    localStorage.removeItem('currentPage');
+    
+    // Определяем правильный путь к главной странице
+    const basePath = window.location.pathname.includes('/budget-manager-cloud/') 
+        ? '/budget-manager-cloud/' 
+        : '/';
+    
+    if (window.location.pathname === basePath || window.location.pathname === basePath + 'index.html') {
+        // Если уже на главной странице - обновляем
         window.location.reload();
     } else {
-        window.location.href = '/';
+        // Переходим на главную страницу
+        window.location.href = basePath;
     }
 }
 
