@@ -1157,7 +1157,9 @@ body {
 .banks-container {
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    width: 100%;
+    max-width: 100%;
 }
 
 .bank-card {
@@ -1270,6 +1272,12 @@ body {
 .action-btn:hover {
     background: #1976D2;
     transform: translateY(-2px);
+}
+
+@media (max-width: 1200px) {
+    .banks-container {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
