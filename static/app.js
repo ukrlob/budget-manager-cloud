@@ -519,15 +519,26 @@ function goHome() {
     localStorage.removeItem('currentPage');
     
     // Определяем правильный путь к главной странице
-    const basePath = window.location.pathname.includes('/budget-manager-cloud/') 
-        ? '/budget-manager-cloud/' 
-        : '/';
+    const currentPath = window.location.pathname;
+    const isOnGitHubPages = currentPath.includes('/budget-manager-cloud/');
+    const basePath = isOnGitHubPages ? '/budget-manager-cloud/' : '/';
     
-    if (window.location.pathname === basePath || window.location.pathname === basePath + 'index.html') {
+    console.log('🔍 goHome() - currentPath:', currentPath);
+    console.log('🔍 goHome() - isOnGitHubPages:', isOnGitHubPages);
+    console.log('🔍 goHome() - basePath:', basePath);
+    
+    // Проверяем, находимся ли мы уже на главной странице
+    const isOnMainPage = currentPath === basePath || 
+                        currentPath === basePath + 'index.html' ||
+                        currentPath === '/budget-manager-cloud/index.html';
+    
+    if (isOnMainPage) {
         // Если уже на главной странице - обновляем
+        console.log('🔄 Обновляем главную страницу');
         window.location.reload();
     } else {
         // Переходим на главную страницу
+        console.log('🏠 Переходим на главную страницу:', basePath);
         window.location.href = basePath;
     }
 }
