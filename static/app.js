@@ -1,5 +1,57 @@
 const API_BASE = 'http://127.0.0.1:8004';
 
+// URL Router - ДОПОЛНЕНИЕ к существующей навигации (НЕ ЗАМЕНА)
+class URLRouter {
+    constructor() {
+        this.routes = {
+            '/': 'dashboard',
+            '/banks': 'banks', 
+            '/transactions': 'transactions',
+            '/advisor': 'advisor'
+        };
+        this.init();
+    }
+
+    init() {
+        // Обработка изменения URL (кнопка Назад браузера)
+        window.addEventListener('popstate', (e) => {
+            this.handleRoute(window.location.pathname);
+        });
+
+        // Обработка начального URL
+        this.handleRoute(window.location.pathname);
+    }
+
+    handleRoute(path) {
+        const tabName = this.routes[path] || 'dashboard';
+        console.log(`🔄 URL Router: ${path} → ${tabName}`);
+        
+        // Используем СУЩЕСТВУЮЩУЮ функцию showTab - НЕ МЕНЯЕМ ЕЁ
+        if (typeof showTab === 'function') {
+            showTab(tabName);
+        }
+    }
+
+    // Функция для программной навигации
+    navigateToTab(tabName) {
+        const routeMap = {
+            'dashboard': '/',
+            'banks': '/banks',
+            'transactions': '/transactions', 
+            'advisor': '/advisor'
+        };
+        
+        const path = routeMap[tabName];
+        if (path) {
+            history.pushState({}, '', path);
+            console.log(`🔄 Navigate to: ${path}`);
+        }
+    }
+}
+
+// Инициализация роутера
+const router = new URLRouter();
+
 // Восстановление текущей страницы после обновления - ВЫПОЛНЯЕТСЯ ПЕРВЫМ
 (function() {
     const currentPage = localStorage.getItem('currentPage');
@@ -114,7 +166,14 @@ function showTab(tabName) {
     
     // Show selected tab
     document.getElementById(tabName).classList.add('active');
-    event.target.classList.add('active');
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+    
+    // ДОБАВЛЯЕМ URL-навигацию - НЕ МЕНЯЯ существующую логику
+    if (typeof router !== 'undefined') {
+        router.navigateToTab(tabName);
+    }
     
     // Load data for the tab
     if (tabName === 'dashboard') {
