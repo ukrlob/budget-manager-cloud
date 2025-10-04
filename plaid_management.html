@@ -137,14 +137,14 @@
 
         <!-- Plaid Management Tab -->
         <div id="plaid-management" class="tab-content active">
-            <div class="plaid-content">
+            <div class="plaid-content" style="padding: 0; width: 100%; max-width: none; margin: 0;">
                 <div class="plaid-header">
                     <h1>Управление банками через Plaid</h1>
                     <button class="plaid-connect-btn" onclick="openPlaidLink()">Подключить новый банк через Plaid</button>
                 </div>
 
                 <!-- Список подключенных банков -->
-                <div class="banks-container" style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); width: 100%; max-width: 100%;">
+                <div class="banks-container" style="display: grid !important; gap: 20px !important; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; width: 100% !important; max-width: 100% !important;">
                     <div class="bank-card">
                         <div class="bank-header">
                             <h3>Royal Bank of Canada</h3>
