@@ -11,9 +11,9 @@
     <div class="main-layout">
         <!-- Фиксированный блок слева - ИДЕНТИЧНЫЙ ГЛАВНОЙ СТРАНИЦЕ -->
         <div class="left-sidebar">
-            <a href="https://ukrlob.github.io/budget-manager-cloud/" class="bm-logo">
+            <div class="bm-logo" onclick="goHome()">
                 <div class="bm-icon">BM</div>
-            </a>
+            </div>
             
             <div class="plaid-counter">
                 <div class="counter-label">Plaid API</div>
@@ -100,10 +100,10 @@
                 <button class="refresh-rates" onclick="refreshExchangeRates()">Обновить</button>
             </div>
             
-            <div class="currency-converter">
+            <div class="currency-converter-section">
                 <div class="converter-label">Конвертер валют</div>
-                <div class="converter-controls">
-                    <select class="currency-select" id="converter-from" onchange="convertCurrencyAmount()">
+                <div class="converter-currencies">
+                    <select class="converter-from" id="converter-from" onchange="convertCurrencyAmount()">
                         <option value="USD">USD</option>
                         <option value="EUR">EUR</option>
                         <option value="CAD">CAD</option>
@@ -111,7 +111,7 @@
                         <option value="RUB">RUB</option>
                     </select>
                     <span class="converter-arrow">→</span>
-                    <select class="currency-select" id="converter-to" onchange="convertCurrencyAmount()">
+                    <select class="converter-to" id="converter-to" onchange="convertCurrencyAmount()">
                         <option value="USD">USD</option>
                         <option value="EUR">EUR</option>
                         <option value="CAD">CAD</option>
@@ -119,22 +119,21 @@
                         <option value="RUB">RUB</option>
                     </select>
                 </div>
-                <input type="number" class="converter-input" id="converter-amount" value="100" oninput="convertCurrencyAmount()">
+                <input type="number" class="converter-amount" id="converter-amount" placeholder="Сумма" value="100" oninput="convertCurrencyAmount()" onchange="convertCurrencyAmount()">
                 <div class="converter-result" id="converter-result">$100.00</div>
             </div>
         </div>
 
         <!-- Основной контент -->
         <div class="main-content">
-            <!-- Навигация - ИДЕНТИЧНАЯ ГЛАВНОЙ СТРАНИЦЕ -->
-            <div class="main-nav">
-                <div class="nav-tabs">
-                    <button class="nav-tab" id="home" onclick="goToHome()">Главная</button>
-                    <button class="nav-tab active" id="banks" onclick="showTab('banks')">Банки</button>
-                    <button class="nav-tab" id="transactions" onclick="goToTransactions()">Транзакции</button>
-                    <button class="nav-tab" id="advisor" onclick="goToAdvisor()">Финконсультант</button>
-                </div>
-            </div>
+            <div class="container">
+
+        <div class="tabs">
+            <button class="tab" onclick="goToHome()">Главная</button>
+            <button class="tab active" onclick="showTab('banks')">Банки</button>
+            <button class="tab" onclick="goToTransactions()">Транзакции</button>
+            <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
+        </div>
 
             <!-- Контент Plaid Management -->
             <div class="plaid-content">
@@ -261,6 +260,10 @@
     
     <script>
         // Функции навигации для Plaid Management
+        function goHome() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
         function goToHome() {
             window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
         }
