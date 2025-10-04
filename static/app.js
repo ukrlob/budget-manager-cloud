@@ -27,9 +27,12 @@ class URLRouter {
         console.log(`🔄 URL Router: ${path} → ${tabName}`);
         
         // Используем СУЩЕСТВУЮЩУЮ функцию showTab - НЕ МЕНЯЕМ ЕЁ
-        if (typeof showTab === 'function') {
-            showTab(tabName);
-        }
+        // Задержка для гарантии, что showTab уже определена
+        setTimeout(() => {
+            if (typeof showTab === 'function') {
+                showTab(tabName);
+            }
+        }, 0);
     }
 
     // Функция для программной навигации
@@ -166,8 +169,11 @@ function showTab(tabName) {
     
     // Show selected tab
     document.getElementById(tabName).classList.add('active');
-    if (event && event.target) {
-        event.target.classList.add('active');
+    
+    // Находим кнопку с нужным ID и делаем её активной
+    const activeButton = document.querySelector(`[onclick*="showTab('${tabName}')"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
     }
     
     // ДОБАВЛЯЕМ URL-навигацию - НЕ МЕНЯЯ существующую логику
