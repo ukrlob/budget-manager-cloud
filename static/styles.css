@@ -1120,6 +1120,17 @@ body {
     margin: 0 auto;
 }
 
+/* Принудительные стили для банков */
+.banks-container-fixed {
+    display: grid !important;
+    gap: 20px !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 .plaid-header {
     display: flex;
     justify-content: space-between;
