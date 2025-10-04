@@ -1,12 +1,18 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import date
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import os
 
 app = FastAPI(title="Budget Manager Cloud", version="1.0.0")
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="."), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,6 +54,10 @@ def get_db_connection():
 
 @app.get("/")
 async def root():
+    return FileResponse("index.html")
+
+@app.get("/api")
+async def api_info():
     return {"message": "Budget Manager Cloud API is running!"}
 
 @app.get("/health")

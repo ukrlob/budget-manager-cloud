@@ -1,0 +1,23 @@
+{
+  "cache_key": "accounts_fallback_WALMART_item_oJLdMdqx7rIkz5ymL90ECY3QO0PpxLUBnnoRp",
+  "data_type": "accounts_fallback",
+  "bank_code": "WALMART",
+  "account_id": null,
+  "data": [
+    {
+      "id": "1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
+      "name": "World Mastercard",
+      "type": "credit",
+      "subtype": "credit card",
+      "current_balance": 2000.0,
+      "credit_limit": 2000.0,
+      "used_credit": -0.37,
+      "currency": "CAD",
+      "bank_name": "Walmart Rewards",
+      "balance_type": "credit_available"
+    }
+  ],
+  "created_at": "2025-09-26T02:29:47.349164",
+  "expires_at": "2025-09-26T02:59:47.349109",
+  "last_updated": "2025-09-26T02:29:47.349188"
+}

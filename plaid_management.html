@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaid - Управление банками</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%2300D4AA%22>BM</text></svg>">
+    <link rel="stylesheet" href="/static/styles.css?v=22">
+    <style>
+        .nav-actions .back-button {
+            background: #2196F3;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .nav-actions .back-button:hover {
+            background: #1976D2;
+        }
+        
+        .plaid-content {
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Фиксированный блок слева -->
+        <div class="left-sidebar">
+            <div class="sidebar-content">
+                <!-- BM Logo -->
+                <div class="bm-logo">
+                    <a href="/" class="logo-link">BM</a>
+                </div>
+                
+                <!-- Plaid API Counter -->
+                <div class="plaid-counter">
+                    <div class="counter-label">Plaid API</div>
+                    <div class="counter-value" id="plaidCounter">0/100</div>
+                    <div class="counter-details">
+                        <span id="plaid-used">0</span>/<span id="plaid-limit">100</span>
+                    </div>
+                    <button class="refresh-plaid" onclick="refreshPlaidCounter()">Обновить</button>
+                </div>
+                
+                <!-- Exchange Rates -->
+                <div class="exchange-rates">
+                    <div class="rates-label">Курсы валют</div>
+                    <div class="rates-list" id="exchangeRates">
+                        <div class="currency-pair" id="pair1">
+                            <select class="currency-select" id="from1">
+                                <option value="CAD">CAD</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="UAH">UAH</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate-separator">/</span>
+                            <select class="currency-select" id="to1">
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="UAH">UAH</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate" id="rate1">0.7194</span>
+                        </div>
+                        <div class="currency-pair" id="pair2">
+                            <select class="currency-select" id="from2">
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="UAH">UAH</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate-separator">/</span>
+                            <select class="currency-select" id="to2">
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="UAH">UAH</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate" id="rate2">0.8560</span>
+                        </div>
+                        <div class="currency-pair" id="pair3">
+                            <select class="currency-select" id="from3">
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="UAH">UAH</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate-separator">/</span>
+                            <select class="currency-select" id="to3">
+                                <option value="UAH">UAH</option>
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate" id="rate3">41.4900</span>
+                        </div>
+                        <div class="currency-pair" id="pair4">
+                            <select class="currency-select" id="from4">
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="UAH">UAH</option>
+                                <option value="RUB">RUB</option>
+                            </select>
+                            <span class="rate-separator">/</span>
+                            <select class="currency-select" id="to4">
+                                <option value="RUB">RUB</option>
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="UAH">UAH</option>
+                            </select>
+                            <span class="rate" id="rate4">83.8000</span>
+                        </div>
+                    </div>
+                    <button class="refresh-rates" onclick="refreshExchangeRates()">Обновить</button>
+                </div>
+                
+                <!-- Currency Converter -->
+                <div class="currency-converter">
+                    <div class="converter-label">Конвертер валют</div>
+                    <div class="converter-currencies">
+                        <select id="fromCurrency" onchange="convertCurrencyAmount()">
+                            <option value="USD">USD</option>
+                            <option value="CAD">CAD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="UAH">UAH</option>
+                            <option value="RUB">RUB</option>
+                        </select>
+                        <span class="rate-separator">→</span>
+                        <select id="toCurrency" onchange="convertCurrencyAmount()">
+                            <option value="USD">USD</option>
+                            <option value="CAD">CAD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="UAH">UAH</option>
+                            <option value="RUB">RUB</option>
+                        </select>
+                    </div>
+                    <div class="converter-amount">
+                        <input type="number" id="amountInput" value="100" oninput="convertCurrencyAmount()" placeholder="Сумма">
+                    </div>
+                    <div class="converter-result" id="converterResult">$100.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Navigation -->
+            <nav class="main-nav">
+                <div class="nav-tabs">
+                    <a href="/" class="tab" onclick="localStorage.removeItem('currentPage')">Главная</a>
+                    <button class="tab active">Банки</button>
+                    <a href="/" class="tab" onclick="localStorage.removeItem('currentPage')">Транзакции</a>
+                    <a href="/" class="tab" onclick="localStorage.removeItem('currentPage')">Финконсультант</a>
+                </div>
+                <div class="nav-actions">
+                    <a href="/" class="back-button" onclick="localStorage.removeItem('currentPage')">← Назад к разделам</a>
+                </div>
+            </nav>
+            
+            <!-- Plaid Content -->
+            <div class="plaid-content">
+                <div class="plaid-integration">
+                    <button class="btn btn-primary" onclick="openPlaidLink()">
+                        Подключить новый банк через Plaid
+                    </button>
+                </div>
+                <div class="banks-grid" id="banksGrid">
+                    <div class="loading">Загрузка банков...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Сохраняем текущую страницу в localStorage
+        localStorage.setItem('currentPage', 'plaid_management');
+        
+        // Функция навигации
+        
+        // Простая функция для загрузки банков
+        function loadSimpleBanks() {
+            const banksGrid = document.getElementById('banksGrid');
+            if (banksGrid) {
+                banksGrid.innerHTML = `
+                    <div class="bank-card">
+                        <div class="bank-header">
+                            <h3>Royal Bank of Canada</h3>
+                            <div class="bank-status working">Работает</div>
+                        </div>
+                        <div class="bank-info">
+                            <div class="bank-stats">
+                                <span>Счетов: 5</span>
+                                <span>Последняя транзакция: 2025-09-15</span>
+                            </div>
+                            <div class="accounts-list">
+                                <div class="account-item">
+                                    <div class="account-name">RBC Advantage Banking</div>
+                                    <div class="account-balance">119.14 CAD</div>
+                                </div>
+                                <div class="account-item">
+                                    <div class="account-name">RBC ION Visa</div>
+                                    <div class="account-balance">-58.11 CAD</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bank-actions">
+                            <button class="btn btn-secondary">Обновить</button>
+                            <button class="btn btn-secondary">Счета</button>
+                            <button class="btn btn-secondary">Транзакции</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Загружаем данные при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Plaid page loaded');
+            loadSimpleBanks();
+        });
+        
+        // Обработка обновления страницы
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem('currentPage', 'plaid_management');
+        });
+    </script>
+</body>
+</html>
