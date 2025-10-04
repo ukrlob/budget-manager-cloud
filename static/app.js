@@ -31,7 +31,27 @@ class URLRouter {
     }
 
     handleRoute(path) {
-        const tabName = this.routes[path] || 'dashboard';
+        console.log(`🔍 handleRoute: ${path}`);
+        console.log(`🔍 available routes:`, Object.keys(this.routes));
+        
+        // Ищем точное совпадение
+        let tabName = this.routes[path];
+        
+        // Если точного совпадения нет, пробуем найти по частичному совпадению
+        if (!tabName) {
+            for (const [route, tab] of Object.entries(this.routes)) {
+                if (path.startsWith(route)) {
+                    tabName = tab;
+                    break;
+                }
+            }
+        }
+        
+        // Если ничего не найдено, используем dashboard
+        if (!tabName) {
+            tabName = 'dashboard';
+        }
+        
         console.log(`🔄 URL Router: ${path} → ${tabName}`);
         
         // Используем СУЩЕСТВУЮЩУЮ функцию showTab - НЕ МЕНЯЕМ ЕЁ
@@ -184,7 +204,8 @@ function showTab(tabName) {
     }
     
     // ДОБАВЛЯЕМ URL-навигацию - НЕ МЕНЯЯ существующую логику
-    if (typeof router !== 'undefined') {
+    // НЕ обновляем URL для кнопки "Главная" - это вызывает проблемы
+    if (typeof router !== 'undefined' && tabName !== 'dashboard') {
         router.navigateToTab(tabName);
     }
     
@@ -606,6 +627,13 @@ function goHome() {
         console.log('🏠 Переходим на главную страницу (локальный сервер)');
         window.location.href = '/';
     }
+}
+
+// Функция для перехода на главную страницу БЕЗ изменения URL
+function goHomeNoURL() {
+    console.log('🏠 Переходим на главную страницу БЕЗ изменения URL');
+    // Просто переключаем на вкладку dashboard
+    showTab('dashboard');
 }
 
 // Загрузка курсов валют
