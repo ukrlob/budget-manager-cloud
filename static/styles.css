@@ -1114,7 +1114,10 @@ body {
 
 /* Plaid Management Styles */
 .plaid-content {
-    padding: 20px;
+    padding: 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .plaid-header {
