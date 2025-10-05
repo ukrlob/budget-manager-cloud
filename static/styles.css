@@ -1124,11 +1124,116 @@ body {
 .banks-container-fixed {
     display: grid !important;
     gap: 20px !important;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+}
+
+/* Стили для банковских карточек */
+.bank-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.bank-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.bank-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.bank-header h3 {
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.bank-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.bank-status.working {
+    background: #d4edda;
+    color: #155724;
+}
+
+.bank-status.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.bank-info {
+    margin-bottom: 15px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.account-item:last-child {
+    border-bottom: none;
+}
+
+.account-item.error {
+    color: #721c24;
+    font-style: italic;
+}
+
+.account-name {
+    color: #333;
+    font-weight: 500;
+}
+
+.account-balance {
+    color: #2196F3;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.bank-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.action-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: #1976D2;
+    transform: translateY(-2px);
 }
 
 .plaid-header {
