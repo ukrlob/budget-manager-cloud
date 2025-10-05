@@ -18,10 +18,11 @@
         }
         
         .left-sidebar {
-            width: 300px;
+            width: 320px;
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .main-content {
@@ -123,6 +124,53 @@
             background: #1976D2;
         }
         
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 10px 15px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+            position: relative;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab.active {
+            background: white;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2196F3;
+        }
+        
         .plaid-header {
             display: flex;
             justify-content: space-between;
@@ -196,12 +244,19 @@
                     </select>
                 </div>
                 <input type="number" value="100" style="width: 100%; padding: 8px; border-radius: 4px; border: none; margin-bottom: 10px;">
-                <div style="background: #2196F3; color: white; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold;">$100.00</div>
+                <div style="background: rgba(33, 150, 243, 0.9); color: white; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold; opacity: 1; backdrop-filter: blur(10px);">$100.00</div>
             </div>
         </div>
         
         <!-- Основной контент -->
         <div class="main-content">
+            <div class="tabs">
+                <button class="tab">Главная</button>
+                <button class="tab active">Банки</button>
+                <button class="tab">Транзакции</button>
+                <button class="tab">Финконсультант</button>
+            </div>
+            
             <div class="plaid-header">
                 <h1>Управление банками через Plaid</h1>
                 <button class="plaid-connect-btn">Подключить новый банк через Plaid</button>
