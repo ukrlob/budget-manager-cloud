@@ -3,379 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Management - Plaid</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%232196F3%22 text-decoration=%22underline%22>BM</text></svg>">
-    <link rel="stylesheet" href="static/styles.css?v=33">
+    <title>Plaid Management - Budget Manager Cloud</title>
+    <link rel="icon" type="image/x-icon" href="https://ukrlob.github.io/budget-manager-cloud/favicon.ico">
+    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=34">
+    <style>
+        .plaid-button {
+            background: linear-gradient(135deg, #00D4AA 0%, #00A8CC 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .plaid-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
+        }
+        
+        .banks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .bank-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .bank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .bank-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .bank-meta {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .accounts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .accounts-table th {
+            background: rgba(248, 249, 250, 0.4);
+            color: #333;
+            font-weight: 600;
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .accounts-table td {
+            background: rgba(233, 236, 239, 0.6);
+            color: #333;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+        
+        .accounts-table tr:hover td {
+            background: rgba(248, 249, 250, 0.3);
+        }
+        
+        .account-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .account-balance {
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #f8f9fa;
+        }
+        
+        .account-balance.positive {
+            color: #155724;
+            background: rgba(40, 167, 69, 0.15);
+        }
+        
+        .account-balance.negative {
+            color: #721c24;
+            background: rgba(220, 53, 69, 0.15);
+        }
+        
+        .main-content {
+            margin-left: 0 !important;
+            width: 100% !important;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .footer {
+            margin-left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+    </style>
 </head>
 <body>
     <div class="main-layout">
-        <!-- Адаптивный блок слева -->
-        <div class="left-sidebar" style="width: min(300px, 25vw); max-width: 300px; min-width: 200px;">
-            <div class="bm-logo" onclick="goHome()" style="margin-bottom: min(20px, 3vw);">
-                <div class="bm-icon" style="width: min(50px, 6vw); height: min(50px, 6vw); font-size: min(1.5rem, 3vw);">BM</div>
-            </div>
-            
-            <div class="plaid-counter" style="padding: min(15px, 2vw); margin-bottom: min(20px, 3vw);">
-                <div class="counter-label" style="font-size: min(1.3rem, 2.5vw); margin-bottom: min(8px, 1.5vw);">Plaid API</div>
-                <div class="counter-value" style="font-size: min(1.6rem, 3vw);">
-                    <span id="plaid-used">-</span>/<span id="plaid-limit">-</span>
-                </div>
-                <button class="refresh-plaid" onclick="refreshPlaidCounter()" style="font-size: min(0.9rem, 1.8vw); padding: min(6px, 1.2vw) min(12px, 2.4vw);">Обновить</button>
-            </div>
-            
-            <div class="exchange-rates" style="padding: min(15px, 2vw); margin-bottom: min(20px, 3vw);">
-                <div class="rates-label" style="font-size: min(1.1rem, 2.2vw); margin-bottom: min(10px, 2vw);">Курсы валют</div>
-                <div class="rate-item">
-                    <select class="currency-select" id="currency-from-1" onchange="updateCurrencyPair(1)">
-                        <option value="CAD">CAD</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate-separator">/</span>
-                    <select class="currency-select" id="currency-to-1" onchange="updateCurrencyPair(1)">
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate" id="rate-1">0.7246</span>
-                </div>
-                <div class="rate-item">
-                    <select class="currency-select" id="currency-from-2" onchange="updateCurrencyPair(2)">
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate-separator">/</span>
-                    <select class="currency-select" id="currency-to-2" onchange="updateCurrencyPair(2)">
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate" id="rate-2">0.8560</span>
-                </div>
-                <div class="rate-item">
-                    <select class="currency-select" id="currency-from-3" onchange="updateCurrencyPair(3)">
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate-separator">/</span>
-                    <select class="currency-select" id="currency-to-3" onchange="updateCurrencyPair(3)">
-                        <option value="UAH">UAH</option>
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate" id="rate-3">41.4900</span>
-                </div>
-                <div class="rate-item">
-                    <select class="currency-select" id="currency-from-4" onchange="updateCurrencyPair(4)">
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="rate-separator">/</span>
-                    <select class="currency-select" id="currency-to-4" onchange="updateCurrencyPair(4)">
-                        <option value="RUB">RUB</option>
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="UAH">UAH</option>
-                    </select>
-                    <span class="rate" id="rate-4">83.8000</span>
-                </div>
-                <button class="refresh-rates" onclick="refreshExchangeRates()">Обновить</button>
-            </div>
-            
-            <div class="currency-converter-section" style="padding: min(15px, 2vw); margin-top: min(15px, 2vw);">
-                <div class="converter-label" style="font-size: min(1.1rem, 2.2vw); margin-bottom: min(8px, 1.6vw);">Конвертер валют</div>
-                <div class="converter-currencies">
-                    <select class="converter-from" id="converter-from" onchange="convertCurrencyAmount()">
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="CAD">CAD</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                    <span class="converter-arrow">→</span>
-                    <select class="converter-to" id="converter-to" onchange="convertCurrencyAmount()">
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="CAD">CAD</option>
-                        <option value="UAH">UAH</option>
-                        <option value="RUB">RUB</option>
-                    </select>
-                </div>
-                <input type="number" class="converter-amount" id="converter-amount" placeholder="Сумма" value="100" oninput="convertCurrencyAmount()" onchange="convertCurrencyAmount()">
-                <div class="converter-result" id="converter-result">$100.00</div>
-            </div>
-        </div>
-
-        <!-- Основной контент -->
+        <!-- Основной контент без левого меню -->
         <div class="main-content">
             <div class="container">
+                <!-- Навигация -->
                 <div class="tabs">
                     <button class="tab" onclick="goToHome()">Главная</button>
-                    <button class="tab active" onclick="showTab('banks')">Банки</button>
+                    <button class="tab active" onclick="goToBanks()">Банки</button>
                     <button class="tab" onclick="goToTransactions()">Транзакции</button>
                     <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
                 </div>
 
-                <!-- Plaid Management Content -->
-                <div id="plaid-management" class="tab-content active">
-                    <div class="plaid-header">
-                        <h1>Управление банками через Plaid</h1>
-                        <button class="plaid-connect-btn" onclick="openPlaidLink()">Plaid</button>
+                <!-- Кнопка подключения Plaid -->
+                <button class="plaid-button" onclick="connectPlaid()">
+                    🔗 Подключить банк через Plaid
+                </button>
+
+                <!-- Контейнер банков -->
+                <div class="banks-container">
+                    <!-- RBC Bank -->
+                    <div class="bank-card">
+                        <div class="bank-header">
+                            <div class="bank-name">RBC Royal Bank</div>
+                            <div class="bank-meta">5 счетов • 2 часа назад</div>
+                        </div>
+                        <table class="accounts-table">
+                            <thead>
+                                <tr>
+                                    <th>Название счета</th>
+                                    <th>Тип</th>
+                                    <th>Баланс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="account-name">RBC Chequing Account</td>
+                                    <td>Чековый</td>
+                                    <td class="account-balance positive">$2,450.75</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">RBC Savings Account</td>
+                                    <td>Сберегательный</td>
+                                    <td class="account-balance positive">$15,230.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">RBC Credit Card</td>
+                                    <td>Кредитная карта</td>
+                                    <td class="account-balance negative">-$1,250.30</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">RBC Investment Account</td>
+                                    <td>Инвестиционный</td>
+                                    <td class="account-balance positive">$45,680.50</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">RBC Business Account</td>
+                                    <td>Бизнес</td>
+                                    <td class="account-balance positive">$8,900.25</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <!-- Banks Table with Accordion -->
-                    <div class="banks-accordion">
-                        <!-- RBC Bank -->
-                        <div class="bank-item">
-                            <div class="bank-header">
-                                <div class="bank-info">
-                                    <div class="bank-logo">RBC</div>
-                                    <div class="bank-details">
-                                        <div class="bank-name">Royal Bank of Canada</div>
-                                    </div>
-                                </div>
-                                <div class="bank-status">
-                                    <span class="status-badge status-working">Работает</span>
-                                    <span class="bank-meta">5 счетов • 2 часа назад</span>
-                                </div>
-                            </div>
-                            <div class="bank-content">
-                                <div class="accounts-section">
-                                    <table class="accounts-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название счета</th>
-                                                <th>Тип</th>
-                                                <th>Баланс</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">RBC Advantage Banking</div>
-                                                    <div class="account-type">Чековый счет</div>
-                                                </td>
-                                                <td>Checking</td>
-                                                <td class="account-balance positive">$119.14 CAD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">RBC ION Visa</div>
-                                                    <div class="account-type">Кредитная карта</div>
-                                                </td>
-                                                <td>Credit</td>
-                                                <td class="account-balance negative">-$58.11 CAD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">RBC US Dollar Account</div>
-                                                    <div class="account-type">Долларовый счет</div>
-                                                </td>
-                                                <td>Checking</td>
-                                                <td class="account-balance positive">$100.82 USD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">RBC Investment Account</div>
-                                                    <div class="account-type">Инвестиционный счет</div>
-                                                </td>
-                                                <td>Investment</td>
-                                                <td class="account-balance positive">$4,500.00 CAD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">RBC Savings Account</div>
-                                                    <div class="account-type">Сберегательный счет</div>
-                                                </td>
-                                                <td>Savings</td>
-                                                <td class="account-balance positive">$2,100.00 CAD</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    <!-- BMO Bank -->
+                    <div class="bank-card">
+                        <div class="bank-header">
+                            <div class="bank-name">BMO Bank of Montreal</div>
+                            <div class="bank-meta">3 счета • 1 час назад</div>
                         </div>
+                        <table class="accounts-table">
+                            <thead>
+                                <tr>
+                                    <th>Название счета</th>
+                                    <th>Тип</th>
+                                    <th>Баланс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="account-name">BMO Chequing Account</td>
+                                    <td>Чековый</td>
+                                    <td class="account-balance positive">$1,850.40</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">BMO Savings Account</td>
+                                    <td>Сберегательный</td>
+                                    <td class="account-balance positive">$12,500.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">BMO Credit Card</td>
+                                    <td>Кредитная карта</td>
+                                    <td class="account-balance negative">-$890.75</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                        <!-- BMO Bank -->
-                        <div class="bank-item">
-                            <div class="bank-header">
-                                <div class="bank-info">
-                                    <div class="bank-logo">BMO</div>
-                                    <div class="bank-details">
-                                        <div class="bank-name">Bank of Montreal</div>
-                                    </div>
-                                </div>
-                                <div class="bank-status">
-                                    <span class="status-badge status-working">Работает</span>
-                                    <span class="bank-meta">2 счета • 1 час назад</span>
-                                </div>
-                            </div>
-                            <div class="bank-content">
-                                <div class="accounts-section">
-                                    <table class="accounts-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название счета</th>
-                                                <th>Тип</th>
-                                                <th>Баланс</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">BMO Chequing Account</div>
-                                                    <div class="account-type">Чековый счет</div>
-                                                </td>
-                                                <td>Checking</td>
-                                                <td class="account-balance positive">$50.00 CAD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">BMO Savings Account</div>
-                                                    <div class="account-type">Сберегательный счет</div>
-                                                </td>
-                                                <td>Savings</td>
-                                                <td class="account-balance positive">$50.00 CAD</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    <!-- Walmart Bank -->
+                    <div class="bank-card">
+                        <div class="bank-header">
+                            <div class="bank-name">Walmart Financial</div>
+                            <div class="bank-meta">2 счета • 30 минут назад</div>
                         </div>
+                        <table class="accounts-table">
+                            <thead>
+                                <tr>
+                                    <th>Название счета</th>
+                                    <th>Тип</th>
+                                    <th>Баланс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="account-name">Walmart Money Card</td>
+                                    <td>Дебетовая карта</td>
+                                    <td class="account-balance positive">$450.20</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">Walmart Credit Card</td>
+                                    <td>Кредитная карта</td>
+                                    <td class="account-balance negative">-$320.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                        <!-- Walmart Bank -->
-                        <div class="bank-item">
-                            <div class="bank-header">
-                                <div class="bank-info">
-                                    <div class="bank-logo">WM</div>
-                                    <div class="bank-details">
-                                        <div class="bank-name">Walmart Rewards</div>
-                                    </div>
-                                </div>
-                                <div class="bank-status">
-                                    <span class="status-badge status-working">Работает</span>
-                                    <span class="bank-meta">1 счет • 30 минут назад</span>
-                                </div>
-                            </div>
-                            <div class="bank-content">
-                                <div class="accounts-section">
-                                    <table class="accounts-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название счета</th>
-                                                <th>Тип</th>
-                                                <th>Баланс</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">Walmart Mastercard</div>
-                                                    <div class="account-type">Кредитная карта</div>
-                                                </td>
-                                                <td>Credit</td>
-                                                <td class="account-balance positive">$1,905.54 CAD</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    <!-- CIBC Bank -->
+                    <div class="bank-card">
+                        <div class="bank-header">
+                            <div class="bank-name">CIBC Canadian Imperial Bank</div>
+                            <div class="bank-meta">4 счета • 45 минут назад</div>
                         </div>
-
-                        <!-- CIBC Bank -->
-                        <div class="bank-item">
-                            <div class="bank-header">
-                                <div class="bank-info">
-                                    <div class="bank-logo">CIBC</div>
-                                    <div class="bank-details">
-                                        <div class="bank-name">CIBC</div>
-                                    </div>
-                                </div>
-                                <div class="bank-status">
-                                    <span class="status-badge status-error">Ошибка</span>
-                                    <span class="bank-meta">0 счетов • 1 день назад</span>
-                                </div>
-                            </div>
-                            <div class="bank-content">
-                                <div class="accounts-section">
-                                    <table class="accounts-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Название счета</th>
-                                                <th>Тип</th>
-                                                <th>Баланс</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="account-name">Access Token не найден</div>
-                                                    <div class="account-type">-</div>
-                                                </td>
-                                                <td>-</td>
-                                                <td class="account-balance error">-</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <table class="accounts-table">
+                            <thead>
+                                <tr>
+                                    <th>Название счета</th>
+                                    <th>Тип</th>
+                                    <th>Баланс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="account-name">CIBC Chequing Account</td>
+                                    <td>Чековый</td>
+                                    <td class="account-balance positive">$3,200.80</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">CIBC Savings Account</td>
+                                    <td>Сберегательный</td>
+                                    <td class="account-balance positive">$22,100.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">CIBC Credit Card</td>
+                                    <td>Кредитная карта</td>
+                                    <td class="account-balance negative">-$1,650.25</td>
+                                </tr>
+                                <tr>
+                                    <td class="account-name">CIBC Investment Account</td>
+                                    <td>Инвестиционный</td>
+                                    <td class="account-balance positive">$67,890.75</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Футер -->
+        <footer class="footer">
+            <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
+        </footer>
     </div>
 
-    <footer class="footer" style="margin-left: min(300px, 25vw); max-width: calc(100vw - min(300px, 25vw)); width: calc(100vw - min(300px, 25vw));">
-        <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
-    </footer>
-
-    <script src="static/app.js?v=44"></script>
-    
     <script>
-        // Функции навигации для Plaid Management
-        function goHome() {
-            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
-        }
-        
         function goToHome() {
             window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
         }
         
+        function goToBanks() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/plaid_management.html';
+        }
+        
         function goToTransactions() {
-            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/transactions';
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
         }
         
         function goToAdvisor() {
-            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/advisor';
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
         }
         
-        function showTab(tabName) {
-            // Для страницы Plaid Management кнопка "Банки" не должна ничего делать
-            console.log('На странице Plaid Management, кнопка "Банки" неактивна');
-        }
-        
-        function openPlaidLink() {
-            // Mock функция для Plaid Link (временно)
-            alert('Функция Plaid Link будет реализована после решения CORS проблемы');
+        function connectPlaid() {
+            alert('Функция подключения Plaid будет реализована позже');
         }
     </script>
 </body>
