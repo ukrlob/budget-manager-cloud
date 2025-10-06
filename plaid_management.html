@@ -5,144 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Management - Plaid</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%232196F3%22 text-decoration=%22underline%22>BM</text></svg>">
-    <link rel="stylesheet" href="static/styles.css?v=26">
-    <style>
-        /* Принудительные стили для исправления кэширования */
-        .banks-container-fixed {
-            display: grid !important;
-            gap: 20px !important;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        .bank-card {
-            background: white !important;
-            border-radius: 12px !important;
-            padding: 20px !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        .bank-card:hover {
-            transform: translateY(-5px) !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
-        }
-        
-        .bank-header {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            margin-bottom: 15px !important;
-            padding-bottom: 10px !important;
-            border-bottom: 2px solid #f0f0f0 !important;
-        }
-        
-        .bank-header h3 {
-            color: #333 !important;
-            font-size: 1.3rem !important;
-            font-weight: bold !important;
-            margin: 0 !important;
-        }
-        
-        .bank-status {
-            padding: 4px 12px !important;
-            border-radius: 20px !important;
-            font-size: 0.8rem !important;
-            font-weight: bold !important;
-            text-transform: uppercase !important;
-        }
-        
-        .bank-status.working {
-            background: #d4edda !important;
-            color: #155724 !important;
-        }
-        
-        .bank-status.error {
-            background: #f8d7da !important;
-            color: #721c24 !important;
-        }
-        
-        .bank-info {
-            margin-bottom: 15px !important;
-            color: #666 !important;
-            font-size: 0.9rem !important;
-        }
-        
-        .account-item {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            padding: 8px 0 !important;
-            border-bottom: 1px solid #f0f0f0 !important;
-        }
-        
-        .account-item:last-child {
-            border-bottom: none !important;
-        }
-        
-        .account-item.error {
-            color: #721c24 !important;
-            font-style: italic !important;
-        }
-        
-        .account-name {
-            color: #333 !important;
-            font-weight: 500 !important;
-        }
-        
-        .account-balance {
-            color: #2196F3 !important;
-            font-weight: bold !important;
-            font-size: 1.1rem !important;
-        }
-        
-        .bank-actions {
-            display: flex !important;
-            gap: 10px !important;
-            margin-top: 15px !important;
-        }
-        
-        .action-btn {
-            background: #2196F3 !important;
-            color: white !important;
-            border: none !important;
-            padding: 8px 16px !important;
-            border-radius: 6px !important;
-            font-size: 0.9rem !important;
-            cursor: pointer !important;
-            flex: 1 !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        .action-btn:hover {
-            background: #1976D2 !important;
-            transform: translateY(-2px) !important;
-        }
-        
-        /* Исправление левого меню */
-        .left-sidebar {
-            width: 320px !important;
-            background: rgba(255, 255, 255, 0.1) !important;
-            padding: 20px !important;
-            backdrop-filter: blur(10px) !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-        }
-        
-        /* Исправление конвертера */
-        .currency-converter-section div:last-child {
-            background: rgba(33, 150, 243, 0.9) !important;
-            color: white !important;
-            padding: 8px !important;
-            border-radius: 4px !important;
-            text-align: center !important;
-            font-weight: bold !important;
-            opacity: 1 !important;
-            backdrop-filter: blur(10px) !important;
-        }
-    </style>
+    <link rel="stylesheet" href="static/styles.css?v=31">
 </head>
 <body>
     <div class="main-layout">
@@ -264,108 +127,216 @@
         <!-- Основной контент -->
         <div class="main-content">
             <div class="container">
-
-        <div class="tabs">
-            <button class="tab" onclick="goToHome()">Главная</button>
-            <button class="tab active" onclick="showTab('banks')">Банки</button>
-            <button class="tab" onclick="goToTransactions()">Транзакции</button>
-            <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
-        </div>
-
-        <!-- Plaid Management Tab -->
-        <div id="plaid-management" class="tab-content active">
-                <div class="plaid-header">
-                    <h1>Управление банками через Plaid</h1>
-                    <button class="plaid-connect-btn" onclick="openPlaidLink()">Подключить новый банк через Plaid</button>
+                <div class="tabs">
+                    <button class="tab" onclick="goToHome()">Главная</button>
+                    <button class="tab active" onclick="showTab('banks')">Банки</button>
+                    <button class="tab" onclick="goToTransactions()">Транзакции</button>
+                    <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
                 </div>
 
-                <!-- Список подключенных банков -->
-                <div class="banks-container-fixed">
-                    <div class="bank-card">
-                        <div class="bank-header">
-                            <h3>Royal Bank of Canada</h3>
-                            <span class="bank-status working">Работает</span>
-                        </div>
-                        <div class="bank-info">Счетов: 5 | Последняя транзакция: 2025-09-15</div>
-                        <div class="account-item">
-                            <span class="account-name">RBC Advantage Banking</span>
-                            <span class="account-balance">119.14 CAD</span>
-                        </div>
-                        <div class="account-item">
-                            <span class="account-name">RBC ION Visa</span>
-                            <span class="account-balance">-58.11 CAD</span>
-                        </div>
-                        <div class="account-item">
-                            <span class="account-name">RBC US Dollar Account</span>
-                            <span class="account-balance">100.82 USD</span>
-                        </div>
-                        <div class="account-item">
-                            <span class="account-name">RBC Investment Account</span>
-                            <span class="account-balance">4,500.00 CAD</span>
-                        </div>
-                        <div class="account-item">
-                            <span class="account-name">RBC Savings Account</span>
-                            <span class="account-balance">2,100.00 CAD</span>
-                        </div>
-                        <div class="bank-actions">
-                            <button class="action-btn" onclick="refreshBank('RBC')">Обновить</button>
-                            <button class="action-btn" onclick="viewAccounts('RBC')">Счета</button>
-                            <button class="action-btn" onclick="viewTransactions('RBC')">Транзакции</button>
-                        </div>
+                <!-- Plaid Management Content -->
+                <div id="plaid-management" class="tab-content active">
+                    <div class="plaid-header">
+                        <h1>Управление банками через Plaid</h1>
+                        <button class="plaid-connect-btn" onclick="openPlaidLink()">Plaid</button>
                     </div>
 
-                    <div class="bank-card">
-                        <div class="bank-header">
-                            <h3>Bank of Montreal</h3>
-                            <span class="bank-status working">Работает</span>
+                    <!-- Banks Table with Accordion -->
+                    <div class="banks-accordion">
+                        <!-- RBC Bank -->
+                        <div class="bank-item">
+                            <div class="bank-header">
+                                <div class="bank-info">
+                                    <div class="bank-logo">RBC</div>
+                                    <div class="bank-details">
+                                        <div class="bank-name">Royal Bank of Canada</div>
+                                    </div>
+                                </div>
+                                <div class="bank-status">
+                                    <span class="status-badge status-working">Работает</span>
+                                    <span class="bank-meta">5 счетов • 2 часа назад</span>
+                                </div>
+                            </div>
+                            <div class="bank-content">
+                                <div class="accounts-section">
+                                    <table class="accounts-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Название счета</th>
+                                                <th>Тип</th>
+                                                <th>Баланс</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">RBC Advantage Banking</div>
+                                                    <div class="account-type">Чековый счет</div>
+                                                </td>
+                                                <td>Checking</td>
+                                                <td class="account-balance positive">$119.14 CAD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">RBC ION Visa</div>
+                                                    <div class="account-type">Кредитная карта</div>
+                                                </td>
+                                                <td>Credit</td>
+                                                <td class="account-balance negative">-$58.11 CAD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">RBC US Dollar Account</div>
+                                                    <div class="account-type">Долларовый счет</div>
+                                                </td>
+                                                <td>Checking</td>
+                                                <td class="account-balance positive">$100.82 USD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">RBC Investment Account</div>
+                                                    <div class="account-type">Инвестиционный счет</div>
+                                                </td>
+                                                <td>Investment</td>
+                                                <td class="account-balance positive">$4,500.00 CAD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">RBC Savings Account</div>
+                                                    <div class="account-type">Сберегательный счет</div>
+                                                </td>
+                                                <td>Savings</td>
+                                                <td class="account-balance positive">$2,100.00 CAD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bank-info">Счетов: 2 | Последняя транзакция: 2025-09-14</div>
-                        <div class="account-item">
-                            <span class="account-name">BMO Chequing Account</span>
-                            <span class="account-balance">50.00 CAD</span>
-                        </div>
-                        <div class="account-item">
-                            <span class="account-name">BMO Savings Account</span>
-                            <span class="account-balance">50.00 CAD</span>
-                        </div>
-                        <div class="bank-actions">
-                            <button class="action-btn" onclick="refreshBank('BMO')">Обновить</button>
-                            <button class="action-btn" onclick="viewAccounts('BMO')">Счета</button>
-                            <button class="action-btn" onclick="viewTransactions('BMO')">Транзакции</button>
-                        </div>
-                    </div>
 
-                    <div class="bank-card">
-                        <div class="bank-header">
-                            <h3>Walmart Rewards</h3>
-                            <span class="bank-status working">Работает</span>
+                        <!-- BMO Bank -->
+                        <div class="bank-item">
+                            <div class="bank-header">
+                                <div class="bank-info">
+                                    <div class="bank-logo">BMO</div>
+                                    <div class="bank-details">
+                                        <div class="bank-name">Bank of Montreal</div>
+                                    </div>
+                                </div>
+                                <div class="bank-status">
+                                    <span class="status-badge status-working">Работает</span>
+                                    <span class="bank-meta">2 счета • 1 час назад</span>
+                                </div>
+                            </div>
+                            <div class="bank-content">
+                                <div class="accounts-section">
+                                    <table class="accounts-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Название счета</th>
+                                                <th>Тип</th>
+                                                <th>Баланс</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">BMO Chequing Account</div>
+                                                    <div class="account-type">Чековый счет</div>
+                                                </td>
+                                                <td>Checking</td>
+                                                <td class="account-balance positive">$50.00 CAD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">BMO Savings Account</div>
+                                                    <div class="account-type">Сберегательный счет</div>
+                                                </td>
+                                                <td>Savings</td>
+                                                <td class="account-balance positive">$50.00 CAD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bank-info">Счетов: 1 | Последняя транзакция: 2025-09-13</div>
-                        <div class="account-item">
-                            <span class="account-name">Walmart Mastercard</span>
-                            <span class="account-balance">1,905.54 CAD</span>
-                        </div>
-                        <div class="bank-actions">
-                            <button class="action-btn" onclick="refreshBank('WALMART')">Обновить</button>
-                            <button class="action-btn" onclick="viewAccounts('WALMART')">Счета</button>
-                            <button class="action-btn" onclick="viewTransactions('WALMART')">Транзакции</button>
-                        </div>
-                    </div>
 
-                    <div class="bank-card">
-                        <div class="bank-header">
-                            <h3>CIBC</h3>
-                            <span class="bank-status error">Ошибка</span>
+                        <!-- Walmart Bank -->
+                        <div class="bank-item">
+                            <div class="bank-header">
+                                <div class="bank-info">
+                                    <div class="bank-logo">WM</div>
+                                    <div class="bank-details">
+                                        <div class="bank-name">Walmart Rewards</div>
+                                    </div>
+                                </div>
+                                <div class="bank-status">
+                                    <span class="status-badge status-working">Работает</span>
+                                    <span class="bank-meta">1 счет • 30 минут назад</span>
+                                </div>
+                            </div>
+                            <div class="bank-content">
+                                <div class="accounts-section">
+                                    <table class="accounts-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Название счета</th>
+                                                <th>Тип</th>
+                                                <th>Баланс</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">Walmart Mastercard</div>
+                                                    <div class="account-type">Кредитная карта</div>
+                                                </td>
+                                                <td>Credit</td>
+                                                <td class="account-balance positive">$1,905.54 CAD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bank-info">Счетов: 0 | Последняя попытка: 2025-09-12</div>
-                        <div class="account-item error">
-                            <span class="account-name">Access Token не найден</span>
-                            <span class="account-balance">-</span>
-                        </div>
-                        <div class="bank-actions">
-                            <button class="action-btn" onclick="refreshBank('CIBC')">Обновить</button>
-                            <button class="action-btn" onclick="viewAccounts('CIBC')">Счета</button>
-                            <button class="action-btn" onclick="viewTransactions('CIBC')">Транзакции</button>
+
+                        <!-- CIBC Bank -->
+                        <div class="bank-item">
+                            <div class="bank-header">
+                                <div class="bank-info">
+                                    <div class="bank-logo">CIBC</div>
+                                    <div class="bank-details">
+                                        <div class="bank-name">CIBC</div>
+                                    </div>
+                                </div>
+                                <div class="bank-status">
+                                    <span class="status-badge status-error">Ошибка</span>
+                                    <span class="bank-meta">0 счетов • 1 день назад</span>
+                                </div>
+                            </div>
+                            <div class="bank-content">
+                                <div class="accounts-section">
+                                    <table class="accounts-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Название счета</th>
+                                                <th>Тип</th>
+                                                <th>Баланс</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="account-name">Access Token не найден</div>
+                                                    <div class="account-type">-</div>
+                                                </td>
+                                                <td>-</td>
+                                                <td class="account-balance error">-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -377,7 +348,7 @@
         <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
     </footer>
 
-    <script src="static/app_new.js?v=2"></script>
+    <script src="static/app.js?v=44"></script>
     
     <script>
         // Функции навигации для Plaid Management
@@ -399,28 +370,12 @@
         
         function showTab(tabName) {
             // Для страницы Plaid Management кнопка "Банки" не должна ничего делать
-            // так как мы уже на странице управления банками
             console.log('На странице Plaid Management, кнопка "Банки" неактивна');
         }
         
         function openPlaidLink() {
             // Mock функция для Plaid Link (временно)
             alert('Функция Plaid Link будет реализована после решения CORS проблемы');
-        }
-        
-        function refreshBank(bankCode) {
-            console.log('Обновление банка:', bankCode);
-            alert('Обновление банка ' + bankCode + ' (функция будет реализована после решения CORS)');
-        }
-        
-        function viewAccounts(bankCode) {
-            console.log('Просмотр счетов банка:', bankCode);
-            alert('Просмотр счетов банка ' + bankCode + ' (функция будет реализована после решения CORS)');
-        }
-        
-        function viewTransactions(bankCode) {
-            console.log('Просмотр транзакций банка:', bankCode);
-            alert('Просмотр транзакций банка ' + bankCode + ' (функция будет реализована после решения CORS)');
         }
     </script>
 </body>

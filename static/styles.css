@@ -1382,3 +1382,284 @@ body {
     }
 }
 
+/* PLAID MANAGEMENT STYLES - TABLE ACCORDION */
+.plaid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.plaid-header h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.plaid-connect-btn {
+    background: #00D4AA;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+}
+
+.plaid-connect-btn:hover {
+    background: #00B894;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
+}
+
+.banks-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bank-item {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.bank-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.bank-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(248, 249, 250, 0.4);
+    border-bottom: 1px solid rgba(233, 236, 239, 0.6);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bank-header:hover {
+    background: rgba(248, 249, 250, 0.6);
+}
+
+.bank-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bank-logo {
+    width: 40px;
+    height: 40px;
+    background: #2196F3;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.bank-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.bank-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.bank-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-working {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.bank-meta {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.bank-content {
+    padding: 0;
+}
+
+.accounts-section {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0;
+}
+
+.accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.accounts-table th {
+    background: rgba(248, 249, 250, 0.4);
+    color: #333;
+    font-weight: 600;
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 2px solid rgba(233, 236, 239, 0.6);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.accounts-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.6);
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.accounts-table tr:hover td {
+    background: rgba(248, 249, 250, 0.3);
+}
+
+.accounts-table tr:last-child td {
+    border-bottom: none;
+}
+
+.account-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.account-type {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+}
+
+.account-balance {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: right;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.account-balance.positive {
+    color: #155724;
+    background: rgba(40, 167, 69, 0.15);
+}
+
+.account-balance.negative {
+    color: #721c24;
+    background: rgba(220, 53, 69, 0.15);
+}
+
+.account-balance.error {
+    color: #6c757d;
+    background: rgba(108, 117, 125, 0.15);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .plaid-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .plaid-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .bank-header {
+        padding: 15px;
+    }
+    
+    .bank-logo {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+    
+    .bank-name {
+        font-size: 1.1rem;
+    }
+    
+    .accounts-table th,
+    .accounts-table td {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .plaid-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .plaid-connect-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .bank-header {
+        padding: 12px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .bank-status {
+        align-items: center;
+    }
+    
+    .accounts-table {
+        font-size: 0.9rem;
+    }
+    
+    .accounts-table th,
+    .accounts-table td {
+        padding: 10px 12px;
+    }
+    
+    .account-name {
+        font-size: 13px;
+    }
+    
+    .account-balance {
+        font-size: 1rem;
+    }
+}
+

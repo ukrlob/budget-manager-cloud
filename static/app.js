@@ -1211,7 +1211,7 @@ function viewTransactions(bankCode) {
 // Функции переключения между методами управления банками
 function showPlaidManagement() {
     console.log('Переход на страницу управления Plaid');
-    window.location.href = '/budget-manager-cloud/plaid_management.html';
+    window.location.href = '/budget-manager-cloud/plaid_management_experimental.html';
 }
 
 function showApiManagement() {
