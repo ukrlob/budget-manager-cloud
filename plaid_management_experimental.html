@@ -130,7 +130,7 @@
             padding: 20px !important;
             backdrop-filter: blur(10px) !important;
             border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-            overflow-y: auto !important;
+            overflow-y: hidden !important;
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
@@ -228,7 +228,8 @@
             .left-sidebar {
                 width: 260px !important;
                 font-size: clamp(8px, 0.9vw, 11px) !important;
-                padding: 12px !important;
+                padding: 8px !important;
+                overflow-y: hidden !important;
             }
             .main-content {
                 padding-left: 280px !important;
@@ -236,22 +237,22 @@
             
             .bm-logo {
                 font-size: clamp(12px, 1.5vw, 18px) !important;
-                margin-bottom: clamp(10px, 1.5vw, 20px) !important;
+                margin-bottom: clamp(8px, 1.2vw, 15px) !important;
             }
             
             .bm-icon {
                 font-size: clamp(16px, 2vw, 24px) !important;
-                padding: clamp(6px, 0.8vw, 10px) !important;
+                padding: clamp(4px, 0.6vw, 8px) !important;
             }
             
             .plaid-counter {
                 font-size: clamp(9px, 1vw, 12px) !important;
-                margin-bottom: clamp(10px, 1.5vw, 20px) !important;
+                margin-bottom: clamp(8px, 1.2vw, 15px) !important;
             }
             
             .currency-rates {
                 font-size: clamp(8px, 0.9vw, 11px) !important;
-                margin-bottom: clamp(10px, 1.5vw, 20px) !important;
+                margin-bottom: clamp(8px, 1.2vw, 15px) !important;
             }
             
             .currency-converter-section {
@@ -260,7 +261,7 @@
             
             .converter-label {
                 font-size: clamp(8px, 0.9vw, 11px) !important;
-                margin-bottom: clamp(6px, 0.8vw, 10px) !important;
+                margin-bottom: clamp(4px, 0.6vw, 8px) !important;
             }
             
             .converter-currencies select,
@@ -271,12 +272,62 @@
             }
         }
         
+        /* Очень маленькие 15" экраны (768px - 900px) */
+        @media (max-width: 900px) and (min-width: 769px) {
+            .left-sidebar {
+                width: 240px !important;
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                padding: 6px !important;
+                overflow-y: hidden !important;
+            }
+            .main-content {
+                padding-left: 260px !important;
+            }
+            
+            .bm-logo {
+                font-size: clamp(10px, 1.2vw, 16px) !important;
+                margin-bottom: clamp(6px, 1vw, 12px) !important;
+            }
+            
+            .bm-icon {
+                font-size: clamp(14px, 1.8vw, 20px) !important;
+                padding: clamp(3px, 0.5vw, 6px) !important;
+            }
+            
+            .plaid-counter {
+                font-size: clamp(8px, 0.9vw, 11px) !important;
+                margin-bottom: clamp(6px, 1vw, 12px) !important;
+            }
+            
+            .currency-rates {
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                margin-bottom: clamp(6px, 1vw, 12px) !important;
+            }
+            
+            .currency-converter-section {
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+            }
+            
+            .converter-label {
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                margin-bottom: clamp(3px, 0.5vw, 6px) !important;
+            }
+            
+            .converter-currencies select,
+            .converter-amount,
+            .converter-result {
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                padding: clamp(2px, 0.4vw, 5px) !important;
+            }
+        }
+        
         /* Планшеты (481px - 768px) */
         @media (max-width: 768px) and (min-width: 481px) {
             .left-sidebar {
                 width: 240px !important;
                 font-size: clamp(7px, 0.8vw, 10px) !important;
                 padding: 10px !important;
+                overflow-y: auto !important;
             }
             .main-content {
                 padding-left: 260px !important;
@@ -327,6 +378,7 @@
             }
             .left-sidebar {
                 display: none !important;
+                overflow-y: auto !important;
             }
         }
         
