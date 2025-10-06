@@ -19,22 +19,23 @@ body {
 }
 
 .left-sidebar {
-    width: 320px;
+    width: clamp(240px, 20vw, 320px);
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    padding: 20px;
+    padding: clamp(12px, 1.5vw, 20px);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: clamp(8px, 1.2vw, 15px);
     position: fixed;
     height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
+    font-size: clamp(12px, 1.2vw, 16px);
 }
 
 .main-content {
     flex: 1;
-    margin-left: 320px;
-    padding: 20px;
+    margin-left: clamp(240px, 20vw, 320px);
+    padding: clamp(15px, 1.5vw, 20px);
     padding-bottom: 0;
     min-height: 100vh;
     display: flex;
@@ -53,6 +54,7 @@ body {
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s ease;
+    margin-bottom: clamp(12px, 1.5vw, 20px);
 }
 
 .bm-logo:hover {
@@ -60,15 +62,15 @@ body {
 }
 
 .bm-icon {
-    width: 60px;
-    height: 60px;
+    width: clamp(40px, 5vw, 60px);
+    height: clamp(40px, 5vw, 60px);
     background: white;
     color: #2196F3;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
     font-weight: bold;
     margin: 0 auto;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -78,33 +80,35 @@ body {
 .plaid-counter {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    padding: 15px;
+    padding: clamp(10px, 1.2vw, 15px);
     text-align: center;
     color: white;
+    margin-bottom: clamp(12px, 1.5vw, 20px);
 }
 
 .counter-label {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
     opacity: 0.8;
-    margin-bottom: 8px;
+    margin-bottom: clamp(4px, 0.8vw, 8px);
 }
 
 .counter-value {
-    font-size: 1.6rem;
+    font-size: clamp(1.2rem, 1.6vw, 1.6rem);
     font-weight: bold;
 }
 
 .exchange-rates {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    padding: 15px;
+    padding: clamp(10px, 1.2vw, 15px);
     color: white;
+    margin-bottom: clamp(12px, 1.5vw, 20px);
 }
 
 .rates-label {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 1.1vw, 1.1rem);
     opacity: 0.8;
-    margin-bottom: 10px;
+    margin-bottom: clamp(6px, 1vw, 10px);
     text-align: center;
 }
 
@@ -213,15 +217,15 @@ body {
 .currency-converter-section {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    padding: 15px;
-    margin-top: 15px;
+    padding: clamp(10px, 1.2vw, 15px);
+    margin-top: clamp(8px, 1.2vw, 15px);
     color: white;
 }
 
 .converter-label {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 1.1vw, 1.1rem);
     opacity: 0.8;
-    margin-bottom: 8px;
+    margin-bottom: clamp(4px, 0.8vw, 8px);
     text-align: center;
 }
 
@@ -1594,6 +1598,24 @@ body {
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
+    .left-sidebar {
+        width: clamp(200px, 18vw, 280px);
+        padding: clamp(8px, 1vw, 12px);
+        gap: clamp(6px, 1vw, 10px);
+        font-size: clamp(10px, 1vw, 14px);
+    }
+    
+    .main-content {
+        margin-left: clamp(200px, 18vw, 280px);
+        padding: clamp(10px, 1vw, 15px);
+    }
+    
+    .bm-icon {
+        width: clamp(35px, 4vw, 45px);
+        height: clamp(35px, 4vw, 45px);
+        font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    }
+    
     .plaid-header {
         flex-direction: column;
         gap: 15px;
