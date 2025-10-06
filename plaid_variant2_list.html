@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Management - Plaid (Список)</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%232196F3%22 text-decoration=%22underline%22>BM</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .left-sidebar {
+            width: clamp(200px, 15vw, 350px);
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.1);
+            padding: clamp(15px, 2vw, 25px);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            font-size: clamp(12px, 2vw, 16px);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px clamp(220px, 17vw, 370px) 20px 20px;
+            overflow-y: auto;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 10px 15px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+            position: relative;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab.active {
+            background: white;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2196F3;
+        }
+        
+        .bank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .bank-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .bank-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .bank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .bank-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .bank-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-working {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .bank-info {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .accounts-list {
+            margin: 15px 0;
+        }
+        
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        
+        .account-item:last-child {
+            border-bottom: none;
+        }
+        
+        .account-name {
+            color: #333;
+        }
+        
+        .account-balance {
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .account-balance.negative {
+            color: #dc3545;
+        }
+        
+        .bank-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+            margin-left: 0;
+            margin-right: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Левое меню -->
+        <div class="left-sidebar">
+            <div class="bm-logo" onclick="goHome()">
+                <div class="bm-icon" style="font-size: 24px; font-weight: bold; color: #2196F3; text-decoration: underline;">BM</div>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <h3>Plaid API</h3>
+                <p>7/100</p>
+                <button class="btn btn-primary">Обновить</button>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <h3>Курсы валют</h3>
+                <p>CAD / USD: 0.7143</p>
+                <p>USD / EUR: 0.8530</p>
+                <p>USD / UAH: 41.3000</p>
+                <p>USD / RUB: 82.1400</p>
+                <button class="btn btn-primary">Обновить</button>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <h3>Конвертер валют</h3>
+                <div style="margin: 10px 0;">
+                    <select style="width: 100%; padding: 5px; margin: 5px 0;">
+                        <option>USD</option>
+                        <option>CAD</option>
+                        <option>EUR</option>
+                    </select>
+                    <input type="number" value="100" style="width: 100%; padding: 5px; margin: 5px 0;">
+                    <div style="background: rgba(33, 150, 243, 0.9); color: white; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold;">$100.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab" onclick="goToHome()">Главная</button>
+                <button class="tab active" onclick="showTab('banks')">Банки</button>
+                <button class="tab" onclick="goToTransactions()">Транзакции</button>
+                <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="openPlaidLink()">Подключить банк</button>
+            </div>
+
+            <div class="bank-list">
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div class="bank-name">Royal Bank of Canada</div>
+                        <div class="bank-status status-working">✅ Работает</div>
+                    </div>
+                    <div class="bank-info">Счетов: 5 | Последняя транзакция: 2025-09-15</div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name">RBC Advantage Banking</span>
+                            <span class="account-balance">$119.14 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC ION Visa</span>
+                            <span class="account-balance negative">-$58.11 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC US Dollar Account</span>
+                            <span class="account-balance">$100.82 USD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC Investment Account</span>
+                            <span class="account-balance">$4,500.00 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC Savings Account</span>
+                            <span class="account-balance">$2,100.00 CAD</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn btn-primary">Обновить</button>
+                        <button class="btn btn-success">Счета</button>
+                        <button class="btn btn-success">Транзакции</button>
+                    </div>
+                </div>
+
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div class="bank-name">Bank of Montreal</div>
+                        <div class="bank-status status-working">✅ Работает</div>
+                    </div>
+                    <div class="bank-info">Счетов: 2 | Последняя транзакция: 2025-09-14</div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name">BMO Chequing Account</span>
+                            <span class="account-balance">$50.00 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">BMO Savings Account</span>
+                            <span class="account-balance">$50.00 CAD</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn btn-primary">Обновить</button>
+                        <button class="btn btn-success">Счета</button>
+                        <button class="btn btn-success">Транзакции</button>
+                    </div>
+                </div>
+
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div class="bank-name">Walmart Rewards</div>
+                        <div class="bank-status status-working">✅ Работает</div>
+                    </div>
+                    <div class="bank-info">Счетов: 1 | Последняя транзакция: 2025-09-13</div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name">Walmart Mastercard</span>
+                            <span class="account-balance">$1,905.54 CAD</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn btn-primary">Обновить</button>
+                        <button class="btn btn-success">Счета</button>
+                        <button class="btn btn-success">Транзакции</button>
+                    </div>
+                </div>
+
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div class="bank-name">CIBC</div>
+                        <div class="bank-status status-error">❌ Ошибка</div>
+                    </div>
+                    <div class="bank-info">Счетов: 0 | Последняя попытка: 2025-09-12</div>
+                    <div class="accounts-list">
+                        <div class="account-item" style="color: #dc3545;">
+                            <span>Access Token не найден</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn btn-primary">Обновить</button>
+                        <button class="btn btn-success">Счета</button>
+                        <button class="btn btn-success">Транзакции</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
+        </footer>
+    </div>
+
+    <script>
+        function goToHome() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
+        function goToTransactions() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
+        function goToAdvisor() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
+        function openPlaidLink() {
+            alert('Открытие Plaid Link...');
+        }
+    </script>
+</body>
+</html>
