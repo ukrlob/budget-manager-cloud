@@ -5,15 +5,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plaid Management - Budget Manager Cloud</title>
     <link rel="icon" type="image/x-icon" href="https://ukrlob.github.io/budget-manager-cloud/favicon.ico">
-    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=35">
+    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=36">
     <style>
-        /* ПРИНУДИТЕЛЬНОЕ СКРЫТИЕ ЛЕВОГО МЕНЮ */
+        /* СОВРЕМЕННЫЙ CSS GRID LAYOUT */
+        .main-layout {
+            display: grid;
+            grid-template-columns: minmax(250px, 300px) 1fr;
+            grid-template-areas: "sidebar main";
+            min-height: 100vh;
+        }
+        
         .left-sidebar {
-            display: none !important;
-            visibility: hidden !important;
-            width: 0 !important;
-            height: 0 !important;
-            overflow: hidden !important;
+            grid-area: sidebar;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 14px;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            grid-area: main;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* Стили для элементов левого меню */
+        .bm-logo {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-bottom: 20px;
+        }
+        
+        .bm-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: #2196F3;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: underline;
+        }
+        
+        .plaid-counter, .exchange-rates, .currency-converter-section {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .counter-label, .rates-label, .converter-label {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .counter-value {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .rate-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .currency-select, .converter-from, .converter-to {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+        
+        .converter-currencies {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .converter-amount {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .converter-result {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .refresh-plaid, .refresh-rates {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: 100%;
+        }
+        
+        .refresh-plaid:hover, .refresh-rates:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Адаптивность для маленьких экранов */
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                grid-template-areas: "main";
+            }
+            
+            .left-sidebar {
+                display: none;
+            }
         }
         
         .plaid-button {
@@ -140,7 +271,86 @@
 </head>
 <body>
     <div class="main-layout">
-        <!-- Основной контент без левого меню -->
+        <!-- Левое меню -->
+        <div class="left-sidebar">
+            <div class="bm-logo" onclick="goHome()">
+                <div class="bm-icon">BM</div>
+            </div>
+            
+            <div class="plaid-counter">
+                <div class="counter-label">Plaid API</div>
+                <div class="counter-value">
+                    <span id="plaid-used">-</span>/<span id="plaid-limit">-</span>
+                </div>
+                <button class="refresh-plaid" onclick="refreshPlaidCounter()">Обновить</button>
+            </div>
+            
+            <div class="exchange-rates">
+                <div class="rates-label">Курсы валют</div>
+                <div class="rate-item">
+                    <select class="currency-select" id="currency-from-1" onchange="updateCurrencyPair(1)">
+                        <option value="CAD">CAD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate-separator">/</span>
+                    <select class="currency-select" id="currency-to-1" onchange="updateCurrencyPair(1)">
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate" id="rate-1">0.7246</span>
+                </div>
+                <div class="rate-item">
+                    <select class="currency-select" id="currency-from-2" onchange="updateCurrencyPair(2)">
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate-separator">/</span>
+                    <select class="currency-select" id="currency-to-2" onchange="updateCurrencyPair(2)">
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate" id="rate-2">0.8560</span>
+                </div>
+                <button class="refresh-rates" onclick="refreshExchangeRates()">Обновить</button>
+            </div>
+            
+            <div class="currency-converter-section">
+                <div class="converter-label">Конвертер валют</div>
+                <div class="converter-currencies">
+                    <select class="converter-from" id="converter-from" onchange="convertCurrencyAmount()">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="converter-arrow">→</span>
+                    <select class="converter-to" id="converter-to" onchange="convertCurrencyAmount()">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                </div>
+                <input type="number" class="converter-amount" id="converter-amount" placeholder="Сумма" value="100" oninput="convertCurrencyAmount()" onchange="convertCurrencyAmount()">
+                <div class="converter-result" id="converter-result">$100.00</div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
         <div class="main-content">
             <div class="container">
                 <!-- Навигация -->
@@ -314,22 +524,6 @@
     </div>
 
     <script>
-        // ПРИНУДИТЕЛЬНОЕ УДАЛЕНИЕ ЛЕВОГО МЕНЮ
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.querySelector('.left-sidebar');
-            if (sidebar) {
-                sidebar.remove();
-                console.log('Left sidebar removed successfully');
-            }
-            
-            // Убеждаемся что main-content занимает всю ширину
-            const mainContent = document.querySelector('.main-content');
-            if (mainContent) {
-                mainContent.style.marginLeft = '0';
-                mainContent.style.width = '100%';
-            }
-        });
-        
         function goToHome() {
             window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
         }
