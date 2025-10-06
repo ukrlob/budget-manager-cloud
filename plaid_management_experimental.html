@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Management - Plaid</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%232196F3%22 text-decoration=%22underline%22>BM</text></svg>">
-    <link rel="stylesheet" href="static/styles.css?v=27">
+    <link rel="stylesheet" href="static/styles.css?v=28">
     <style>
         /* Принудительные стили для исправления кэширования */
         .banks-container-fixed {
@@ -122,19 +122,22 @@
             transform: translateY(-2px) !important;
         }
         
-        /* Исправление левого меню - стационарное */
+        /* Исправление левого меню - FLEXBOX ПОДХОД */
         .left-sidebar {
-            width: 320px !important;
+            width: clamp(240px, 20vw, 320px) !important;
             height: 100vh !important;
             background: rgba(255, 255, 255, 0.1) !important;
-            padding: 20px !important;
+            padding: clamp(8px, 1.5vw, 20px) !important;
             backdrop-filter: blur(10px) !important;
             border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-            overflow-y: hidden !important;
+            overflow-y: auto !important;
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            font-size: clamp(10px, 1.2vw, 14px) !important;
+            font-size: clamp(8px, 1vw, 14px) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: clamp(8px, 1.5vw, 20px) !important;
         }
         
         /* ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ 15" ЭКРАНОВ - ОБХОД КЭША */
@@ -273,41 +276,45 @@
             }
         }
         
-        /* Адаптивные элементы левого меню */
+        /* FLEXBOX ЭЛЕМЕНТЫ ЛЕВОГО МЕНЮ */
         .bm-logo {
-            font-size: clamp(16px, 2vw, 24px) !important;
-            margin-bottom: clamp(15px, 2vw, 25px) !important;
+            font-size: clamp(12px, 1.5vw, 20px) !important;
+            flex-shrink: 0 !important;
+            margin-bottom: 0 !important;
         }
         
         .bm-icon {
-            font-size: clamp(20px, 2.5vw, 32px) !important;
-            padding: clamp(8px, 1vw, 12px) !important;
+            font-size: clamp(16px, 2vw, 28px) !important;
+            padding: clamp(6px, 0.8vw, 10px) !important;
         }
         
         .plaid-counter {
-            font-size: clamp(11px, 1.1vw, 14px) !important;
-            margin-bottom: clamp(15px, 2vw, 25px) !important;
+            font-size: clamp(9px, 1vw, 12px) !important;
+            flex-shrink: 0 !important;
+            margin-bottom: 0 !important;
         }
         
         .currency-rates {
-            font-size: clamp(10px, 1vw, 13px) !important;
-            margin-bottom: clamp(15px, 2vw, 25px) !important;
+            font-size: clamp(8px, 0.9vw, 11px) !important;
+            flex-shrink: 0 !important;
+            margin-bottom: 0 !important;
         }
         
         .currency-converter-section {
-            font-size: clamp(10px, 1vw, 13px) !important;
+            font-size: clamp(8px, 0.9vw, 11px) !important;
+            flex-shrink: 0 !important;
         }
         
         .converter-label {
-            font-size: clamp(10px, 1vw, 13px) !important;
-            margin-bottom: clamp(8px, 1vw, 12px) !important;
+            font-size: clamp(8px, 0.9vw, 11px) !important;
+            margin-bottom: clamp(4px, 0.6vw, 8px) !important;
         }
         
         .converter-currencies select,
         .converter-amount,
         .converter-result {
-            font-size: clamp(10px, 1vw, 13px) !important;
-            padding: clamp(6px, 0.8vw, 10px) !important;
+            font-size: clamp(8px, 0.9vw, 11px) !important;
+            padding: clamp(4px, 0.6vw, 8px) !important;
         }
         
         /* Адаптивные стили для верхнего меню */
@@ -355,20 +362,20 @@
         /* 27" экраны и больше (1025px+) */
         @media (min-width: 1025px) {
             .main-content {
-                padding-left: 340px !important;
+                padding-left: clamp(320px, 22vw, 340px) !important;
             }
         }
         
-        /* 15" экраны (768px - 1024px) */
+        /* 15" экраны (768px - 1024px) - FLEXBOX */
         @media (max-width: 1024px) and (min-width: 769px) {
             .left-sidebar {
-                width: 260px !important;
-                font-size: clamp(8px, 0.9vw, 11px) !important;
-                padding: 6px !important;
-                overflow-y: auto !important;
+                width: clamp(200px, 18vw, 260px) !important;
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                padding: clamp(4px, 0.8vw, 8px) !important;
+                gap: clamp(4px, 1vw, 12px) !important;
             }
             .main-content {
-                padding-left: 280px !important;
+                padding-left: clamp(220px, 20vw, 280px) !important;
             }
             
             .bm-logo {
@@ -408,16 +415,16 @@
             }
         }
         
-        /* Очень маленькие 15" экраны (768px - 900px) */
+        /* Очень маленькие 15" экраны (768px - 900px) - FLEXBOX */
         @media (max-width: 900px) and (min-width: 769px) {
             .left-sidebar {
-                width: 240px !important;
-                font-size: clamp(7px, 0.8vw, 10px) !important;
-                padding: 4px !important;
-                overflow-y: auto !important;
+                width: clamp(180px, 16vw, 240px) !important;
+                font-size: clamp(6px, 0.7vw, 9px) !important;
+                padding: clamp(3px, 0.6vw, 6px) !important;
+                gap: clamp(3px, 0.8vw, 8px) !important;
             }
             .main-content {
-                padding-left: 260px !important;
+                padding-left: clamp(200px, 18vw, 260px) !important;
             }
             
             .bm-logo {
@@ -457,16 +464,16 @@
             }
         }
         
-        /* Планшеты (481px - 768px) */
+        /* Планшеты (481px - 768px) - FLEXBOX */
         @media (max-width: 768px) and (min-width: 481px) {
             .left-sidebar {
-                width: 240px !important;
-                font-size: clamp(7px, 0.8vw, 10px) !important;
-                padding: 10px !important;
-                overflow-y: auto !important;
+                width: clamp(160px, 15vw, 220px) !important;
+                font-size: clamp(6px, 0.7vw, 9px) !important;
+                padding: clamp(3px, 0.6vw, 6px) !important;
+                gap: clamp(3px, 0.8vw, 8px) !important;
             }
             .main-content {
-                padding-left: 260px !important;
+                padding-left: clamp(180px, 17vw, 240px) !important;
             }
             
             .bm-logo {
