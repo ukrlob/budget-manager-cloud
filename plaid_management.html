@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plaid Management - Budget Manager Cloud</title>
     <link rel="icon" type="image/x-icon" href="https://ukrlob.github.io/budget-manager-cloud/favicon.ico">
-    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=37">
+    <!-- Внешний CSS отключен для избежания конфликтов -->
     <style>
         /* СОВРЕМЕННЫЙ CSS GRID LAYOUT */
         .main-layout {
@@ -28,6 +28,8 @@
             width: auto !important;
             max-width: none !important;
             min-width: 250px !important;
+            z-index: 10 !important;
+            position: relative !important;
         }
         
         .main-content {
@@ -259,11 +261,13 @@
         }
         
         .account-balance.positive {
-            color: #f8f9fa;
+            color: #f8f9fa !important;
+            background: none !important;
         }
         
         .account-balance.negative {
-            color: #f8f9fa;
+            color: #f8f9fa !important;
+            background: none !important;
         }
         
         .main-content {
