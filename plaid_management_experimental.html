@@ -129,6 +129,11 @@
             padding: 20px !important;
             backdrop-filter: blur(10px) !important;
             border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
         }
         
         /* Исправление конвертера */
@@ -313,7 +318,7 @@
         </div>
 
         <!-- Основной контент -->
-        <div class="main-content" style="width: 100% !important; max-width: none !important; padding-left: 340px !important; padding-right: 100px !important; margin: 0 !important; min-height: 100vh !important;">
+        <div class="main-content" style="width: 100% !important; max-width: none !important; padding-left: 340px !important; padding-right: 100px !important; padding-bottom: 60px !important; margin: 0 !important; min-height: 100vh !important;">
             <div class="container" style="width: 100% !important; max-width: none !important; padding: 0 !important; margin: 0 !important;">
 
         <div class="tabs">
@@ -325,9 +330,10 @@
 
         <!-- Plaid Management Tab -->
         <div id="plaid-management" class="tab-content active" style="width: 100% !important; max-width: none !important; padding: 0 !important; margin: 0 !important;">
-                <div class="plaid-header">
-                    <h1>Управление банками через Plaid</h1>
-                    <button class="plaid-connect-btn" onclick="openPlaidLink()">Подключить новый банк через Plaid</button>
+                <div class="plaid-header" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <button class="plaid-connect-btn" onclick="openPlaidLink()" style="padding: 8px 16px; font-size: 14px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Подключить банк
+                    </button>
                 </div>
 
                 <!-- Список подключенных банков - ЭКСПЕРИМЕНТАЛЬНАЯ СТРУКТУРА -->
@@ -424,7 +430,7 @@
         </div>
     </div>
 
-    <footer class="footer" style="position: static !important; background: rgba(255, 255, 255, 0.1); color: white; text-align: center; padding: 10px; backdrop-filter: blur(10px); margin-top: 20px; width: 100%;">
+    <footer class="footer" style="position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; background: rgba(255, 255, 255, 0.1); color: white; text-align: center; padding: 10px; backdrop-filter: blur(10px); z-index: 1000; width: 100%;">
         <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
     </footer>
 
