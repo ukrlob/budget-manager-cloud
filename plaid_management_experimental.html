@@ -228,60 +228,11 @@
             .left-sidebar {
                 width: 260px !important;
                 font-size: clamp(8px, 0.9vw, 11px) !important;
-                padding: 8px !important;
-                overflow-y: hidden !important;
+                padding: 6px !important;
+                overflow-y: auto !important;
             }
             .main-content {
                 padding-left: 280px !important;
-            }
-            
-            .bm-logo {
-                font-size: clamp(12px, 1.5vw, 18px) !important;
-                margin-bottom: clamp(8px, 1.2vw, 15px) !important;
-            }
-            
-            .bm-icon {
-                font-size: clamp(16px, 2vw, 24px) !important;
-                padding: clamp(4px, 0.6vw, 8px) !important;
-            }
-            
-            .plaid-counter {
-                font-size: clamp(9px, 1vw, 12px) !important;
-                margin-bottom: clamp(8px, 1.2vw, 15px) !important;
-            }
-            
-            .currency-rates {
-                font-size: clamp(8px, 0.9vw, 11px) !important;
-                margin-bottom: clamp(8px, 1.2vw, 15px) !important;
-            }
-            
-            .currency-converter-section {
-                font-size: clamp(8px, 0.9vw, 11px) !important;
-            }
-            
-            .converter-label {
-                font-size: clamp(8px, 0.9vw, 11px) !important;
-                margin-bottom: clamp(4px, 0.6vw, 8px) !important;
-            }
-            
-            .converter-currencies select,
-            .converter-amount,
-            .converter-result {
-                font-size: clamp(8px, 0.9vw, 11px) !important;
-                padding: clamp(4px, 0.6vw, 8px) !important;
-            }
-        }
-        
-        /* Очень маленькие 15" экраны (768px - 900px) */
-        @media (max-width: 900px) and (min-width: 769px) {
-            .left-sidebar {
-                width: 240px !important;
-                font-size: clamp(7px, 0.8vw, 10px) !important;
-                padding: 6px !important;
-                overflow-y: hidden !important;
-            }
-            .main-content {
-                padding-left: 260px !important;
             }
             
             .bm-logo {
@@ -317,7 +268,56 @@
             .converter-amount,
             .converter-result {
                 font-size: clamp(7px, 0.8vw, 10px) !important;
+                padding: clamp(3px, 0.5vw, 6px) !important;
+            }
+        }
+        
+        /* Очень маленькие 15" экраны (768px - 900px) */
+        @media (max-width: 900px) and (min-width: 769px) {
+            .left-sidebar {
+                width: 240px !important;
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                padding: 4px !important;
+                overflow-y: auto !important;
+            }
+            .main-content {
+                padding-left: 260px !important;
+            }
+            
+            .bm-logo {
+                font-size: clamp(8px, 1vw, 14px) !important;
+                margin-bottom: clamp(4px, 0.8vw, 10px) !important;
+            }
+            
+            .bm-icon {
+                font-size: clamp(12px, 1.5vw, 18px) !important;
                 padding: clamp(2px, 0.4vw, 5px) !important;
+            }
+            
+            .plaid-counter {
+                font-size: clamp(7px, 0.8vw, 10px) !important;
+                margin-bottom: clamp(4px, 0.8vw, 10px) !important;
+            }
+            
+            .currency-rates {
+                font-size: clamp(6px, 0.7vw, 9px) !important;
+                margin-bottom: clamp(4px, 0.8vw, 10px) !important;
+            }
+            
+            .currency-converter-section {
+                font-size: clamp(6px, 0.7vw, 9px) !important;
+            }
+            
+            .converter-label {
+                font-size: clamp(6px, 0.7vw, 9px) !important;
+                margin-bottom: clamp(2px, 0.4vw, 5px) !important;
+            }
+            
+            .converter-currencies select,
+            .converter-amount,
+            .converter-result {
+                font-size: clamp(6px, 0.7vw, 9px) !important;
+                padding: clamp(2px, 0.4vw, 4px) !important;
             }
         }
         
