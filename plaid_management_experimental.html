@@ -159,8 +159,8 @@
                 padding-left: 20vw !important;
             }
             .footer {
-                margin-left: 20vw !important;
-                width: calc(100% - 22vw) !important;
+                margin-left: 0 !important;
+                width: 100% !important;
             }
         }
         
@@ -173,22 +173,25 @@
                 padding-left: 18vw !important;
             }
             .footer {
-                margin-left: 18vw !important;
-                width: calc(100% - 20vw) !important;
+                margin-left: 0 !important;
+                width: 100% !important;
             }
         }
         
         @media (max-width: 1366px) {
             .left-sidebar {
-                width: 14vw !important;
-                min-width: 220px !important;
+                width: 12vw !important;
+                min-width: 200px !important;
             }
             .main-content {
-                padding-left: 16vw !important;
+                padding-left: 14vw !important;
             }
             .footer {
-                margin-left: 16vw !important;
-                width: calc(100% - 18vw) !important;
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            .banks-grid {
+                grid-template-columns: repeat(auto-fit, minmax(18vw, 1fr)) !important;
             }
         }
         
@@ -201,8 +204,8 @@
                 padding-left: 14vw !important;
             }
             .footer {
-                margin-left: 14vw !important;
-                width: calc(100% - 16vw) !important;
+                margin-left: 0 !important;
+                width: 100% !important;
             }
         }
         
@@ -215,8 +218,8 @@
                 padding-left: 12vw !important;
             }
             .footer {
-                margin-left: 12vw !important;
-                width: calc(100% - 14vw) !important;
+                margin-left: 0 !important;
+                width: 100% !important;
             }
         }
         
@@ -229,9 +232,9 @@
                 display: none !important;
             }
             .footer {
-                margin-left: 20px !important;
-                margin-right: 20px !important;
-                width: calc(100% - 40px) !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
             }
         }
         
@@ -245,8 +248,11 @@
                 padding-left: 24vw !important;
             }
             .footer {
-                margin-left: 24vw !important;
-                width: calc(100% - 26vw) !important;
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            .banks-grid {
+                grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr)) !important;
             }
         }
         
@@ -258,9 +264,9 @@
             padding: 10px;
             backdrop-filter: blur(10px);
             margin-top: 20px;
-            margin-left: 22vw;
-            margin-right: 2vw;
-            width: calc(100% - 24vw);
+            margin-left: 0;
+            margin-right: 0;
+            width: 100%;
         }
     </style>
 </head>
@@ -401,7 +407,7 @@
                 </div>
 
                 <!-- Список подключенных банков - ЭКСПЕРИМЕНТАЛЬНАЯ СТРУКТУРА -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr)); gap: 2vw; width: 100%;">
+                <div class="banks-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr)); gap: 2vw; width: 100%;">
                     <div style="background: white; border-radius: 12px; padding: 2vw; box-shadow: 0 4px 20px rgba(0,0,0,0.1); font-size: clamp(12px, 1.2vw, 18px);">
                         <div class="bank-header">
                             <h3>Royal Bank of Canada</h3>
