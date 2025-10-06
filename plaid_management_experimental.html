@@ -134,7 +134,7 @@
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            font-size: 14px !important;
+            font-size: clamp(10px, 1.2vw, 14px) !important;
         }
         
         /* Исправление конвертера */
@@ -161,7 +161,7 @@
         @media (max-width: 1024px) and (min-width: 769px) {
             .left-sidebar {
                 width: 280px !important;
-                font-size: 12px !important;
+                font-size: clamp(9px, 1vw, 12px) !important;
                 padding: 16px !important;
             }
             .main-content {
@@ -173,7 +173,7 @@
         @media (max-width: 768px) and (min-width: 481px) {
             .left-sidebar {
                 width: 260px !important;
-                font-size: 11px !important;
+                font-size: clamp(8px, 0.9vw, 11px) !important;
                 padding: 14px !important;
             }
             .main-content {
@@ -317,23 +317,25 @@
         }
         
         .accounts-table th {
-            background: #f8f9fa;
+            background: rgba(248, 249, 250, 0.4);
             padding: 10px 12px;
             text-align: left;
-            font-weight: 600;
-            color: #495057;
+            font-weight: 700;
+            color: #212529;
             font-size: 13px;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid rgba(222, 226, 230, 0.6);
         }
         
         .accounts-table td {
             padding: 10px 12px;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(233, 236, 239, 0.6);
             font-size: 13px;
+            color: #212529;
+            font-weight: 500;
         }
         
         .accounts-table tr:hover {
-            background: #f8f9fa;
+            background: rgba(248, 249, 250, 0.3);
         }
         
         .account-name {
@@ -348,16 +350,20 @@
         }
         
         .account-balance {
-            font-weight: 600;
+            font-weight: 700;
             text-align: right;
+            padding: 4px 8px;
+            border-radius: 4px;
         }
         
         .account-balance.positive {
-            color: #28a745;
+            color: #155724;
+            background: rgba(40, 167, 69, 0.15);
         }
         
         .account-balance.negative {
-            color: #dc3545;
+            color: #721c24;
+            background: rgba(220, 53, 69, 0.15);
         }
         
     </style>
