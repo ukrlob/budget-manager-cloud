@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plaid Management - Budget Manager Cloud</title>
     <link rel="icon" type="image/x-icon" href="https://ukrlob.github.io/budget-manager-cloud/favicon.ico">
-    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=34">
+    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=35">
     <style>
+        /* ПРИНУДИТЕЛЬНОЕ СКРЫТИЕ ЛЕВОГО МЕНЮ */
+        .left-sidebar {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+        
         .plaid-button {
             background: linear-gradient(135deg, #00D4AA 0%, #00A8CC 100%);
             color: white;
@@ -305,6 +314,22 @@
     </div>
 
     <script>
+        // ПРИНУДИТЕЛЬНОЕ УДАЛЕНИЕ ЛЕВОГО МЕНЮ
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.left-sidebar');
+            if (sidebar) {
+                sidebar.remove();
+                console.log('Left sidebar removed successfully');
+            }
+            
+            // Убеждаемся что main-content занимает всю ширину
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.style.marginLeft = '0';
+                mainContent.style.width = '100%';
+            }
+        });
+        
         function goToHome() {
             window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
         }
