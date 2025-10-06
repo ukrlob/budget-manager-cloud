@@ -5,32 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plaid Management - Budget Manager Cloud</title>
     <link rel="icon" type="image/x-icon" href="https://ukrlob.github.io/budget-manager-cloud/favicon.ico">
-    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=36">
+    <link rel="stylesheet" href="https://ukrlob.github.io/budget-manager-cloud/static/styles.css?v=37">
     <style>
         /* СОВРЕМЕННЫЙ CSS GRID LAYOUT */
         .main-layout {
-            display: grid;
-            grid-template-columns: minmax(250px, 300px) 1fr;
-            grid-template-areas: "sidebar main";
-            min-height: 100vh;
+            display: grid !important;
+            grid-template-columns: minmax(250px, 300px) 1fr !important;
+            grid-template-areas: "sidebar main" !important;
+            min-height: 100vh !important;
         }
         
         .left-sidebar {
-            grid-area: sidebar;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            font-size: 14px;
-            overflow-y: auto;
+            grid-area: sidebar !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px) !important;
+            padding: 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+            font-size: 14px !important;
+            overflow-y: auto !important;
+            width: auto !important;
+            max-width: none !important;
+            min-width: 250px !important;
         }
         
         .main-content {
-            grid-area: main;
-            padding: 20px;
-            overflow-y: auto;
+            grid-area: main !important;
+            padding: 20px !important;
+            overflow-y: auto !important;
+            margin-left: 0 !important;
+            width: auto !important;
+        }
+        
+        /* ПРИНУДИТЕЛЬНОЕ СКРЫТИЕ СТАРЫХ СТИЛЕЙ */
+        .tabs {
+            display: none !important;
+        }
+        
+        .banks-container {
+            display: none !important;
+        }
+        
+        .plaid-button {
+            display: none !important;
         }
         
         /* Стили для элементов левого меню */
@@ -273,6 +291,19 @@
     <div class="main-layout">
         <!-- Левое меню -->
         <div class="left-sidebar">
+            <!-- Навигация в левом меню -->
+            <div class="tabs" style="display: flex !important; flex-direction: column !important; gap: 10px !important; margin-bottom: 20px !important;">
+                <button class="tab" onclick="goToHome()" style="width: 100% !important; text-align: left !important;">Главная</button>
+                <button class="tab active" onclick="goToBanks()" style="width: 100% !important; text-align: left !important;">Банки</button>
+                <button class="tab" onclick="goToTransactions()" style="width: 100% !important; text-align: left !important;">Транзакции</button>
+                <button class="tab" onclick="goToAdvisor()" style="width: 100% !important; text-align: left !important;">Финконсультант</button>
+            </div>
+            
+            <!-- Кнопка Plaid -->
+            <button class="plaid-button" onclick="connectPlaid()" style="display: block !important; width: 100% !important; margin-bottom: 20px !important;">
+                🔗 Подключить банк через Plaid
+            </button>
+            
             <div class="bm-logo" onclick="goHome()">
                 <div class="bm-icon">BM</div>
             </div>
@@ -353,21 +384,8 @@
         <!-- Основной контент -->
         <div class="main-content">
             <div class="container">
-                <!-- Навигация -->
-                <div class="tabs">
-                    <button class="tab" onclick="goToHome()">Главная</button>
-                    <button class="tab active" onclick="goToBanks()">Банки</button>
-                    <button class="tab" onclick="goToTransactions()">Транзакции</button>
-                    <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
-                </div>
-
-                <!-- Кнопка подключения Plaid -->
-                <button class="plaid-button" onclick="connectPlaid()">
-                    🔗 Подключить банк через Plaid
-                </button>
-
                 <!-- Контейнер банков -->
-                <div class="banks-container">
+                <div class="banks-container" style="display: grid !important; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important; gap: 20px !important; margin-top: 20px !important;">
                     <!-- RBC Bank -->
                     <div class="bank-card">
                         <div class="bank-header">
