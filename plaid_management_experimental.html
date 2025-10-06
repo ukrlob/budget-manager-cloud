@@ -153,6 +153,10 @@
             .main-content {
                 padding-left: 20vw !important;
             }
+            .footer {
+                margin-left: 20vw !important;
+                width: calc(100% - 22vw) !important;
+            }
         }
         
         @media (max-width: 1600px) {
@@ -162,6 +166,10 @@
             }
             .main-content {
                 padding-left: 18vw !important;
+            }
+            .footer {
+                margin-left: 18vw !important;
+                width: calc(100% - 20vw) !important;
             }
         }
         
@@ -173,6 +181,10 @@
             .main-content {
                 padding-left: 16vw !important;
             }
+            .footer {
+                margin-left: 16vw !important;
+                width: calc(100% - 18vw) !important;
+            }
         }
         
         @media (max-width: 1200px) {
@@ -182,6 +194,10 @@
             }
             .main-content {
                 padding-left: 14vw !important;
+            }
+            .footer {
+                margin-left: 14vw !important;
+                width: calc(100% - 16vw) !important;
             }
         }
         
@@ -193,6 +209,10 @@
             .main-content {
                 padding-left: 12vw !important;
             }
+            .footer {
+                margin-left: 12vw !important;
+                width: calc(100% - 14vw) !important;
+            }
         }
         
         @media (max-width: 768px) {
@@ -203,6 +223,24 @@
             .left-sidebar {
                 display: none !important;
             }
+            .footer {
+                margin-left: 20px !important;
+                margin-right: 20px !important;
+                width: calc(100% - 40px) !important;
+            }
+        }
+        
+        /* Исправление футера - как на главной странице */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+            margin-left: 22vw;
+            margin-right: 2vw;
+            width: calc(100% - 24vw);
         }
     </style>
 </head>
@@ -434,11 +472,11 @@
                 </div>
             </div>
         </div>
+        
+        <footer class="footer" style="background: rgba(255, 255, 255, 0.1); color: white; text-align: center; padding: 10px; backdrop-filter: blur(10px); margin-top: 20px; width: 100%;">
+            <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
+        </footer>
     </div>
-
-    <footer class="footer" style="background: rgba(255, 255, 255, 0.1); color: white; text-align: center; padding: 10px; backdrop-filter: blur(10px); margin-top: 20px; width: 100%;">
-        <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
-    </footer>
 
     <script src="static/app_new.js?v=4"></script>
     
