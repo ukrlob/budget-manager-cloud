@@ -166,46 +166,55 @@
         
         @media (max-width: 1600px) {
             .left-sidebar {
-                width: 10vw !important;
-                min-width: 180px !important;
-            }
-            .main-content {
-                padding-left: 12vw !important;
-            }
-            .footer {
-                margin-left: 0 !important;
-                width: 100% !important;
-            }
-        }
-        
-        @media (max-width: 1366px) {
-            .left-sidebar {
                 width: 8vw !important;
-                min-width: 160px !important;
+                min-width: 140px !important;
             }
             .main-content {
-                padding-left: 10vw !important;
+                padding-left: 8vw !important;
             }
             .footer {
                 margin-left: 0 !important;
                 width: 100% !important;
             }
             .banks-grid {
-                grid-template-columns: repeat(auto-fit, minmax(12vw, 1fr)) !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 1vw !important;
+            }
+        }
+        
+        @media (max-width: 1366px) {
+            .left-sidebar {
+                width: 6vw !important;
+                min-width: 120px !important;
+            }
+            .main-content {
+                padding-left: 6vw !important;
+            }
+            .footer {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            .banks-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5vw !important;
             }
         }
         
         @media (max-width: 1200px) {
             .left-sidebar {
-                width: 12vw !important;
-                min-width: 200px !important;
+                width: 5vw !important;
+                min-width: 100px !important;
             }
             .main-content {
-                padding-left: 14vw !important;
+                padding-left: 5vw !important;
             }
             .footer {
                 margin-left: 0 !important;
                 width: 100% !important;
+            }
+            .banks-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5vw !important;
             }
         }
         
@@ -407,7 +416,7 @@
                 </div>
 
                 <!-- Список подключенных банков - ЭКСПЕРИМЕНТАЛЬНАЯ СТРУКТУРА -->
-                <div class="banks-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(15vw, 1fr)); gap: 2vw; width: 100%;">
+                <div class="banks-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(12vw, 1fr)); gap: 2vw; width: 100%;">
                     <div style="background: white; border-radius: 12px; padding: 2vw; box-shadow: 0 4px 20px rgba(0,0,0,0.1); font-size: clamp(10px, 1vw, 16px);">
                         <div class="bank-header">
                             <h3>Royal Bank of Canada</h3>
