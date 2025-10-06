@@ -127,10 +127,15 @@
             width: 20vw !important;
             min-width: 280px !important;
             max-width: 400px !important;
+            height: 100vh !important;
             background: rgba(255, 255, 255, 0.1) !important;
             padding: 20px !important;
             backdrop-filter: blur(10px) !important;
             border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+            overflow-y: auto !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
         }
         
         /* Исправление конвертера */
@@ -227,6 +232,21 @@
                 margin-left: 20px !important;
                 margin-right: 20px !important;
                 width: calc(100% - 40px) !important;
+            }
+        }
+        
+        /* Дополнительные адаптивные стили для очень больших экранов */
+        @media (min-width: 1921px) {
+            .left-sidebar {
+                width: 22vw !important;
+                min-width: 300px !important;
+            }
+            .main-content {
+                padding-left: 24vw !important;
+            }
+            .footer {
+                margin-left: 24vw !important;
+                width: calc(100% - 26vw) !important;
             }
         }
         
@@ -382,7 +402,7 @@
 
                 <!-- Список подключенных банков - ЭКСПЕРИМЕНТАЛЬНАЯ СТРУКТУРА -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr)); gap: 2vw; width: 100%;">
-                    <div style="background: white; border-radius: 12px; padding: 2vw; box-shadow: 0 4px 20px rgba(0,0,0,0.1); font-size: 1.2vw;">
+                    <div style="background: white; border-radius: 12px; padding: 2vw; box-shadow: 0 4px 20px rgba(0,0,0,0.1); font-size: clamp(12px, 1.2vw, 18px);">
                         <div class="bank-header">
                             <h3>Royal Bank of Canada</h3>
                             <span class="bank-status working">Работает</span>
