@@ -372,22 +372,7 @@ body {
     padding: 0;
 }
 
-.bank-card {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 15px 20px;
-    transition: all 0.2s ease;
-    border-left: 4px solid #2196F3;
-}
-
-.bank-card:hover {
-    background: #e3f2fd;
-    border-color: #2196F3;
-    transform: translateX(8px);
-    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
-}
+/* Удалено дублирующее определение .bank-card */
 
 .bank-header {
     display: flex;
@@ -1131,19 +1116,7 @@ body {
     padding: 0 !important;
 }
 
-/* Стили для банковских карточек */
-.bank-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.bank-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
+/* Удалено дублирующее определение .bank-card */
 
 .bank-header {
     display: flex;
@@ -1278,18 +1251,7 @@ body {
     max-width: 100%;
 }
 
-.bank-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.bank-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
+/* Удалено дублирующее определение .bank-card */
 
 .bank-header {
     display: flex;
