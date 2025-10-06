@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaid Management - Вариант 3: Список с карточками</title>
+    <link rel="stylesheet" href="static/styles.css?v=26">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <style>
+        .main-content {
+            padding-left: 340px !important;
+            padding-right: 20px !important;
+            min-height: 100vh;
+        }
+        
+        .banks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        
+        .bank-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border-left: 4px solid #007bff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .bank-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .bank-item.error {
+            border-left-color: #dc3545;
+        }
+        
+        .bank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .bank-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #212529;
+        }
+        
+        .bank-subtitle {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+        
+        .bank-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .status-working {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .bank-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .bank-balance {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #28a745;
+        }
+        
+        .bank-accounts-count {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .accounts-list {
+            margin-bottom: 15px;
+        }
+        
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .account-item:last-child {
+            border-bottom: none;
+        }
+        
+        .account-name {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .account-balance {
+            font-weight: 600;
+            color: #212529;
+        }
+        
+        .bank-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-action {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-action:hover {
+            background: #0056b3;
+        }
+        
+        .btn-action.secondary {
+            background: #6c757d;
+        }
+        
+        .btn-action.secondary:hover {
+            background: #545b62;
+        }
+        
+        .btn-action.success {
+            background: #28a745;
+        }
+        
+        .btn-action.success:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Левое меню -->
+        <div class="left-sidebar">
+            <div class="bm-icon" onclick="goHome()">BM</div>
+            <div class="plaid-counter">
+                <div class="counter-label">Plaid API</div>
+                <div class="counter-value" id="plaid-counter">3 банка</div>
+            </div>
+            <div class="exchange-rates">
+                <div class="rates-label">Курсы валют</div>
+                <div class="rate-item">USD: 1.00</div>
+                <div class="rate-item">EUR: 0.85</div>
+                <div class="rate-item">CAD: 1.35</div>
+            </div>
+            <div class="currency-converter-section">
+                <div class="converter-label">Конвертер валют</div>
+                <div class="converter-currencies">
+                    <select class="converter-from" id="converter-from">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                    </select>
+                    <span class="converter-arrow">→</span>
+                    <select class="converter-to" id="converter-to">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                    </select>
+                </div>
+                <input type="number" class="converter-amount" id="converter-amount" placeholder="Сумма" value="100">
+                <div class="converter-result" id="converter-result">$100.00</div>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab" onclick="goToHome()">Главная</button>
+                <button class="tab active" onclick="showTab('banks')">Банки</button>
+                <button class="tab" onclick="goToTransactions()">Транзакции</button>
+                <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Plaid Management - Список с карточками</h2>
+                <button class="btn btn-success" onclick="openPlaidLink()">Подключить банк</button>
+            </div>
+
+            <div class="banks-list">
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div>
+                            <div class="bank-title">RBC Royal Bank</div>
+                            <div class="bank-subtitle">5 счетов • Последнее обновление: 2 часа назад</div>
+                        </div>
+                        <span class="bank-status status-working">✅ Работает</span>
+                    </div>
+                    <div class="bank-summary">
+                        <div class="bank-balance">$6,661.85 CAD</div>
+                        <div class="bank-accounts-count">5 активных счетов</div>
+                    </div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name">RBC Advantaging</span>
+                            <span class="account-balance">$119.14 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC Visa</span>
+                            <span class="account-balance">-$58.11 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC USD</span>
+                            <span class="account-balance">$100.82 USD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC Savings</span>
+                            <span class="account-balance">$5,500.00 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">RBC Investment</span>
+                            <span class="account-balance">$1,000.00 CAD</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn-action success" onclick="updateBank('RBC')">Обновить данные</button>
+                        <button class="btn-action" onclick="viewAccounts('RBC')">Управление счетами</button>
+                        <button class="btn-action secondary" onclick="viewTransactions('RBC')">Транзакции</button>
+                    </div>
+                </div>
+
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div>
+                            <div class="bank-title">BMO Bank</div>
+                            <div class="bank-subtitle">2 счета • Последнее обновление: 1 час назад</div>
+                        </div>
+                        <span class="bank-status status-working">✅ Работает</span>
+                    </div>
+                    <div class="bank-summary">
+                        <div class="bank-balance">$100.00 CAD</div>
+                        <div class="bank-accounts-count">2 активных счета</div>
+                    </div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name">BMO Chequing</span>
+                            <span class="account-balance">$50.00 CAD</span>
+                        </div>
+                        <div class="account-item">
+                            <span class="account-name">BMO Savings</span>
+                            <span class="account-balance">$50.00 CAD</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn-action success" onclick="updateBank('BMO')">Обновить данные</button>
+                        <button class="btn-action" onclick="viewAccounts('BMO')">Управление счетами</button>
+                        <button class="btn-action secondary" onclick="viewTransactions('BMO')">Транзакции</button>
+                    </div>
+                </div>
+
+                <div class="bank-item">
+                    <div class="bank-header">
+                        <div>
+                            <div class="bank-title">Walmart Mastercard</div>
+                            <div class="bank-subtitle">1 счет • Последнее обновление: 30 минут назад</div>
+                        </div>
+                        <span class="bank-status status-working">✅ Работает</span>
+                    </div>
+                    <div class="bank-summary">
+                        <div class="bank-balance">$1,905.54 CAD</div>
+                        <div class="bank-accounts-count">1 активный счет</div>
+                    </div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name">Walmart Mastercard</span>
+                            <span class="account-balance">$1,905.54 CAD</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn-action success" onclick="updateBank('WALMART')">Обновить данные</button>
+                        <button class="btn-action" onclick="viewAccounts('WALMART')">Управление счетами</button>
+                        <button class="btn-action secondary" onclick="viewTransactions('WALMART')">Транзакции</button>
+                    </div>
+                </div>
+
+                <div class="bank-item error">
+                    <div class="bank-header">
+                        <div>
+                            <div class="bank-title">CIBC Bank</div>
+                            <div class="bank-subtitle">0 счетов • Последняя попытка: 1 день назад</div>
+                        </div>
+                        <span class="bank-status status-error">❌ Ошибка подключения</span>
+                    </div>
+                    <div class="bank-summary">
+                        <div class="bank-balance" style="color: #dc3545;">Ошибка подключения</div>
+                        <div class="bank-accounts-count">Нет доступных счетов</div>
+                    </div>
+                    <div class="accounts-list">
+                        <div class="account-item">
+                            <span class="account-name" style="color: #6c757d;">Нет доступных счетов</span>
+                            <span class="account-balance" style="color: #6c757d;">-</span>
+                        </div>
+                    </div>
+                    <div class="bank-actions">
+                        <button class="btn-action" onclick="updateBank('CIBC')">Повторить подключение</button>
+                        <button class="btn-action secondary" onclick="viewAccounts('CIBC')">Управление счетами</button>
+                        <button class="btn-action secondary" onclick="viewTransactions('CIBC')">Транзакции</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToHome() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
+        function goToTransactions() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/transactions';
+        }
+        
+        function goToAdvisor() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/advisor';
+        }
+        
+        function showTab(tabName) {
+            // Заглушка для совместимости
+        }
+        
+        function openPlaidLink() {
+            alert('Открытие Plaid Link...');
+        }
+        
+        function updateBank(bankCode) {
+            alert(`Обновление банка ${bankCode}...`);
+        }
+        
+        function viewAccounts(bankCode) {
+            alert(`Просмотр счетов банка ${bankCode}...`);
+        }
+        
+        function viewTransactions(bankCode) {
+            alert(`Просмотр транзакций банка ${bankCode}...`);
+        }
+    </script>
+</body>
+</html>
