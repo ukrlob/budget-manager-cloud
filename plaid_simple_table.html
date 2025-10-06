@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaid Management - Простая таблица</title>
+    <link rel="stylesheet" href="static/styles.css?v=26">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <style>
+        .main-content {
+            padding-left: 340px !important;
+            padding-right: 20px !important;
+            min-height: 100vh;
+        }
+        
+        .simple-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .simple-table th {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            font-size: 0.9em;
+        }
+        
+        .simple-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+        
+        .simple-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .bank-name {
+            font-weight: 600;
+            color: #212529;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .status-working {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .balance {
+            font-weight: 600;
+            color: #28a745;
+        }
+        
+        .balance-error {
+            color: #dc3545;
+        }
+        
+        .accounts-count {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .action-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-right: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #0056b3;
+        }
+        
+        .action-btn.secondary {
+            background: #6c757d;
+        }
+        
+        .action-btn.secondary:hover {
+            background: #545b62;
+        }
+        
+        .action-btn.success {
+            background: #28a745;
+        }
+        
+        .action-btn.success:hover {
+            background: #1e7e34;
+        }
+        
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .table-info {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- Левое меню -->
+        <div class="left-sidebar">
+            <div class="bm-icon" onclick="goHome()">BM</div>
+            <div class="plaid-counter">
+                <div class="counter-label">Plaid API</div>
+                <div class="counter-value" id="plaid-counter">3 банка</div>
+            </div>
+            <div class="exchange-rates">
+                <div class="rates-label">Курсы валют</div>
+                <div class="rate-item">USD: 1.00</div>
+                <div class="rate-item">EUR: 0.85</div>
+                <div class="rate-item">CAD: 1.35</div>
+            </div>
+            <div class="currency-converter-section">
+                <div class="converter-label">Конвертер валют</div>
+                <div class="converter-currencies">
+                    <select class="converter-from" id="converter-from">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                    </select>
+                    <span class="converter-arrow">→</span>
+                    <select class="converter-to" id="converter-to">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                    </select>
+                </div>
+                <input type="number" class="converter-amount" id="converter-amount" placeholder="Сумма" value="100">
+                <div class="converter-result" id="converter-result">$100.00</div>
+            </div>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab" onclick="goToHome()">Главная</button>
+                <button class="tab active" onclick="showTab('banks')">Банки</button>
+                <button class="tab" onclick="goToTransactions()">Транзакции</button>
+                <button class="tab" onclick="goToAdvisor()">Финконсультант</button>
+            </div>
+
+            <div class="header-section">
+                <div>
+                    <h2>Plaid Management - Простая таблица</h2>
+                    <div class="table-info">4 банка • 3 работают • 1 с ошибкой</div>
+                </div>
+                <button class="btn btn-success" onclick="openPlaidLink()">Подключить банк</button>
+            </div>
+
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>Банк</th>
+                        <th>Статус</th>
+                        <th>Счетов</th>
+                        <th>Общий баланс</th>
+                        <th>Последнее обновление</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="bank-name">RBC Royal Bank</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-working">✅ Работает</span>
+                        </td>
+                        <td>
+                            <span class="accounts-count">5</span>
+                        </td>
+                        <td>
+                            <span class="balance">$6,661.85 CAD</span>
+                        </td>
+                        <td>2 часа назад</td>
+                        <td>
+                            <button class="action-btn success" onclick="updateBank('RBC')">Обновить</button>
+                            <button class="action-btn" onclick="viewAccounts('RBC')">Счета</button>
+                            <button class="action-btn secondary" onclick="viewTransactions('RBC')">Транзакции</button>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="bank-name">BMO Bank</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-working">✅ Работает</span>
+                        </td>
+                        <td>
+                            <span class="accounts-count">2</span>
+                        </td>
+                        <td>
+                            <span class="balance">$100.00 CAD</span>
+                        </td>
+                        <td>1 час назад</td>
+                        <td>
+                            <button class="action-btn success" onclick="updateBank('BMO')">Обновить</button>
+                            <button class="action-btn" onclick="viewAccounts('BMO')">Счета</button>
+                            <button class="action-btn secondary" onclick="viewTransactions('BMO')">Транзакции</button>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="bank-name">Walmart Mastercard</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-working">✅ Работает</span>
+                        </td>
+                        <td>
+                            <span class="accounts-count">1</span>
+                        </td>
+                        <td>
+                            <span class="balance">$1,905.54 CAD</span>
+                        </td>
+                        <td>30 минут назад</td>
+                        <td>
+                            <button class="action-btn success" onclick="updateBank('WALMART')">Обновить</button>
+                            <button class="action-btn" onclick="viewAccounts('WALMART')">Счета</button>
+                            <button class="action-btn secondary" onclick="viewTransactions('WALMART')">Транзакции</button>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <div class="bank-name">CIBC Bank</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-error">❌ Ошибка</span>
+                        </td>
+                        <td>
+                            <span class="accounts-count">0</span>
+                        </td>
+                        <td>
+                            <span class="balance-error">Ошибка подключения</span>
+                        </td>
+                        <td>1 день назад</td>
+                        <td>
+                            <button class="action-btn" onclick="updateBank('CIBC')">Повторить</button>
+                            <button class="action-btn secondary" onclick="viewAccounts('CIBC')">Счета</button>
+                            <button class="action-btn secondary" onclick="viewTransactions('CIBC')">Транзакции</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function goToHome() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/';
+        }
+        
+        function goToTransactions() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/transactions';
+        }
+        
+        function goToAdvisor() {
+            window.location.href = 'https://ukrlob.github.io/budget-manager-cloud/advisor';
+        }
+        
+        function showTab(tabName) {
+            // Заглушка для совместимости
+        }
+        
+        function openPlaidLink() {
+            alert('Открытие Plaid Link...');
+        }
+        
+        function updateBank(bankCode) {
+            alert(`Обновление банка ${bankCode}...`);
+        }
+        
+        function viewAccounts(bankCode) {
+            alert(`Просмотр счетов банка ${bankCode}...`);
+        }
+        
+        function viewTransactions(bankCode) {
+            alert(`Просмотр транзакций банка ${bankCode}...`);
+        }
+    </script>
+</body>
+</html>
