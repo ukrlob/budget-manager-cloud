@@ -140,7 +140,7 @@
             padding: 4px 6px;
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
-            width: 55px;
+            width: 60px;
             text-align: center;
         }
         
@@ -168,8 +168,8 @@
         .converter-currencies {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 4px;
+            justify-content: center;
+            gap: 8px;
             margin-bottom: 6px;
         }
         
@@ -180,7 +180,7 @@
             padding: 4px 6px;
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
-            width: 55px;
+            width: 60px;
             text-align: center;
         }
         
@@ -189,8 +189,14 @@
             color: white;
         }
         
+        .converter-arrow {
+            color: white;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            font-weight: bold;
+        }
+        
         .converter-amount {
-            width: 80%;
+            width: 75%;
             padding: 4px 6px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
@@ -215,7 +221,7 @@
             font-weight: bold;
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            width: 80%;
+            width: 75%;
             margin-left: auto;
             margin-right: auto;
         }
@@ -511,7 +517,7 @@
                         <option>EUR</option>
                         <option>CAD</option>
                     </select>
-                    <span>→</span>
+                    <span class="converter-arrow">→</span>
                     <select class="converter-to">
                         <option>EUR</option>
                         <option>USD</option>
