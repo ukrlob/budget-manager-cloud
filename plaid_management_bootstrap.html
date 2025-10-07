@@ -19,7 +19,7 @@
             color: #333;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            overflow: hidden;
         }
         
         .sidebar {
@@ -31,13 +31,13 @@
             width: clamp(240px, 20vw, 320px);
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: clamp(12px, 1.5vw, 20px);
+            padding: clamp(8px, 1vw, 12px);
             display: flex;
             flex-direction: column;
-            gap: clamp(8px, 1.2vw, 15px);
+            gap: clamp(4px, 0.8vw, 8px);
             height: 100vh;
             overflow-y: hidden;
-            font-size: clamp(12px, 1.2vw, 16px);
+            font-size: clamp(10px, 1vw, 14px);
             justify-content: space-between;
         }
         
@@ -72,15 +72,15 @@
         }
         
         .bm-icon {
-            width: clamp(40px, 4.5vw, 55px);
-            height: clamp(40px, 4.5vw, 55px);
+            width: clamp(35px, 4vw, 50px);
+            height: clamp(35px, 4vw, 50px);
             background: white;
             color: #2196F3;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(0.9rem, 1.3vw, 1.4rem);
+            font-size: clamp(0.8rem, 1.2vw, 1.2rem);
             font-weight: bold;
             margin: 0 auto;
             box-shadow: 0 3px 12px rgba(0,0,0,0.2);
@@ -91,20 +91,20 @@
         .plaid-counter {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 6px;
-            padding: clamp(6px, 1vw, 10px);
+            padding: clamp(6px, 0.8vw, 10px);
             text-align: center;
             color: white;
-            margin-bottom: clamp(4px, 0.8vw, 8px);
+            margin-bottom: clamp(4px, 0.6vw, 8px);
         }
         
         .counter-label {
-            font-size: clamp(0.7rem, 1vw, 1.1rem);
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
             opacity: 0.8;
-            margin-bottom: clamp(2px, 0.6vw, 4px);
+            margin-bottom: clamp(2px, 0.4vw, 4px);
         }
         
         .counter-value {
-            font-size: clamp(0.9rem, 1.2vw, 1.4rem);
+            font-size: clamp(0.8rem, 1vw, 1.2rem);
             font-weight: bold;
         }
         
@@ -112,15 +112,15 @@
         .exchange-rates {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: clamp(10px, 1.2vw, 15px);
+            padding: clamp(6px, 0.8vw, 10px);
             color: white;
-            margin-bottom: clamp(12px, 1.5vw, 20px);
+            margin-bottom: clamp(6px, 0.8vw, 12px);
         }
         
         .rates-label {
-            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
             opacity: 0.8;
-            margin-bottom: clamp(6px, 1vw, 10px);
+            margin-bottom: clamp(3px, 0.6vw, 6px);
             text-align: center;
         }
         
@@ -128,7 +128,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 4px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
@@ -144,7 +144,7 @@
             padding: 6px 8px;
             font-size: 0.9rem;
             cursor: pointer;
-            min-width: 70px;
+            min-width: 60px;
             flex: 1;
         }
         
@@ -171,23 +171,23 @@
         .currency-converter-section {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: clamp(10px, 1.2vw, 15px);
-            margin-top: clamp(8px, 1.2vw, 15px);
+            padding: clamp(6px, 0.8vw, 10px);
+            margin-top: clamp(4px, 0.6vw, 8px);
             color: white;
         }
         
         .converter-label {
-            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
             opacity: 0.8;
-            margin-bottom: clamp(4px, 0.8vw, 8px);
+            margin-bottom: clamp(2px, 0.4vw, 6px);
             text-align: center;
         }
         
         .converter-currencies {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 8px;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -200,8 +200,8 @@
             padding: 8px 12px;
             font-size: 1rem;
             cursor: pointer;
-            flex: 1;
-            min-width: 90px;
+            width: 80px;
+            text-align: center;
         }
         
         .converter-from option, .converter-to option {
@@ -220,11 +220,11 @@
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 8px 12px;
-            font-size: 1rem;
+            padding: 6px 8px;
+            font-size: 0.9rem;
             width: 100%;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             -moz-appearance: textfield;
         }
         
@@ -239,11 +239,11 @@
             color: white;
             opacity: 1;
             border-radius: 6px;
-            padding: 8px;
-            font-size: 1.1rem;
+            padding: 6px;
+            font-size: 1rem;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         /* Навигация в стиле главной - без отделения */
@@ -282,7 +282,7 @@
             font-weight: 600;
         }
         
-        /* Plaid кнопка как + - плавающая и прозрачная */
+        /* Plaid кнопка как + - практически прозрачная и не зеленая */
         .plaid-add {
             position: fixed;
             bottom: 30px;
@@ -293,23 +293,24 @@
             text-decoration: none;
             padding: 15px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(0, 212, 170, 0.7) 0%, rgba(0, 168, 204, 0.7) 100%);
+            background: rgba(255, 255, 255, 0.15);
             width: 60px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
             z-index: 1000;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .plaid-add:hover {
-            background: linear-gradient(135deg, rgba(0, 168, 204, 0.8) 0%, rgba(0, 212, 170, 0.8) 100%);
+            background: rgba(255, 255, 255, 0.25);
             color: white;
             transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(0, 212, 170, 0.5);
+            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
         }
         
         .bank-card {
