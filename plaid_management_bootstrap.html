@@ -27,16 +27,17 @@
             bottom: 0;
             left: 0;
             z-index: 100;
-            width: clamp(240px, 20vw, 320px);
+            width: clamp(280px, 22vw, 360px);
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: clamp(8px, 1vw, 12px);
+            padding: clamp(12px, 1.5vw, 20px);
             display: flex;
             flex-direction: column;
-            gap: clamp(4px, 0.8vw, 8px);
+            gap: clamp(8px, 1.2vw, 15px);
             height: 100vh;
             overflow-y: hidden;
-            font-size: clamp(10px, 1vw, 14px);
+            font-size: clamp(12px, 1.3vw, 16px);
+            justify-content: space-between;
         }
         
         .sidebar-sticky {
@@ -49,7 +50,7 @@
         }
         
         .main-content {
-            margin-left: clamp(240px, 20vw, 320px);
+            margin-left: clamp(280px, 22vw, 360px);
             padding: clamp(15px, 1.5vw, 20px);
             padding-bottom: 0;
             min-height: 100vh;
@@ -57,12 +58,12 @@
             flex-direction: column;
         }
         
-        /* BM Logo стиль как на главной - уменьшенный */
+        /* BM Logo стиль как на главной - адаптивный */
         .bm-logo {
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s ease;
-            margin-bottom: clamp(6px, 1vw, 12px);
+            margin-bottom: clamp(8px, 1.2vw, 15px);
         }
         
         .bm-logo:hover {
@@ -70,72 +71,72 @@
         }
         
         .bm-icon {
-            width: clamp(30px, 4vw, 45px);
-            height: clamp(30px, 4vw, 45px);
+            width: clamp(45px, 5.5vw, 65px);
+            height: clamp(45px, 5.5vw, 65px);
             background: white;
             color: #2196F3;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+            font-size: clamp(1rem, 1.5vw, 1.6rem);
             font-weight: bold;
             margin: 0 auto;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             text-decoration: underline;
         }
         
-        /* Plaid Counter стиль как на главной - уменьшенный */
+        /* Plaid Counter стиль как на главной - адаптивный */
         .plaid-counter {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            padding: clamp(6px, 0.8vw, 10px);
+            border-radius: 8px;
+            padding: clamp(10px, 1.3vw, 16px);
             text-align: center;
             color: white;
-            margin-bottom: clamp(6px, 1vw, 12px);
+            margin-bottom: clamp(8px, 1.2vw, 15px);
         }
         
         .counter-label {
-            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            font-size: clamp(0.9rem, 1.2vw, 1.3rem);
             opacity: 0.8;
-            margin-bottom: clamp(2px, 0.5vw, 4px);
+            margin-bottom: clamp(4px, 0.8vw, 8px);
         }
         
         .counter-value {
-            font-size: clamp(1rem, 1.2vw, 1.3rem);
+            font-size: clamp(1.1rem, 1.5vw, 1.7rem);
             font-weight: bold;
         }
         
-        /* Exchange Rates стиль как на главной - уменьшенный */
+        /* Exchange Rates стиль как на главной - адаптивный */
         .exchange-rates {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            padding: clamp(6px, 0.8vw, 10px);
+            border-radius: 8px;
+            padding: clamp(10px, 1.3vw, 16px);
             color: white;
-            margin-bottom: clamp(6px, 1vw, 12px);
+            margin-bottom: clamp(8px, 1.2vw, 15px);
         }
         
         .rates-label {
-            font-size: clamp(0.7rem, 0.9vw, 1rem);
+            font-size: clamp(0.8rem, 1.1vw, 1.2rem);
             opacity: 0.8;
-            margin-bottom: clamp(3px, 0.6vw, 6px);
+            margin-bottom: clamp(6px, 1vw, 10px);
             text-align: center;
         }
         
         .rate-item {
             display: flex;
             align-items: center;
-            gap: 4px;
-            margin-bottom: 4px;
-            font-size: 0.7rem;
+            gap: 6px;
+            margin-bottom: 6px;
+            font-size: clamp(0.8rem, 1vw, 1rem);
         }
         
         .currency-select {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 3px 6px;
-            font-size: 0.7rem;
+            padding: 4px 6px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
         }
         
@@ -144,35 +145,35 @@
             color: white;
         }
         
-        /* Currency Converter стиль как на главной - уменьшенный */
+        /* Currency Converter стиль как на главной - адаптивный */
         .currency-converter-section {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            padding: clamp(6px, 0.8vw, 10px);
-            margin-top: clamp(4px, 0.8vw, 8px);
+            border-radius: 8px;
+            padding: clamp(10px, 1.3vw, 16px);
+            margin-top: clamp(6px, 1vw, 12px);
             color: white;
         }
         
         .converter-label {
-            font-size: clamp(0.7rem, 0.9vw, 1rem);
+            font-size: clamp(0.8rem, 1.1vw, 1.2rem);
             opacity: 0.8;
-            margin-bottom: clamp(2px, 0.5vw, 4px);
+            margin-bottom: clamp(4px, 0.8vw, 8px);
             text-align: center;
         }
         
         .converter-currencies {
             display: flex;
             align-items: center;
-            gap: 4px;
-            margin-bottom: 6px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
         
         .converter-from, .converter-to {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 3px 6px;
-            font-size: 0.7rem;
+            padding: 4px 6px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
         }
         
@@ -227,27 +228,33 @@
             font-weight: 600;
         }
         
-        /* Plaid кнопка как + */
+        /* Plaid кнопка как + - плавающая */
         .plaid-add {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             text-decoration: none;
-            padding: 10px;
+            padding: 15px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            width: 40px;
-            height: 40px;
+            background: linear-gradient(135deg, #00D4AA 0%, #00A8CC 100%);
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.4);
+            z-index: 1000;
         }
         
         .plaid-add:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #00A8CC 0%, #00D4AA 100%);
             color: white;
             transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 212, 170, 0.6);
         }
         
         .bank-card {
@@ -327,7 +334,7 @@
             <div class="plaid-counter">
                 <div class="counter-label">Plaid API</div>
                 <div class="counter-value">7/100</div>
-                <button class="btn btn-sm btn-outline-light w-100 mt-1" style="font-size: 0.7rem; padding: 2px 4px;">Обновить</button>
+                <button class="btn btn-sm btn-outline-light w-100 mt-2" style="font-size: clamp(0.7rem, 0.9vw, 0.9rem); padding: 4px 8px;">Обновить</button>
             </div>
             
             <!-- Exchange Rates -->
@@ -583,15 +590,13 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Plaid Add Button at Bottom -->
-        <div class="text-center mt-4 mb-4">
-            <a href="#" class="plaid-add">+</a>
-        </div>
     </main>
+    
+    <!-- Floating Plaid Add Button -->
+    <a href="#" class="plaid-add">+</a>
 
     <!-- Footer -->
-    <footer class="bg-light text-center py-3 mt-5">
+    <footer class="bg-light text-center py-3 mt-5" style="margin-left: clamp(280px, 22vw, 360px); width: calc(100vw - clamp(280px, 22vw, 360px));">
         <div class="container">
             <p class="mb-0">Budget Manager Cloud - Управление личными финансами в облаке</p>
         </div>
