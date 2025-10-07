@@ -127,6 +127,7 @@
         .rate-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 4px;
             margin-bottom: 4px;
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
@@ -139,8 +140,8 @@
             padding: 4px 6px;
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
-            min-width: 45px;
-            max-width: 50px;
+            width: 55px;
+            text-align: center;
         }
         
         .currency-select option {
@@ -167,19 +168,20 @@
         .converter-currencies {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 8px;
+            justify-content: space-between;
+            gap: 4px;
+            margin-bottom: 6px;
         }
         
         .converter-from, .converter-to {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 6px 8px;
-            font-size: clamp(0.8rem, 1vw, 1rem);
+            padding: 4px 6px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
-            min-width: 60px;
+            width: 55px;
+            text-align: center;
         }
         
         .converter-from option, .converter-to option {
@@ -188,7 +190,7 @@
         }
         
         .converter-amount {
-            width: 100%;
+            width: 80%;
             padding: 4px 6px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
@@ -196,6 +198,8 @@
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             background: rgba(255, 255, 255, 0.15);
             color: white;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .converter-amount::placeholder {
@@ -211,6 +215,9 @@
             font-weight: bold;
             font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         /* Навигация в стиле главной - без отделения */
