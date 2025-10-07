@@ -19,6 +19,7 @@
             color: #333;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
         
         .sidebar {
@@ -27,16 +28,16 @@
             bottom: 0;
             left: 0;
             z-index: 100;
-            width: clamp(280px, 22vw, 360px);
+            width: clamp(260px, 20vw, 320px);
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: clamp(10px, 1.2vw, 16px);
+            padding: clamp(8px, 1vw, 12px);
             display: flex;
             flex-direction: column;
-            gap: clamp(6px, 1vw, 12px);
+            gap: clamp(4px, 0.8vw, 8px);
             height: 100vh;
             overflow-y: hidden;
-            font-size: clamp(11px, 1.2vw, 15px);
+            font-size: clamp(10px, 1.1vw, 14px);
             justify-content: space-between;
         }
         
@@ -50,7 +51,7 @@
         }
         
         .main-content {
-            margin-left: clamp(280px, 22vw, 360px);
+            margin-left: clamp(260px, 20vw, 320px);
             padding: clamp(15px, 1.5vw, 20px);
             padding-bottom: 0;
             min-height: 100vh;
@@ -71,39 +72,39 @@
         }
         
         .bm-icon {
-            width: clamp(45px, 5.5vw, 65px);
-            height: clamp(45px, 5.5vw, 65px);
+            width: clamp(40px, 4.5vw, 55px);
+            height: clamp(40px, 4.5vw, 55px);
             background: white;
             color: #2196F3;
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(1rem, 1.5vw, 1.6rem);
+            font-size: clamp(0.9rem, 1.3vw, 1.4rem);
             font-weight: bold;
             margin: 0 auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
             text-decoration: underline;
         }
         
         /* Plaid Counter стиль как на главной - адаптивный */
         .plaid-counter {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: clamp(10px, 1.3vw, 16px);
+            border-radius: 6px;
+            padding: clamp(6px, 1vw, 10px);
             text-align: center;
             color: white;
-            margin-bottom: clamp(8px, 1.2vw, 15px);
-        }
-        
-        .counter-label {
-            font-size: clamp(0.9rem, 1.2vw, 1.3rem);
-            opacity: 0.8;
             margin-bottom: clamp(4px, 0.8vw, 8px);
         }
         
+        .counter-label {
+            font-size: clamp(0.7rem, 1vw, 1.1rem);
+            opacity: 0.8;
+            margin-bottom: clamp(2px, 0.6vw, 4px);
+        }
+        
         .counter-value {
-            font-size: clamp(1.1rem, 1.5vw, 1.7rem);
+            font-size: clamp(0.9rem, 1.2vw, 1.4rem);
             font-weight: bold;
         }
         
@@ -111,34 +112,35 @@
         .exchange-rates {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: clamp(10px, 1.3vw, 16px);
+            padding: clamp(8px, 1vw, 12px);
             color: white;
-            margin-bottom: clamp(8px, 1.2vw, 15px);
+            margin-bottom: clamp(6px, 1vw, 10px);
         }
         
         .rates-label {
-            font-size: clamp(0.8rem, 1.1vw, 1.2rem);
+            font-size: clamp(0.7rem, 1vw, 1rem);
             opacity: 0.8;
-            margin-bottom: clamp(6px, 1vw, 10px);
+            margin-bottom: clamp(4px, 0.8vw, 6px);
             text-align: center;
         }
         
         .rate-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 6px;
-            font-size: clamp(0.8rem, 1vw, 1rem);
+            gap: 4px;
+            margin-bottom: 4px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
         }
         
         .currency-select {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 6px 8px;
-            font-size: clamp(0.8rem, 1vw, 1rem);
+            padding: 4px 6px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             color: white;
-            min-width: 60px;
+            min-width: 45px;
+            max-width: 50px;
         }
         
         .currency-select option {
@@ -187,11 +189,11 @@
         
         .converter-amount {
             width: 100%;
-            padding: 6px;
+            padding: 4px 6px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            margin-bottom: 6px;
-            font-size: clamp(0.8rem, 1vw, 1rem);
+            margin-bottom: 4px;
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             background: rgba(255, 255, 255, 0.15);
             color: white;
         }
@@ -203,11 +205,11 @@
         .converter-result {
             background: rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 6px;
+            padding: 4px 6px;
             border-radius: 4px;
             text-align: center;
             font-weight: bold;
-            font-size: clamp(0.8rem, 1vw, 1rem);
+            font-size: clamp(0.7rem, 0.9vw, 0.9rem);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
@@ -531,7 +533,6 @@
 
         <!-- Header -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-            <h1 class="h2 text-white">Банки</h1>
         </div>
 
 
@@ -717,7 +718,7 @@
     <a href="#" class="plaid-add">+</a>
 
     <!-- Footer -->
-    <footer class="text-center py-3 mt-5" style="margin-left: clamp(280px, 22vw, 360px); width: calc(100vw - clamp(280px, 22vw, 360px)); background: rgba(255, 255, 255, 0.1); color: white;">
+    <footer class="text-center py-3 mt-5" style="margin-left: clamp(260px, 20vw, 320px); width: calc(100vw - clamp(260px, 20vw, 320px)); background: rgba(255, 255, 255, 0.1); color: white;">
         <div class="container">
             <p class="mb-0">Budget Manager Cloud - Управление личными финансами в облаке</p>
         </div>
