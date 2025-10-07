@@ -36,7 +36,7 @@
             flex-direction: column;
             gap: clamp(8px, 1.2vw, 15px);
             height: 100vh;
-            overflow-y: auto;
+            overflow-y: hidden;
             font-size: clamp(12px, 1.2vw, 16px);
             justify-content: space-between;
         }
@@ -144,7 +144,7 @@
             padding: 6px 8px;
             font-size: 0.9rem;
             cursor: pointer;
-            min-width: 60px;
+            min-width: 70px;
             flex: 1;
         }
         
@@ -201,7 +201,7 @@
             font-size: 1rem;
             cursor: pointer;
             flex: 1;
-            min-width: 80px;
+            min-width: 90px;
         }
         
         .converter-from option, .converter-to option {
@@ -282,7 +282,7 @@
             font-weight: 600;
         }
         
-        /* Plaid кнопка как + - плавающая */
+        /* Plaid кнопка как + - плавающая и прозрачная */
         .plaid-add {
             position: fixed;
             bottom: 30px;
@@ -293,22 +293,23 @@
             text-decoration: none;
             padding: 15px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00D4AA 0%, #00A8CC 100%);
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.7) 0%, rgba(0, 168, 204, 0.7) 100%);
             width: 60px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         
         .plaid-add:hover {
-            background: linear-gradient(135deg, #00A8CC 0%, #00D4AA 100%);
+            background: linear-gradient(135deg, rgba(0, 168, 204, 0.8) 0%, rgba(0, 212, 170, 0.8) 100%);
             color: white;
             transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(0, 212, 170, 0.6);
+            box-shadow: 0 6px 25px rgba(0, 212, 170, 0.5);
         }
         
         .bank-card {
