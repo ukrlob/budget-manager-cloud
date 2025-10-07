@@ -30,13 +30,13 @@
             width: clamp(240px, 20vw, 320px);
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: clamp(12px, 1.5vw, 20px);
+            padding: clamp(8px, 1vw, 12px);
             display: flex;
             flex-direction: column;
-            gap: clamp(8px, 1.2vw, 15px);
+            gap: clamp(4px, 0.8vw, 8px);
             height: 100vh;
-            overflow-y: auto;
-            font-size: clamp(12px, 1.2vw, 16px);
+            overflow-y: hidden;
+            font-size: clamp(10px, 1vw, 14px);
         }
         
         .sidebar-sticky {
@@ -57,12 +57,12 @@
             flex-direction: column;
         }
         
-        /* BM Logo стиль как на главной */
+        /* BM Logo стиль как на главной - уменьшенный */
         .bm-logo {
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s ease;
-            margin-bottom: clamp(12px, 1.5vw, 20px);
+            margin-bottom: clamp(6px, 1vw, 12px);
         }
         
         .bm-logo:hover {
@@ -70,129 +70,143 @@
         }
         
         .bm-icon {
-            width: clamp(40px, 5vw, 60px);
-            height: clamp(40px, 5vw, 60px);
+            width: clamp(30px, 4vw, 45px);
+            height: clamp(30px, 4vw, 45px);
             background: white;
             color: #2196F3;
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(1rem, 1.5vw, 1.5rem);
+            font-size: clamp(0.8rem, 1.2vw, 1.2rem);
             font-weight: bold;
             margin: 0 auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             text-decoration: underline;
         }
         
-        /* Plaid Counter стиль как на главной */
+        /* Plaid Counter стиль как на главной - уменьшенный */
         .plaid-counter {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: clamp(10px, 1.2vw, 15px);
+            border-radius: 6px;
+            padding: clamp(6px, 0.8vw, 10px);
             text-align: center;
             color: white;
-            margin-bottom: clamp(12px, 1.5vw, 20px);
+            margin-bottom: clamp(6px, 1vw, 12px);
         }
         
         .counter-label {
-            font-size: clamp(1rem, 1.3vw, 1.3rem);
+            font-size: clamp(0.8rem, 1vw, 1.1rem);
             opacity: 0.8;
-            margin-bottom: clamp(4px, 0.8vw, 8px);
+            margin-bottom: clamp(2px, 0.5vw, 4px);
         }
         
         .counter-value {
-            font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+            font-size: clamp(1rem, 1.2vw, 1.3rem);
             font-weight: bold;
         }
         
-        /* Exchange Rates стиль как на главной */
+        /* Exchange Rates стиль как на главной - уменьшенный */
         .exchange-rates {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: clamp(10px, 1.2vw, 15px);
+            border-radius: 6px;
+            padding: clamp(6px, 0.8vw, 10px);
             color: white;
-            margin-bottom: clamp(12px, 1.5vw, 20px);
+            margin-bottom: clamp(6px, 1vw, 12px);
         }
         
         .rates-label {
-            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
             opacity: 0.8;
-            margin-bottom: clamp(6px, 1vw, 10px);
+            margin-bottom: clamp(3px, 0.6vw, 6px);
             text-align: center;
         }
         
         .rate-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            gap: 4px;
+            margin-bottom: 4px;
+            font-size: 0.7rem;
         }
         
         .currency-select {
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.8rem;
+            padding: 3px 6px;
+            font-size: 0.7rem;
+            color: white;
         }
         
-        /* Currency Converter стиль как на главной */
+        .currency-select option {
+            background: #2196F3;
+            color: white;
+        }
+        
+        /* Currency Converter стиль как на главной - уменьшенный */
         .currency-converter-section {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: clamp(10px, 1.2vw, 15px);
-            margin-top: clamp(8px, 1.2vw, 15px);
+            border-radius: 6px;
+            padding: clamp(6px, 0.8vw, 10px);
+            margin-top: clamp(4px, 0.8vw, 8px);
             color: white;
         }
         
         .converter-label {
-            font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
             opacity: 0.8;
-            margin-bottom: clamp(4px, 0.8vw, 8px);
+            margin-bottom: clamp(2px, 0.5vw, 4px);
             text-align: center;
         }
         
         .converter-currencies {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 4px;
+            margin-bottom: 6px;
         }
         
         .converter-from, .converter-to {
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.8rem;
+            padding: 3px 6px;
+            font-size: 0.7rem;
+            color: white;
+        }
+        
+        .converter-from option, .converter-to option {
+            background: #2196F3;
+            color: white;
         }
         
         .converter-amount {
             width: 100%;
-            padding: 8px;
+            padding: 4px;
             border: none;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 1rem;
+            border-radius: 3px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
         }
         
         .converter-result {
             background: rgba(255, 255, 255, 0.9);
             color: #333;
-            padding: 8px;
-            border-radius: 4px;
+            padding: 4px;
+            border-radius: 3px;
             text-align: center;
             font-weight: bold;
+            font-size: 0.8rem;
         }
         
-        /* Навигация в стиле главной */
+        /* Навигация в стиле главной - без отделения */
         .navbar {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: transparent !important;
+            backdrop-filter: none;
+            border-radius: 0;
+            margin-bottom: 10px;
+            padding: 5px 0;
         }
         
         .navbar-nav .nav-link {
@@ -313,7 +327,7 @@
             <div class="plaid-counter">
                 <div class="counter-label">Plaid API</div>
                 <div class="counter-value">7/100</div>
-                <button class="btn btn-sm btn-outline-light w-100 mt-2">Обновить</button>
+                <button class="btn btn-sm btn-outline-light w-100 mt-1" style="font-size: 0.7rem; padding: 2px 4px;">Обновить</button>
             </div>
             
             <!-- Exchange Rates -->
@@ -399,14 +413,9 @@
             </div>
         </nav>
 
-        <!-- Plaid Add Button -->
-        <div class="text-center mb-4">
-            <a href="#" class="plaid-add">+</a>
-        </div>
-
         <!-- Header -->
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2 text-white">Управление банками</h1>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+            <h1 class="h2 text-white">Банки</h1>
         </div>
 
 
@@ -573,6 +582,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Plaid Add Button at Bottom -->
+        <div class="text-center mt-4 mb-4">
+            <a href="#" class="plaid-add">+</a>
         </div>
     </main>
 
