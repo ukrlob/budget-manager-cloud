@@ -956,6 +956,37 @@
             }
         }
         
+        // Функция для обновления курсов при изменении пар валют
+        function updateCurrencyPair(pairIndex) {
+            console.log(`🔄 Обновляем пару валют ${pairIndex}`);
+            
+            // Находим элементы для этой пары
+            const rateItems = document.querySelectorAll('.rate-item');
+            if (rateItems.length > pairIndex) {
+                const pair = rateItems[pairIndex];
+                const fromSelect = pair.querySelector('.currency-select:first-child');
+                const toSelect = pair.querySelector('.currency-select:last-child');
+                const rateSpan = pair.querySelector('.rate');
+                
+                if (fromSelect && toSelect && rateSpan) {
+                    const fromCurrency = fromSelect.value;
+                    const toCurrency = toSelect.value;
+                    
+                    console.log(`📊 Пара ${pairIndex}: ${fromCurrency}/${toCurrency}`);
+                    
+                    // Рассчитываем курс
+                    const fromRate = customRates[fromCurrency] || 1;
+                    const toRate = customRates[toCurrency] || 1;
+                    
+                    if (fromRate && toRate) {
+                        const rate = (toRate / fromRate).toFixed(4);
+                        rateSpan.textContent = rate;
+                        console.log(`✅ Курс обновлен: ${rate}`);
+                    }
+                }
+            }
+        }
+        
         // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Plaid Management страница загружена');
@@ -966,7 +997,7 @@
             // Загружаем существующие банки
             loadBanks();
             
-            // Добавляем обработчики событий
+            // Добавляем обработчики событий для конвертера
             const converterAmount = document.querySelector('.converter-amount');
             const converterFrom = document.querySelector('.converter-from');
             const converterTo = document.querySelector('.converter-to');
@@ -981,6 +1012,23 @@
             if (converterTo) {
                 converterTo.addEventListener('change', convertCurrencyAmount);
             }
+            
+            // Добавляем обработчики событий для курсов валют
+            const currencySelects = document.querySelectorAll('.currency-select');
+            currencySelects.forEach((select, index) => {
+                select.addEventListener('change', function() {
+                    // Определяем к какой паре относится этот селект
+                    const rateItem = select.closest('.rate-item');
+                    const rateItems = document.querySelectorAll('.rate-item');
+                    const pairIndex = Array.from(rateItems).indexOf(rateItem);
+                    
+                    if (pairIndex >= 0) {
+                        updateCurrencyPair(pairIndex);
+                    }
+                });
+            });
+            
+            console.log('✅ Все обработчики событий добавлены');
         });
     </script>
 </body>
