@@ -258,7 +258,7 @@
         
         .navbar-nav .nav-link {
             flex: 1;
-            padding: 10px 15px;
+            padding: 12px 20px;
             text-align: center;
             cursor: pointer;
             background: transparent;
@@ -483,7 +483,7 @@
         <div class="plaid-counter">
             <div class="counter-label">Plaid API</div>
             <div class="counter-value">7/100</div>
-            <button class="btn btn-sm btn-outline-light w-100 mt-2" style="font-size: clamp(0.7rem, 0.9vw, 0.9rem); padding: 4px 8px;">Обновить</button>
+            <button class="btn btn-sm btn-outline-light w-100 mt-2" style="font-size: clamp(0.7rem, 0.9vw, 0.9rem); padding: 4px 8px;" onclick="refreshPlaidCounter()">Обновить</button>
         </div>
         
         <div class="exchange-rates">
@@ -530,6 +530,7 @@
                 </select>
                 <span class="rate">41.49</span>
             </div>
+            <button class="btn btn-sm btn-outline-light w-100 mt-2" style="font-size: clamp(0.7rem, 0.9vw, 0.9rem); padding: 4px 8px;" onclick="refreshRates()">Обновить</button>
         </div>
         
         <div class="currency-converter-section">
@@ -595,6 +596,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        // Глобальные переменные для курсов валют
+        let customRates = {
+            USD: 1,
+            CAD: 0.7246,
+            EUR: 0.8560,
+            UAH: 41.49,
+            RUB: 83.80
+        };
+        
         // Plaid Link конфигурация
         const PLAID_ENV = 'sandbox'; // Используем sandbox для разработки
         const PLAID_CLIENT_ID = 'your_client_id'; // Замените на ваш client_id
@@ -814,11 +824,145 @@
             }
         }
         
+        // Функции для курсов валют
+        async function loadExchangeRates() {
+            console.log('🚀 Загружаем курсы валют');
+            
+            const apiUrl = 'https://api.exchangerate-api.com/v4/latest/USD';
+            
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const rates = data.rates;
+                
+                if (rates) {
+                    customRates.USD = 1;
+                    if (rates.CAD) customRates.CAD = rates.CAD;
+                    if (rates.EUR) customRates.EUR = rates.EUR;
+                    if (rates.UAH) customRates.UAH = rates.UAH;
+                    if (rates.RUB) customRates.RUB = rates.RUB;
+                    
+                    console.log('✅ Курсы валют обновлены:', customRates);
+                    updateRatesUI();
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки курсов:', error);
+            }
+        }
+        
+        function updateRatesUI() {
+            // Обновляем отображение курсов валют
+            const rateElements = document.querySelectorAll('.rate');
+            if (rateElements.length >= 3) {
+                // CAD/USD
+                if (customRates.CAD && customRates.USD) {
+                    rateElements[0].textContent = (customRates.USD / customRates.CAD).toFixed(4);
+                }
+                // USD/EUR
+                if (customRates.USD && customRates.EUR) {
+                    rateElements[1].textContent = (customRates.USD / customRates.EUR).toFixed(4);
+                }
+                // USD/UAH
+                if (customRates.USD && customRates.UAH) {
+                    rateElements[2].textContent = customRates.UAH.toFixed(2);
+                }
+            }
+        }
+        
+        function refreshRates() {
+            console.log('🔄 Обновляем курсы валют');
+            loadExchangeRates();
+        }
+        
+        // Функции для конвертера валют
+        function convertCurrencyAmount() {
+            const fromSelect = document.querySelector('.converter-from');
+            const toSelect = document.querySelector('.converter-to');
+            const amountInput = document.querySelector('.converter-amount');
+            const resultDiv = document.querySelector('.converter-result');
+            
+            if (!fromSelect || !toSelect || !amountInput || !resultDiv) return;
+            
+            const fromCurrency = fromSelect.value;
+            const toCurrency = toSelect.value;
+            const amount = parseFloat(amountInput.value) || 0;
+            
+            if (amount === 0) {
+                resultDiv.textContent = '$0.00';
+                return;
+            }
+            
+            // Конвертируем через USD как базовую валюту
+            const fromRate = customRates[fromCurrency] || 1;
+            const toRate = customRates[toCurrency] || 1;
+            
+            // Сначала конвертируем в USD, затем в целевую валюту
+            const usdAmount = amount / fromRate;
+            const convertedAmount = usdAmount * toRate;
+            
+            const symbol = getCurrencySymbol(toCurrency);
+            resultDiv.textContent = `${symbol}${convertedAmount.toFixed(2)}`;
+            
+            console.log(`Конвертация: ${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`);
+        }
+        
+        function getCurrencySymbol(currency) {
+            const symbols = {
+                'USD': '$',
+                'EUR': '€',
+                'CAD': 'C$',
+                'UAH': '₴',
+                'RUB': '₽'
+            };
+            return symbols[currency] || '$';
+        }
+        
+        // Функция для обновления счетчика Plaid
+        async function refreshPlaidCounter() {
+            try {
+                const response = await fetch('http://127.0.0.1:8004/api/banks/plaid/usage');
+                if (response.ok) {
+                    const data = await response.json();
+                    const counterValue = document.querySelector('.counter-value');
+                    if (counterValue) {
+                        counterValue.textContent = `${data.used}/${data.limit}`;
+                    }
+                    console.log('✅ Счетчик Plaid обновлен:', data);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка обновления счетчика Plaid:', error);
+            }
+        }
+        
         // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Plaid Management страница загружена');
+            
+            // Загружаем курсы валют
+            loadExchangeRates();
+            
             // Загружаем существующие банки
             loadBanks();
+            
+            // Добавляем обработчики событий
+            const converterAmount = document.querySelector('.converter-amount');
+            const converterFrom = document.querySelector('.converter-from');
+            const converterTo = document.querySelector('.converter-to');
+            
+            if (converterAmount) {
+                converterAmount.addEventListener('input', convertCurrencyAmount);
+                converterAmount.addEventListener('change', convertCurrencyAmount);
+            }
+            if (converterFrom) {
+                converterFrom.addEventListener('change', convertCurrencyAmount);
+            }
+            if (converterTo) {
+                converterTo.addEventListener('change', convertCurrencyAmount);
+            }
         });
     </script>
 </body>
