@@ -857,19 +857,29 @@
         function updateRatesUI() {
             // Обновляем отображение курсов валют
             const rateElements = document.querySelectorAll('.rate');
+            console.log('🔍 Найдено элементов .rate:', rateElements.length);
+            
             if (rateElements.length >= 3) {
-                // CAD/USD
+                // CAD/USD (первый элемент)
                 if (customRates.CAD && customRates.USD) {
-                    rateElements[0].textContent = (customRates.USD / customRates.CAD).toFixed(4);
+                    const cadUsdRate = (customRates.USD / customRates.CAD).toFixed(4);
+                    rateElements[0].textContent = cadUsdRate;
+                    console.log('✅ CAD/USD обновлен:', cadUsdRate);
                 }
-                // USD/EUR
+                // USD/EUR (второй элемент)
                 if (customRates.USD && customRates.EUR) {
-                    rateElements[1].textContent = (customRates.USD / customRates.EUR).toFixed(4);
+                    const usdEurRate = (customRates.USD / customRates.EUR).toFixed(4);
+                    rateElements[1].textContent = usdEurRate;
+                    console.log('✅ USD/EUR обновлен:', usdEurRate);
                 }
-                // USD/UAH
+                // USD/UAH (третий элемент)
                 if (customRates.USD && customRates.UAH) {
-                    rateElements[2].textContent = customRates.UAH.toFixed(2);
+                    const usdUahRate = customRates.UAH.toFixed(2);
+                    rateElements[2].textContent = usdUahRate;
+                    console.log('✅ USD/UAH обновлен:', usdUahRate);
                 }
+            } else {
+                console.error('❌ Не найдено достаточно элементов .rate:', rateElements.length);
             }
         }
         
@@ -885,11 +895,17 @@
             const amountInput = document.querySelector('.converter-amount');
             const resultDiv = document.querySelector('.converter-result');
             
-            if (!fromSelect || !toSelect || !amountInput || !resultDiv) return;
+            if (!fromSelect || !toSelect || !amountInput || !resultDiv) {
+                console.error('❌ Не найдены элементы конвертера');
+                return;
+            }
             
             const fromCurrency = fromSelect.value;
             const toCurrency = toSelect.value;
             const amount = parseFloat(amountInput.value) || 0;
+            
+            console.log(`🔄 Конвертация: ${amount} ${fromCurrency} → ${toCurrency}`);
+            console.log('📊 Текущие курсы:', customRates);
             
             if (amount === 0) {
                 resultDiv.textContent = '$0.00';
@@ -900,6 +916,8 @@
             const fromRate = customRates[fromCurrency] || 1;
             const toRate = customRates[toCurrency] || 1;
             
+            console.log(`📈 Курсы: ${fromCurrency}=${fromRate}, ${toCurrency}=${toRate}`);
+            
             // Сначала конвертируем в USD, затем в целевую валюту
             const usdAmount = amount / fromRate;
             const convertedAmount = usdAmount * toRate;
@@ -907,7 +925,7 @@
             const symbol = getCurrencySymbol(toCurrency);
             resultDiv.textContent = `${symbol}${convertedAmount.toFixed(2)}`;
             
-            console.log(`Конвертация: ${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`);
+            console.log(`✅ Результат: ${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`);
         }
         
         function getCurrencySymbol(currency) {
