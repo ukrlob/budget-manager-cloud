@@ -33,7 +33,7 @@ body {
     padding: clamp(8px, 1vw, 12px);
     display: flex;
     flex-direction: column;
-    gap: clamp(1px, 0.2vw, 2px); /* Минимальные отступы - критическая деталь */
+    gap: clamp(6px, 0.75vw, 10px); /* Оптимальные отступы из plaid_management */
     height: 100vh;
     overflow-y: hidden;
     font-size: clamp(10px, 1vw, 14px);
@@ -167,9 +167,11 @@ body {
     text-align: center;
     font-size: clamp(0.8rem, 1vw, 1rem);
     font-weight: bold;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: clamp(4px, 0.5vw, 6px);
+    background: rgba(33, 150, 243, 0.9);
+    color: white;
+    opacity: 1;
+    border-radius: 6px;
+    padding: 6px;
 }
 
 /* === НАВИГАЦИОННОЕ МЕНЮ === */
@@ -233,27 +235,29 @@ body {
     margin-top: auto;
     padding: 20px 0;
     text-align: center;
-    color: rgba(255, 255, 255, 0.9); /* Улучшенная видимость */
+    color: rgba(255, 255, 255, 0.7); /* Оптимальная видимость из plaid_management */
     font-size: 0.9rem;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 8px;
-    margin: 20px;
+    margin-left: clamp(240px, 20vw, 320px);
+    width: calc(100% - clamp(240px, 20vw, 320px));
 }
 
 /* === КНОПКА PLAID (СПЕЦИАЛЬНЫЕ СТИЛИ) === */
 .plaid-add {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.1);
+    bottom: 30px;
+    right: 30px;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     border: none;
-    border-radius: 50px;
-    padding: 15px 25px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 1000;
@@ -261,8 +265,10 @@ body {
 }
 
 .plaid-add:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
 }
 
 /* === АДАПТИВНОСТЬ === */
@@ -318,6 +324,7 @@ body {
     line-height: 1.5;
 }
 
+/* === КНОПКИ (Bootstrap-подобные стили) === */
 .btn {
     background: #2196F3;
     color: white;
@@ -328,11 +335,15 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn:hover {
     background: #1976D2;
     transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -341,6 +352,42 @@ body {
 
 .btn-primary:hover {
     background: #1976D2;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+}
+
+.btn-outline-light {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border: 1px solid #2196F3;
+    color: #2196F3;
+}
+
+.btn-outline-primary:hover {
+    background: #2196F3;
+    color: white;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.mt-2 {
+    margin-top: 8px;
 }
 
 /* === СТИЛИ ДЛЯ ФОРМ === */
