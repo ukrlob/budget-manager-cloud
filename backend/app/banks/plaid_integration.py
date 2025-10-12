@@ -518,3 +518,32 @@ class PlaidBankConnector(BankConnector):
             'optimization_tips': optimization_tips,
             'recommended_cache_ttl': 600 if cache_hit_rate < 0.3 else 300
         }
+    
+    async def exchange_public_token(self, public_token: str) -> Optional[str]:
+        """
+        Обмен public_token на access_token через Plaid API
+        """
+        try:
+            logger.info(f"Обмен public_token на access_token")
+            
+            # Импортируем необходимые модели Plaid
+            from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchangeRequest
+            
+            # Создаем запрос на обмен токена
+            request = ItemPublicTokenExchangeRequest(
+                public_token=public_token
+            )
+            
+            # Выполняем обмен токена
+            response = self.client.item_public_token_exchange(request)
+            
+            if response and response.access_token:
+                logger.info("Токен успешно обменян")
+                return response.access_token
+            else:
+                logger.error("Не удалось получить access_token")
+                return None
+                
+        except Exception as e:
+            logger.error(f"Ошибка обмена токена: {e}")
+            return None

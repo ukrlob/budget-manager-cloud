@@ -486,6 +486,16 @@ class BankManager:
             
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Ошибка анализа транзакций: {str(e)}")
+    
+    def add_bank(self, code: str, name: str, access_token: str, plaid_institution_id: str = None, item_id: str = None):
+        """Добавляет новый банк в менеджер"""
+        self.banks[code] = {
+            "name": name,
+            "access_token": access_token,
+            "item_id": item_id,
+            "plaid_institution_id": plaid_institution_id
+        }
+        logger.info(f"Добавлен банк {name} с кодом {code}")
 
 # Создаем экземпляр менеджера
 bank_manager = BankManager()
@@ -764,3 +774,52 @@ async def get_available_banks():
             for code, info in bank_manager.banks.items()
         ]
     }
+
+class TokenExchangeRequest(BaseModel):
+    public_token: str
+    metadata: Dict[str, Any]
+
+@router.post("/plaid/exchange-token")
+async def exchange_public_token(request: TokenExchangeRequest):
+    """Обмен public_token на access_token через Plaid API"""
+    try:
+        logger.info(f"Обмен токена для банка: {request.metadata.get('institution', {}).get('name', 'Unknown')}")
+        
+        # Используем PlaidBankConnector для обмена токена
+        plaid_connector = PlaidBankConnector({
+            'client_id': os.getenv('PLAID_CLIENT_ID', 'your_client_id'),
+            'secret': os.getenv('PLAID_SECRET', 'your_secret'),
+            'environment': os.getenv('PLAID_ENV', 'sandbox')
+        })
+        access_token = await plaid_connector.exchange_public_token(request.public_token)
+        
+        if access_token:
+            # Сохраняем access_token в банковском менеджере
+            institution_name = request.metadata.get('institution', {}).get('name', 'Unknown Bank')
+            institution_id = request.metadata.get('institution', {}).get('institution_id', 'unknown')
+            
+            # Добавляем новый банк в менеджер
+            bank_code = institution_id.lower().replace(' ', '_')
+            bank_manager.add_bank(
+                code=bank_code,
+                name=institution_name,
+                access_token=access_token,
+                plaid_institution_id=institution_id
+            )
+            
+            logger.info(f"Банк {institution_name} успешно добавлен с токеном")
+            
+            return {
+                "success": True,
+                "access_token": access_token,
+                "bank_code": bank_code,
+                "institution_name": institution_name,
+                "message": "Банк успешно подключен"
+            }
+        else:
+            logger.error("Не удалось получить access_token")
+            raise HTTPException(status_code=400, detail="Не удалось обменять токен")
+            
+    except Exception as e:
+        logger.error(f"Ошибка обмена токена: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка подключения банка: {str(e)}")
