@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Финконсультант - Budget Manager Cloud</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/styles.css?v=26">
 </head>
 <body>
-    <!-- Левое меню -->
-    <nav class="sidebar">
+    <div class="main-layout">
+        <!-- Фиксированный блок слева -->
+        <div class="left-sidebar">
         <div class="bm-logo" onclick="goHome()">
             <div class="bm-icon">BM</div>
         </div>
@@ -98,53 +97,26 @@
             <input type="number" class="converter-amount" placeholder="Сумма" value="100">
             <div class="converter-result">€85.60</div>
         </div>
-    </nav>
+        </div>
+    </div>
 
     <!-- Основной контент -->
-    <main class="main-content">
-        <!-- Навигация -->
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Главная</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="banks.html">Банки</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="transactions.html">Транзакции</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="advisor.html">Финконсультант</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Контент страницы -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h1>Финконсультант</h1>
-                    <div class="alert alert-info">
-                        <h4>Страница в разработке</h4>
-                        <p>AI-агент для финансового консультирования будет доступен в ближайшее время.</p>
-                    </div>
-                </div>
-            </div>
+    <div class="main-content">
+        <div class="tabs">
+            <button class="tab" onclick="goHomeNoURL()">Главная</button>
+            <button class="tab" onclick="window.location.href='banks.html'">Банки</button>
+            <button class="tab" onclick="window.location.href='transactions.html'">Транзакции</button>
+            <button class="tab active" onclick="goHomeNoURL()">Финконсультант</button>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container-fluid text-center">
-            <p class="mb-0">Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
-        </div>
-    </footer>
+        <h1>Финконсультант</h1>
+        <p>Эта страница находится в разработке.</p>
+    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="footer">
+        Budget Manager Cloud © 2024 - Управление личными финансами в облаке
+    </div>
+
     <script src="static/app.js"></script>
 </body>
 </html>

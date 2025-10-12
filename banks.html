@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление банками - Budget Manager Cloud</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/styles.css?v=26">
 </head>
 <body>
-    <!-- Левое меню -->
-    <nav class="sidebar">
+    <div class="main-layout">
+        <!-- Фиксированный блок слева -->
+        <div class="left-sidebar">
         <div class="bm-logo" onclick="goHome()">
             <div class="bm-icon">BM</div>
         </div>
@@ -98,92 +97,51 @@
             <input type="number" class="converter-amount" placeholder="Сумма" value="100">
             <div class="converter-result">€85.60</div>
         </div>
-    </nav>
+        </div>
+    </div>
 
     <!-- Основной контент -->
-    <main class="main-content">
-        <!-- Навигация -->
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Главная</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="banks.html">Банки</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="transactions.html">Транзакции</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="advisor.html">Финконсультант</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Контент страницы -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h1>Управление банками</h1>
-                    <p>Выберите метод подключения банка:</p>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Plaid API</h5>
-                                    <p class="card-text">Подключение банков через Plaid API</p>
-                                    <a href="plaid_management.html" class="btn btn-primary">Открыть Plaid</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Прямые API</h5>
-                                    <p class="card-text">Интеграция с банками через прямые API</p>
-                                    <button class="btn btn-secondary" disabled>В разработке</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Скраппинг</h5>
-                                    <p class="card-text">Автоматическое извлечение данных с сайтов банков</p>
-                                    <button class="btn btn-secondary" disabled>В разработке</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Ручной ввод</h5>
-                                    <p class="card-text">Добавление банков и счетов вручную</p>
-                                    <button class="btn btn-secondary" disabled>В разработке</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="main-content">
+        <div class="container">
+        <div class="tabs">
+            <button class="tab" onclick="goHomeNoURL()">Главная</button>
+            <button class="tab active" onclick="goHomeNoURL()">Банки</button>
+            <button class="tab" onclick="window.location.href='transactions.html'">Транзакции</button>
+            <button class="tab" onclick="window.location.href='advisor.html'">Финконсультант</button>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container-fluid text-center">
-            <p class="mb-0">Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
+        <h1>Управление банками</h1>
+        <p>Выберите метод подключения банка:</p>
+        
+        <div class="method-card" onclick="window.location.href='plaid_management.html'">
+            <h5>Plaid API</h5>
+            <p>Подключение банков через Plaid API</p>
+            <button class="btn btn-primary">Открыть Plaid</button>
         </div>
-    </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="method-card">
+            <h5>Прямые API</h5>
+            <p>Интеграция с банками через прямые API</p>
+            <button class="btn btn-secondary" disabled>В разработке</button>
+        </div>
+
+        <div class="method-card">
+            <h5>Скраппинг</h5>
+            <p>Автоматическое извлечение данных с сайтов банков</p>
+            <button class="btn btn-secondary" disabled>В разработке</button>
+        </div>
+
+        <div class="method-card">
+            <h5>Ручной ввод</h5>
+            <p>Добавление банков и счетов вручную</p>
+            <button class="btn btn-secondary" disabled>В разработке</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        Budget Manager Cloud © 2024 - Управление личными финансами в облаке
+    </div>
+
     <script src="static/app.js"></script>
 </body>
 </html>
