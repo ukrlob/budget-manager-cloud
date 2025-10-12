@@ -705,7 +705,7 @@ async function loadExchangeRates() {
 // Обновление UI курсов валют
 function updateRatesUI() {
     // Обновляем пары валют
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 3; i++) {
         updateCurrencyPair(i);
     }
 }
