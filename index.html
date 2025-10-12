@@ -114,106 +114,226 @@
             <a class="nav-link" href="advisor.html">Финконсультант</a>
         </div>
 
-        <div class="fade-in">
-            <h1>Управление финансами</h1>
-            <p>Добро пожаловать в Budget Manager Cloud - ваш персональный помощник для управления финансами.</p>
-            
-            <div class="method-card" onclick="showPlaidManagement()">
-                <h5>Plaid</h5>
-                <p>Подключение банков через Plaid API</p>
-                <button class="btn btn-primary">Открыть Plaid</button>
-            </div>
-
-            <div class="method-card" onclick="window.location.href='banks.html'">
-                <h5>Прямые API</h5>
-                <p>Интеграция с банками через прямые API</p>
-                <button class="btn btn-primary">Открыть API</button>
-            </div>
-
-            <div class="method-card" onclick="window.location.href='banks.html'">
-                <h5>Скраппинг</h5>
-                <p>Автоматическое извлечение данных с сайтов банков</p>
-                <button class="btn btn-primary">Открыть скраппинг</button>
-            </div>
-
-            <div class="method-card" onclick="window.location.href='banks.html'">
-                <h5>Ручной ввод</h5>
-                <p>Добавление банков и счетов вручную</p>
-                <button class="btn btn-primary">Открыть ввод</button>
-            </div>
-
-            <div class="method-card">
-                <h5>Добавить счет</h5>
-                <div class="form-group">
-                    <label>Банк</label>
-                    <select class="form-control">
-                        <option>Выберите банк</option>
-                        <option>ПриватБанк</option>
-                        <option>Монобанк</option>
-                        <option>Райффайзен</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Название счета</label>
-                    <input type="text" class="form-control" placeholder="Основной счет">
-                </div>
-                <div class="form-group">
-                    <label>Номер счета</label>
-                    <input type="text" class="form-control" placeholder="****1234">
-                </div>
-                <div class="form-group">
-                    <label>Баланс</label>
-                    <input type="number" class="form-control" placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label>Валюта</label>
-                    <select class="form-control">
-                        <option>CAD</option>
-                        <option>USD</option>
-                        <option>EUR</option>
-                        <option>UAH</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary">Добавить счет</button>
-            </div>
-
-            <div class="method-card">
-                <h5>Список счетов</h5>
-                <p>Загрузка...</p>
-            </div>
-
-            <div class="method-card">
-                <h5>Анализ качества транзакций</h5>
-                <p>Анализ данных транзакций из подключенных банков</p>
-                <button class="btn btn-primary" onclick="window.location.href='transactions.html'">Открыть анализ транзакций</button>
-            </div>
-
-            <div class="method-card">
-                <h5>Статистика транзакций</h5>
-                <p>Загрузка...</p>
-            </div>
-
-            <div class="method-card">
-                <h5>Финансовый консультант</h5>
-                <p>AI-агент для анализа ваших финансов и рекомендаций</p>
-                <div class="form-group">
-                    <label>Выберите AI-агента:</label>
-                    <select class="form-control">
-                        <option>Gemini</option>
-                        <option>DeepSeek</option>
-                        <option>Claude</option>
-                        <option>GPT-4</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Консультант:</label>
-                    <div class="form-control" style="height: 100px; overflow-y: auto;">
-                        <strong>Консультант:</strong> Привет! Я готов помочь вам с анализом ваших финансов. Что вас интересует?
+        <div class="assets-list">
+            <!-- Канада -->
+            <div class="region-section">
+                <div class="region-header">
+                    <div class="region-info">
+                        <h3>Канада</h3>
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="advisor-input" placeholder="Задайте вопрос о ваших финансах...">
-                    <button class="btn btn-primary mt-20" onclick="sendAdvisorMessage()">Отправить</button>
+                <div class="banks-list" id="canada-banks">
+                    <div class="loading-state">Загрузка банков...</div>
+                </div>
+            </div>
+
+            <!-- Украина -->
+            <div class="region-section">
+                <div class="region-header">
+                    <div class="region-info">
+                        <h3>Украина</h3>
+                    </div>
+                </div>
+                <div class="banks-list" id="ukraine-banks">
+                    <div class="loading-state">Загрузка банков...</div>
+                </div>
+            </div>
+
+            <!-- Другие -->
+            <div class="region-section">
+                <div class="region-header">
+                    <div class="region-info">
+                        <h3>Другие</h3>
+                    </div>
+                </div>
+                <div class="banks-list" id="other-banks">
+                    <div class="loading-state">Загрузка банков...</div>
+                </div>
+            </div>
+
+            <!-- Инвестиции -->
+            <div class="region-section">
+                <div class="region-header">
+                    <div class="region-info">
+                        <h3>Инвестиции</h3>
+                    </div>
+                </div>
+                <div class="banks-list" id="investment-banks">
+                    <div class="loading-state">Загрузка банков...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banks Tab -->
+        <div id="banks" class="tab-content">
+            <div class="banks-management">
+                <div class="banks-header">
+                    <h2>Управление банками</h2>
+                </div>
+                
+                <!-- Методы подключения банков -->
+                <div class="integration-methods">
+                    <!-- Plaid -->
+                    <div class="method-card active" id="plaid-method" onclick="showPlaidManagement()">
+                        <div class="method-header">
+                            <h3>Plaid</h3>
+                            <div class="method-status">Активно</div>
+                        </div>
+                        <div class="method-content">
+                            <div class="method-description">
+                                <p>Подключение банков через Plaid API</p>
+                                <p>Доступно сейчас</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Прямые API -->
+                    <div class="method-card" id="api-method" onclick="showApiManagement()">
+                        <div class="method-header">
+                            <h3>Прямые API</h3>
+                            <div class="method-status">В разработке</div>
+                        </div>
+                        <div class="method-content">
+                            <div class="method-description">
+                                <p>Интеграция с банками через прямые API</p>
+                                <p>Скоро будет доступно</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Скраппинг -->
+                    <div class="method-card" id="scraping-method" onclick="showScrapingManagement()">
+                        <div class="method-header">
+                            <h3>Скраппинг</h3>
+                            <div class="method-status">В разработке</div>
+                        </div>
+                        <div class="method-content">
+                            <div class="method-description">
+                                <p>Автоматическое извлечение данных с сайтов банков</p>
+                                <p>Скоро будет доступно</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ручной ввод -->
+                    <div class="method-card" id="manual-method" onclick="showManualManagement()">
+                        <div class="method-header">
+                            <h3>Ручной ввод</h3>
+                            <div class="method-status">В разработке</div>
+                        </div>
+                        <div class="method-content">
+                            <div class="method-description">
+                                <p>Добавление банков и счетов вручную</p>
+                                <p>Скоро будет доступно</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plaid Management Tab -->
+        <div id="plaid-management" class="tab-content">
+            <div class="plaid-management-content">
+                <button class="plaid-add" onclick="openPlaidLink()">+</button>
+                <div class="plaid-status">Загрузка банков...</div>
+            </div>
+        </div>
+
+        <!-- Accounts Tab -->
+        <div id="accounts" class="tab-content">
+            <div class="accounts-management">
+                <div class="accounts-header">
+                    <h2>Добавить счет</h2>
+                </div>
+                
+                <div class="add-account-form">
+                    <div class="form-group">
+                        <label>Банк</label>
+                        <select class="form-control">
+                            <option>Выберите банк</option>
+                            <option>ПриватБанк</option>
+                            <option>Монобанк</option>
+                            <option>Райффайзен</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Название счета</label>
+                        <input type="text" class="form-control" placeholder="Основной счет">
+                    </div>
+                    <div class="form-group">
+                        <label>Номер счета</label>
+                        <input type="text" class="form-control" placeholder="****1234">
+                    </div>
+                    <div class="form-group">
+                        <label>Баланс</label>
+                        <input type="number" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Валюта</label>
+                        <select class="form-control">
+                            <option>CAD</option>
+                            <option>USD</option>
+                            <option>EUR</option>
+                            <option>UAH</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">Добавить счет</button>
+                </div>
+                
+                <div class="accounts-list">
+                    <h3>Список счетов</h3>
+                    <div class="loading-state">Загрузка...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Tab -->
+        <div id="transactions" class="tab-content">
+            <div class="transactions-management">
+                <div class="transactions-header">
+                    <h2>Анализ качества транзакций</h2>
+                    <p>Анализ данных транзакций из подключенных банков</p>
+                    <button class="btn btn-primary" onclick="showTransactions()">Открыть анализ транзакций</button>
+                </div>
+                
+                <div class="transactions-stats">
+                    <h3>Статистика транзакций</h3>
+                    <div class="loading-state">Загрузка...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advisor Tab -->
+        <div id="advisor" class="tab-content">
+            <div class="advisor-management">
+                <div class="advisor-header">
+                    <h2>Финансовый консультант</h2>
+                    <p>AI-агент для анализа ваших финансов и рекомендаций</p>
+                </div>
+                
+                <div class="advisor-settings">
+                    <div class="form-group">
+                        <label>Выберите AI-агента:</label>
+                        <select class="form-control">
+                            <option>Gemini</option>
+                            <option>DeepSeek</option>
+                            <option>Claude</option>
+                            <option>GPT-4</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="advisor-chat">
+                    <div class="chat-messages">
+                        <div class="message advisor-message">
+                            <strong>Консультант:</strong> Привет! Я готов помочь вам с анализом ваших финансов. Что вас интересует?
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="advisor-input" placeholder="Задайте вопрос о ваших финансах...">
+                        <button onclick="sendAdvisorMessage()">Отправить</button>
+                    </div>
                 </div>
             </div>
         </div>
