@@ -21,14 +21,14 @@
       "name": "Chequing",
       "type": "depository",
       "subtype": "checking",
-      "current_balance": 522.05,
-      "available_balance": 522.05,
+      "current_balance": 100.07,
+      "available_balance": 100.07,
       "currency": "CAD",
       "bank_name": "Bank of Montreal",
       "balance_type": "deposit"
     }
   ],
-  "created_at": "2025-10-04T18:48:39.914313",
-  "expires_at": "2025-10-04T19:48:39.914283",
-  "last_updated": "2025-10-04T18:48:39.914330"
+  "created_at": "2025-10-12T15:39:55.629990",
+  "expires_at": "2025-10-12T16:39:55.629927",
+  "last_updated": "2025-10-12T15:39:55.630021"
 }

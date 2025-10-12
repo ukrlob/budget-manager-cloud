@@ -20,9 +20,9 @@
       "name": "RBC ION Visa",
       "type": "credit",
       "subtype": "credit card",
-      "current_balance": -0.82,
-      "credit_limit": -1.64,
-      "used_credit": -0.82,
+      "current_balance": -3.71,
+      "credit_limit": -7.42,
+      "used_credit": -3.71,
       "currency": "CAD",
       "bank_name": "Royal Bank of Canada",
       "balance_type": "credit_available"
@@ -54,14 +54,14 @@
       "name": "RBC Advantage Banking",
       "type": "depository",
       "subtype": "checking",
-      "current_balance": 800.0,
-      "available_balance": 800.0,
+      "current_balance": 958.81,
+      "available_balance": 958.81,
       "currency": "CAD",
       "bank_name": "Royal Bank of Canada",
       "balance_type": "deposit"
     }
   ],
-  "created_at": "2025-10-04T18:48:39.337900",
-  "expires_at": "2025-10-04T19:18:39.337877",
-  "last_updated": "2025-10-04T18:48:39.337910"
+  "created_at": "2025-10-12T15:39:54.204606",
+  "expires_at": "2025-10-12T16:09:54.204536",
+  "last_updated": "2025-10-12T15:39:54.204641"
 }

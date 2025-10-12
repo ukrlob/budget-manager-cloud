@@ -1,6 +1,6 @@
 {
-  "cache_key": "transactions_fallback_BMO_item_RxLgV7b7nOIr3L6Jd0g7C8OP3JkPdPUy9B7w0_gr5B4mkm3yUge5rbXJOAh5gKAr4aE7IMX31bB",
-  "data_type": "transactions_fallback",
+  "cache_key": "transactions_BMO_item_RxLgV7b7nOIr3L6Jd0g7C8OP3JkPdPUy9B7w0_gr5B4mkm3yUge5rbXJOAh5gKAr4aE7IMX31bB_end_date_2025-10-12_start_date_2025-09-12",
+  "data_type": "transactions",
   "bank_code": "BMO",
   "account_id": "gr5B4mkm3yUge5rbXJOAh5gKAr4aE7IMX31bB",
   "data": [
@@ -230,7 +230,7 @@
       "currency": "CAD"
     }
   ],
-  "created_at": "2025-10-12T15:39:56.315450",
-  "expires_at": "2025-10-12T16:09:56.315413",
-  "last_updated": "2025-10-12T15:39:56.315459"
+  "created_at": "2025-10-12T15:39:56.313322",
+  "expires_at": "2025-10-12T16:09:56.313278",
+  "last_updated": "2025-10-12T15:39:56.313344"
 }
