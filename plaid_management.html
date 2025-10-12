@@ -234,35 +234,60 @@
         .navbar {
             background: transparent !important;
             backdrop-filter: none;
-            padding: clamp(8px, 1vw, 12px) 0;
-            margin-bottom: clamp(8px, 1vw, 15px);
+            padding: 0;
+            margin-bottom: 20px;
         }
         
         .navbar-nav {
             display: flex;
-            justify-content: center;
-            width: 100%;
-            gap: clamp(8px, 1.5vw, 20px);
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0;
+        }
+        
+        .navbar-nav .nav-item {
+            flex: 1;
         }
         
         .navbar-nav .nav-link {
             color: white !important;
-            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            font-size: 16px;
             font-weight: 500;
-            padding: clamp(6px, 0.8vw, 10px) clamp(12px, 1.5vw, 20px);
-            border-radius: 6px;
+            padding: 10px 15px;
+            text-align: center;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
+            background: transparent;
+            border: none;
+            text-decoration: none;
+            display: block;
+            position: relative;
         }
         
         .navbar-nav .nav-link:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
         }
         
         .navbar-nav .nav-link.active {
-            background: rgba(255, 255, 255, 0.3);
-            font-weight: 600;
+            background: white;
+            color: #2196F3 !important;
+            font-weight: bold;
+        }
+        
+        .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2196F3;
         }
         
         .plaid-add {
@@ -532,19 +557,16 @@
             <div class="container-fluid">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">
-                            <i class="bi bi-house-door me-2"></i>Главная
-                        </a>
+                        <a class="nav-link" href="index.html">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="plaid_management_bootstrap.html">
-                            <i class="bi bi-bank me-2"></i>Plaid Management
-                        </a>
+                        <a class="nav-link active" href="plaid_management.html">Plaid Management</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="bank_management.html">
-                            <i class="bi bi-gear me-2"></i>Настройки
-                        </a>
+                        <a class="nav-link" href="transactions.html">Транзакции</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="advisor.html">Финконсультант</a>
                     </li>
                 </ul>
             </div>
