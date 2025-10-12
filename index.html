@@ -6,11 +6,244 @@
     <title>Budget Management</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%232196F3%22 text-decoration=%22underline%22>BM</text></svg>">
     <link rel="stylesheet" href="static/styles.css?v=26">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: clamp(240px, 20vw, 320px);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: clamp(8px, 1vw, 12px);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 0.75vw, 10px);
+            height: 100vh;
+            overflow-y: hidden;
+            font-size: clamp(10px, 1vw, 14px);
+            justify-content: space-between;
+        }
+        
+        .main-content {
+            margin-left: clamp(240px, 20vw, 320px);
+            padding: clamp(15px, 1.5vw, 20px);
+            padding-bottom: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .bm-logo {
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .bm-icon {
+            width: clamp(35px, 4vw, 50px);
+            height: clamp(35px, 4vw, 50px);
+            background: white;
+            color: #2196F3;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+            font-weight: bold;
+            margin: 0 auto;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            text-decoration: underline;
+        }
+        
+        .plaid-counter {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: clamp(6px, 0.8vw, 10px);
+            text-align: center;
+            color: white;
+        }
+        
+        .counter-label {
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        
+        .counter-value {
+            font-size: clamp(0.9rem, 1.1vw, 1.2rem);
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        
+        .exchange-rates {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: clamp(8px, 1vw, 12px);
+            color: white;
+        }
+        
+        .rates-label {
+            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            font-weight: bold;
+            margin-bottom: clamp(6px, 0.8vw, 10px);
+            text-align: center;
+        }
+        
+        .rate-item {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 0.5vw, 8px);
+            margin-bottom: clamp(4px, 0.5vw, 6px);
+        }
+        
+        .currency-select {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            padding: clamp(2px, 0.3vw, 4px);
+            font-size: clamp(0.7rem, 0.8vw, 0.9rem);
+            color: #333;
+            min-width: clamp(35px, 4vw, 50px);
+            text-align: center;
+        }
+        
+        .rate-value {
+            flex: 1;
+            text-align: center;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            font-weight: bold;
+        }
+        
+        .currency-converter-section {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: clamp(8px, 1vw, 12px);
+            color: white;
+        }
+        
+        .converter-label {
+            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            font-weight: bold;
+            margin-bottom: clamp(6px, 0.8vw, 10px);
+            text-align: center;
+        }
+        
+        .converter-row {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 0.5vw, 8px);
+            margin-bottom: clamp(4px, 0.5vw, 6px);
+        }
+        
+        .converter-amount {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            padding: clamp(4px, 0.5vw, 6px);
+            font-size: clamp(0.7rem, 0.8vw, 0.9rem);
+            color: #333;
+            width: clamp(50px, 6vw, 80px);
+            text-align: center;
+        }
+        
+        .converter-result {
+            flex: 1;
+            text-align: center;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: clamp(4px, 0.5vw, 6px);
+        }
+        
+        .navbar-nav {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            width: 75%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .navbar-nav .nav-item {
+            flex: 1;
+        }
+        
+        .navbar-nav .nav-link {
+            flex: 1;
+            padding: 6px 10px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            display: block;
+            position: relative;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .navbar-nav .nav-link.active {
+            background: white;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2196F3;
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding: 20px 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="main-layout">
         <!-- Фиксированный блок слева -->
-        <div class="left-sidebar">
+        <nav class="sidebar">
             <div class="bm-logo" onclick="goHome()">
                 <div class="bm-icon">BM</div>
             </div>
@@ -123,16 +356,17 @@
                 <div class="converter-result" id="converter-result">$100.00</div>
             </div>
         </div>
+    </nav>
         
         <!-- Основной контент -->
         <div class="main-content">
             <div class="container">
 
-        <div class="tabs">
-            <button class="tab active" onclick="goHomeNoURL()">Главная</button>
-            <button class="tab" onclick="window.location.href='banks.html'">Банки</button>
-            <button class="tab" onclick="window.location.href='transactions.html'">Транзакции</button>
-            <button class="tab" onclick="window.location.href='advisor.html'">Финконсультант</button>
+        <div class="navbar-nav">
+            <a class="nav-link active" href="index.html">Главная</a>
+            <a class="nav-link" href="banks.html">Банки</a>
+            <a class="nav-link" href="transactions.html">Транзакции</a>
+            <a class="nav-link" href="advisor.html">Финконсультант</a>
         </div>
 
         <!-- Dashboard Tab -->
@@ -384,7 +618,7 @@
         </div>
         
         <footer class="footer">
-            <p>Budget Manager Cloud - Управление личными финансами в облаке</p>
+            <p class="mb-0">Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
         </footer>
     </div>
 
