@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Название страницы - Budget Manager Cloud</title>
+    <link rel="stylesheet" href="static/styles.css?v=26">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: clamp(240px, 20vw, 320px);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: clamp(8px, 1vw, 12px);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1px, 0.2vw, 2px);
+            height: 100vh;
+            overflow-y: hidden;
+            font-size: clamp(10px, 1vw, 14px);
+            justify-content: space-between;
+        }
+        
+        .main-content {
+            margin-left: clamp(240px, 20vw, 320px);
+            padding: clamp(15px, 1.5vw, 20px);
+            padding-bottom: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .bm-logo {
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .bm-icon {
+            width: clamp(35px, 4vw, 50px);
+            height: clamp(35px, 4vw, 50px);
+            background: white;
+            color: #2196F3;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+            font-weight: bold;
+            margin: 0 auto;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            text-decoration: underline;
+        }
+        
+        .plaid-counter {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: clamp(6px, 0.8vw, 10px);
+            text-align: center;
+            color: white;
+        }
+        
+        .counter-label {
+            font-size: clamp(0.7rem, 0.9vw, 1rem);
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        
+        .counter-value {
+            font-size: clamp(0.9rem, 1.1vw, 1.2rem);
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        
+        .exchange-rates {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: clamp(8px, 1vw, 12px);
+            color: white;
+        }
+        
+        .rates-label {
+            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            font-weight: bold;
+            margin-bottom: clamp(6px, 0.8vw, 10px);
+            text-align: center;
+        }
+        
+        .rate-item {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 0.5vw, 8px);
+            margin-bottom: clamp(4px, 0.5vw, 6px);
+        }
+        
+        .currency-select {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            padding: clamp(2px, 0.3vw, 4px);
+            font-size: clamp(0.7rem, 0.8vw, 0.9rem);
+            color: #333;
+            min-width: clamp(35px, 4vw, 50px);
+            text-align: center;
+        }
+        
+        .rate-value {
+            flex: 1;
+            text-align: center;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            font-weight: bold;
+        }
+        
+        .currency-converter-section {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: clamp(8px, 1vw, 12px);
+            color: white;
+        }
+        
+        .converter-label {
+            font-size: clamp(0.8rem, 1vw, 1.1rem);
+            font-weight: bold;
+            margin-bottom: clamp(6px, 0.8vw, 10px);
+            text-align: center;
+        }
+        
+        .converter-row {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 0.5vw, 8px);
+            margin-bottom: clamp(4px, 0.5vw, 6px);
+        }
+        
+        .converter-amount {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            padding: clamp(4px, 0.5vw, 6px);
+            font-size: clamp(0.7rem, 0.8vw, 0.9rem);
+            color: #333;
+            width: clamp(50px, 6vw, 80px);
+            text-align: center;
+        }
+        
+        .converter-result {
+            flex: 1;
+            text-align: center;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: clamp(4px, 0.5vw, 6px);
+        }
+        
+        .navbar-nav {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            width: 75%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .navbar-nav .nav-item {
+            flex: 1;
+        }
+        
+        .navbar-nav .nav-link {
+            flex: 1;
+            padding: 6px 10px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            display: block;
+            position: relative;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .navbar-nav .nav-link.active {
+            background: white;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2196F3;
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding: 20px 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фиксированный блок слева -->
+    <nav class="sidebar">
+            <div class="bm-logo" onclick="goHome()">
+                <div class="bm-icon">BM</div>
+            </div>
+            
+            <div class="plaid-counter">
+                <div class="counter-label">Plaid API</div>
+                <div class="counter-value">-/-</div>
+                <button class="btn btn-sm btn-outline-light w-100 mt-2" style="font-size: clamp(0.7rem, 0.9vw, 0.9rem); padding: 4px 8px;">Обновить</button>
+            </div>
+            
+            <div class="exchange-rates">
+                <div class="rates-label">Курсы валют</div>
+                <div class="rate-item">
+                    <select class="currency-select" id="currency-from-1" onchange="updateCurrencyPair(1)">
+                        <option value="CAD">CAD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate-separator">/</span>
+                    <select class="currency-select" id="currency-to-1" onchange="updateCurrencyPair(1)">
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate" id="rate-value-1">0.7246</span>
+                </div>
+                <div class="rate-item">
+                    <select class="currency-select" id="currency-from-2" onchange="updateCurrencyPair(2)">
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate-separator">/</span>
+                    <select class="currency-select" id="currency-to-2" onchange="updateCurrencyPair(2)">
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate" id="rate-value-2">0.8560</span>
+                </div>
+                <div class="rate-item">
+                    <select class="currency-select" id="currency-from-3" onchange="updateCurrencyPair(3)">
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="UAH">UAH</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate-separator">/</span>
+                    <select class="currency-select" id="currency-to-3" onchange="updateCurrencyPair(3)">
+                        <option value="UAH">UAH</option>
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="RUB">RUB</option>
+                    </select>
+                    <span class="rate" id="rate-value-3">41.49</span>
+                </div>
+                <button class="btn btn-sm btn-outline-light w-100 mt-2" style="font-size: clamp(0.7rem, 0.9vw, 0.9rem); padding: 4px 8px;" onclick="refreshRates()">Обновить</button>
+            </div>
+            
+            <div class="currency-converter-section">
+                <div class="converter-label">Конвертер валют</div>
+                <div class="converter-currencies">
+                    <select class="converter-from" id="converter-from" onchange="convertCurrencyAmount()">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                    </select>
+                    <span class="converter-arrow">→</span>
+                    <select class="converter-to" id="converter-to" onchange="convertCurrencyAmount()">
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                    </select>
+                </div>
+                <input type="number" class="converter-amount" placeholder="Сумма" value="100">
+                <div class="converter-result">€85.60</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <div class="navbar-nav">
+            <a class="nav-link" href="index.html">Главная</a>
+            <a class="nav-link" href="banks.html">Банки</a>
+            <a class="nav-link" href="transactions.html">Транзакции</a>
+            <a class="nav-link" href="advisor.html">Финконсультант</a>
+        </div>
+
+        <h1>Название страницы</h1>
+        <p>Описание страницы</p>
+        
+        <!-- Здесь будет основной контент страницы -->
+        <div class="content-area">
+            <p>Эта страница находится в разработке.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p class="mb-0">Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
+    </footer>
+
+    <script src="static/app.js"></script>
+    <script>
+        // Функции для работы с курсами валют и конвертером
+        let exchangeRates = {};
+        
+        async function loadExchangeRates() {
+            try {
+                const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await response.json();
+                exchangeRates = data.rates;
+                updateRatesUI();
+            } catch (error) {
+                console.error('Ошибка загрузки курсов валют:', error);
+            }
+        }
+        
+        function updateRatesUI() {
+            // Обновляем курсы валют
+            updateCurrencyPair(1);
+            updateCurrencyPair(2);
+            updateCurrencyPair(3);
+            
+            // Обновляем конвертер
+            convertCurrencyAmount();
+        }
+        
+        function updateCurrencyPair(pairId) {
+            const fromSelect = document.getElementById(`currency-from-${pairId}`);
+            const toSelect = document.getElementById(`currency-to-${pairId}`);
+            const rateValue = document.getElementById(`rate-value-${pairId}`);
+            
+            if (fromSelect && toSelect && rateValue && exchangeRates[fromSelect.value] && exchangeRates[toSelect.value]) {
+                const rate = exchangeRates[toSelect.value] / exchangeRates[fromSelect.value];
+                rateValue.textContent = rate.toFixed(4);
+            }
+        }
+        
+        function convertCurrencyAmount() {
+            const fromSelect = document.getElementById('converter-from');
+            const toSelect = document.getElementById('converter-to');
+            const amountInput = document.querySelector('.converter-amount');
+            const resultDiv = document.querySelector('.converter-result');
+            
+            if (fromSelect && toSelect && amountInput && resultDiv && exchangeRates[fromSelect.value] && exchangeRates[toSelect.value]) {
+                const amount = parseFloat(amountInput.value) || 0;
+                const rate = exchangeRates[toSelect.value] / exchangeRates[fromSelect.value];
+                const result = amount * rate;
+                resultDiv.textContent = `${getCurrencySymbol(toSelect.value)}${result.toFixed(2)}`;
+            }
+        }
+        
+        function getCurrencySymbol(currency) {
+            const symbols = {
+                'USD': '$',
+                'EUR': '€',
+                'CAD': 'C$',
+                'UAH': '₴',
+                'GBP': '£'
+            };
+            return symbols[currency] || currency;
+        }
+        
+        function refreshRates() {
+            loadExchangeRates();
+        }
+        
+        // Загружаем курсы валют при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadExchangeRates();
+            
+            // Добавляем обработчики событий
+            const amountInput = document.querySelector('.converter-amount');
+            if (amountInput) {
+                amountInput.addEventListener('input', convertCurrencyAmount);
+            }
+        });
+    </script>
+</body>
+</html>
