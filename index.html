@@ -256,7 +256,18 @@
                     </thead>
                     <tbody id="canada-banks">
                         <tr>
-                            <td colspan="5">Загрузка...</td>
+                            <td>RBC</td>
+                            <td>Основной счет</td>
+                            <td>4,661.00</td>
+                            <td>CAD</td>
+                            <td><button class="btn">Обновить</button></td>
+                        </tr>
+                        <tr>
+                            <td>BMO</td>
+                            <td>Сберегательный</td>
+                            <td>100.00</td>
+                            <td>CAD</td>
+                            <td><button class="btn">Обновить</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -274,7 +285,18 @@
                     </thead>
                     <tbody id="ukraine-banks">
                         <tr>
-                            <td colspan="5">Загрузка...</td>
+                            <td>ПриватБанк</td>
+                            <td>Основной счет</td>
+                            <td>12,450.00</td>
+                            <td>UAH</td>
+                            <td><button class="btn">Обновить</button></td>
+                        </tr>
+                        <tr>
+                            <td>Монобанк</td>
+                            <td>Карточный счет</td>
+                            <td>8,920.00</td>
+                            <td>UAH</td>
+                            <td><button class="btn">Обновить</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -292,7 +314,11 @@
                     </thead>
                     <tbody id="other-banks">
                         <tr>
-                            <td colspan="5">Загрузка...</td>
+                            <td>Райффайзен</td>
+                            <td>Сберегательный</td>
+                            <td>5,680.00</td>
+                            <td>UAH</td>
+                            <td><button class="btn">Обновить</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -310,7 +336,11 @@
                     </thead>
                     <tbody id="investment-banks">
                         <tr>
-                            <td colspan="5">Загрузка...</td>
+                            <td>Interactive Brokers</td>
+                            <td>Инвестиционный счет</td>
+                            <td>15,420.00</td>
+                            <td>USD</td>
+                            <td><button class="btn">Обновить</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -388,54 +418,9 @@
             document.getElementById('converter-result').textContent = `${to} ${result}`;
         }
 
-        // Загрузка банков (заглушка)
-        function loadBanks() {
-            // Заглушка - в будущем будет загружать реальные данные
-            setTimeout(() => {
-                document.getElementById('canada-banks').innerHTML = `
-                    <tr>
-                        <td>RBC</td>
-                        <td>Основной счет</td>
-                        <td>4,661.00</td>
-                        <td>CAD</td>
-                        <td><button class="btn">Обновить</button></td>
-                    </tr>
-                    <tr>
-                        <td>BMO</td>
-                        <td>Сберегательный</td>
-                        <td>100.00</td>
-                        <td>CAD</td>
-                        <td><button class="btn">Обновить</button></td>
-                    </tr>
-                `;
-                
-                document.getElementById('ukraine-banks').innerHTML = `
-                    <tr>
-                        <td>ПриватБанк</td>
-                        <td>Основной счет</td>
-                        <td>12,450.00</td>
-                        <td>UAH</td>
-                        <td><button class="btn">Обновить</button></td>
-                    </tr>
-                `;
-                
-                document.getElementById('other-banks').innerHTML = `
-                    <tr>
-                        <td colspan="5">Нет подключенных банков</td>
-                    </tr>
-                `;
-                
-                document.getElementById('investment-banks').innerHTML = `
-                    <tr>
-                        <td colspan="5">Нет инвестиционных счетов</td>
-                    </tr>
-                `;
-            }, 1000);
-        }
-
         // Запуск при загрузке страницы
         window.onload = function() {
-            loadBanks();
+            // Данные уже загружены в HTML
         };
     </script>
 </body>
