@@ -127,10 +127,21 @@
             <div class="section">
                 <h2>Банки и счета</h2>
                 
-                <h3>Канада</h3>
+                <div style="margin-bottom: 20px;">
+                    <label for="country-select">Выберите страну:</label>
+                    <select id="country-select" onchange="filterByCountry()">
+                        <option value="all">Все страны</option>
+                        <option value="canada">Канада</option>
+                        <option value="ukraine">Украина</option>
+                        <option value="other">Другие</option>
+                        <option value="investment">Инвестиции</option>
+                    </select>
+                </div>
+
                 <table>
                     <thead>
                         <tr>
+                            <th>Страна</th>
                             <th>Банк</th>
                             <th>Счет</th>
                             <th>Баланс</th>
@@ -138,88 +149,49 @@
                             <th>Действия</th>
                         </tr>
                     </thead>
-                    <tbody id="canada-banks">
-                        <tr>
+                    <tbody id="banks-table">
+                        <tr data-country="canada">
+                            <td>Канада</td>
                             <td>RBC</td>
                             <td>Основной счет</td>
                             <td>4,661.00</td>
                             <td>CAD</td>
                             <td><button class="btn">Обновить</button></td>
                         </tr>
-                        <tr>
+                        <tr data-country="canada">
+                            <td>Канада</td>
                             <td>BMO</td>
                             <td>Сберегательный</td>
                             <td>100.00</td>
                             <td>CAD</td>
                             <td><button class="btn">Обновить</button></td>
                         </tr>
-                    </tbody>
-                </table>
-
-                <h3>Украина</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Банк</th>
-                            <th>Счет</th>
-                            <th>Баланс</th>
-                            <th>Валюта</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ukraine-banks">
-                        <tr>
+                        <tr data-country="ukraine">
+                            <td>Украина</td>
                             <td>ПриватБанк</td>
                             <td>Основной счет</td>
                             <td>12,450.00</td>
                             <td>UAH</td>
                             <td><button class="btn">Обновить</button></td>
                         </tr>
-                        <tr>
+                        <tr data-country="ukraine">
+                            <td>Украина</td>
                             <td>Монобанк</td>
                             <td>Карточный счет</td>
                             <td>8,920.00</td>
                             <td>UAH</td>
                             <td><button class="btn">Обновить</button></td>
                         </tr>
-                    </tbody>
-                </table>
-
-                <h3>Другие</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Банк</th>
-                            <th>Счет</th>
-                            <th>Баланс</th>
-                            <th>Валюта</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody id="other-banks">
-                        <tr>
+                        <tr data-country="other">
+                            <td>Другие</td>
                             <td>Райффайзен</td>
                             <td>Сберегательный</td>
                             <td>5,680.00</td>
                             <td>UAH</td>
                             <td><button class="btn">Обновить</button></td>
                         </tr>
-                    </tbody>
-                </table>
-
-                <h3>Инвестиции</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Банк</th>
-                            <th>Счет</th>
-                            <th>Баланс</th>
-                            <th>Валюта</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody id="investment-banks">
-                        <tr>
+                        <tr data-country="investment">
+                            <td>Инвестиции</td>
                             <td>Interactive Brokers</td>
                             <td>Инвестиционный счет</td>
                             <td>15,420.00</td>
@@ -277,7 +249,19 @@
     </div>
 
     <script>
-        // Простые функции для базовой функциональности
+        // Функция фильтрации по странам
+        function filterByCountry() {
+            const selectedCountry = document.getElementById('country-select').value;
+            const rows = document.querySelectorAll('#banks-table tr');
+            
+            rows.forEach(row => {
+                if (selectedCountry === 'all' || row.getAttribute('data-country') === selectedCountry) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
     </script>
 </body>
 </html>
