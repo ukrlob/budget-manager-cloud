@@ -3,346 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Management</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><text x=%2250%22 y=%2265%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%232196F3%22 text-decoration=%22underline%22>BM</text></svg>">
-    <link rel="stylesheet" href="static/unified.css?v=1">
+    <title>Budget Manager Cloud</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: #2196F3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .nav {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .nav a.active {
+            color: #1976D2;
+        }
+        
+        .sidebar {
+            float: left;
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            margin-right: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .main-content {
+            margin-left: 270px;
+        }
+        
+        .section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            margin-top: 0;
+            color: #2196F3;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #1976D2;
+        }
+        
+        select, input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .rates {
+            margin: 10px 0;
+        }
+        
+        .rate-item {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+        
+        .converter {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+        
+        .footer {
+            clear: both;
+            text-align: center;
+            padding: 20px;
+            background-color: #2196F3;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Фиксированный блок слева -->
-    <nav class="sidebar">
-        <div class="bm-logo" onclick="goHome()">
-            <div class="bm-icon">BM</div>
-        </div>
-        
-        <div class="plaid-counter">
-            <div class="counter-label">Plaid API</div>
-            <div class="counter-value" id="plaid-counter">18/100</div>
-        </div>
-        
-        <button class="btn" onclick="refreshPlaidCounter()">Обновить</button>
-        
-        <div class="exchange-rates">
-            <div class="rates-label">Курсы валют</div>
-            <div class="rate-item">
-                <select class="currency-select" id="from-1" onchange="updateCurrencyPair(1)">
-                    <option value="CAD">CAD</option>
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span>/</span>
-                <select class="currency-select" id="to-1" onchange="updateCurrencyPair(1)">
-                    <option value="CAD">CAD</option>
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span class="rate-value" id="rate-value-1">1.0000</span>
-            </div>
-            <div class="rate-item">
-                <select class="currency-select" id="from-2" onchange="updateCurrencyPair(2)">
-                    <option value="CAD">CAD</option>
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span>/</span>
-                <select class="currency-select" id="to-2" onchange="updateCurrencyPair(2)">
-                    <option value="CAD">CAD</option>
-                    <option value="USD">USD</option>
-                    <option value="EUR" selected>EUR</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span class="rate-value" id="rate-value-2">0.8480</span>
-            </div>
-            <div class="rate-item">
-                <select class="currency-select" id="from-3" onchange="updateCurrencyPair(3)">
-                    <option value="CAD">CAD</option>
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span>/</span>
-                <select class="currency-select" id="to-3" onchange="updateCurrencyPair(3)">
-                    <option value="CAD">CAD</option>
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="UAH" selected>UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span class="rate-value" id="rate-value-3">41.38</span>
-            </div>
-        </div>
-        
-        <button class="btn" onclick="refreshRates()">Обновить</button>
-        
-        <div class="currency-converter-section">
-            <div class="converter-label">Конвертер валют</div>
-            <div class="converter-controls">
-                <select class="currency-select" id="converter-from" onchange="convertCurrencyAmount()">
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="CAD">CAD</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-                <span>→</span>
-                <select class="currency-select" id="converter-to" onchange="convertCurrencyAmount()">
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="CAD">CAD</option>
-                    <option value="UAH">UAH</option>
-                    <option value="RUB">RUB</option>
-                </select>
-            </div>
-            <input type="number" class="converter-amount" id="converter-amount" value="100" oninput="convertCurrencyAmount()">
-            <div class="converter-result" id="converter-result">$100.00</div>
-        </div>
-    </nav>
-        
-    <!-- Основной контент -->
-    <main class="main-content">
-        <div class="navbar-nav">
-            <a class="nav-link active" href="index.html">Главная</a>
-            <a class="nav-link" href="banks.html">Банки</a>
-            <a class="nav-link" href="transactions.html">Транзакции</a>
-            <a class="nav-link" href="advisor.html">Финконсультант</a>
+    <div class="header">
+        <h1>Budget Manager Cloud</h1>
+        <p>Управление личными финансами</p>
+    </div>
+
+    <div class="container">
+        <div class="nav">
+            <a href="index.html" class="active">Главная</a>
+            <a href="banks.html">Банки</a>
+            <a href="transactions.html">Транзакции</a>
+            <a href="advisor.html">Финконсультант</a>
+            <a href="plaid_management.html">Plaid</a>
         </div>
 
-        <div class="assets-list">
-            <!-- Канада -->
-            <div class="region-section">
-                <div class="region-header">
-                    <div class="region-info">
-                        <h3>Канада</h3>
-                    </div>
-                </div>
-                <div class="banks-list" id="canada-banks">
-                    <div class="loading-state">Загрузка банков...</div>
-                </div>
+        <div class="sidebar">
+            <h3>BM</h3>
+            
+            <div class="section">
+                <h4>Plaid API</h4>
+                <p>Использовано: <strong id="plaid-counter">18/100</strong></p>
+                <button class="btn" onclick="refreshPlaidCounter()">Обновить</button>
             </div>
 
-            <!-- Украина -->
-            <div class="region-section">
-                <div class="region-header">
-                    <div class="region-info">
-                        <h3>Украина</h3>
-                    </div>
-                </div>
-                <div class="banks-list" id="ukraine-banks">
-                    <div class="loading-state">Загрузка банков...</div>
-                </div>
-            </div>
-
-            <!-- Другие -->
-            <div class="region-section">
-                <div class="region-header">
-                    <div class="region-info">
-                        <h3>Другие</h3>
-                    </div>
-                </div>
-                <div class="banks-list" id="other-banks">
-                    <div class="loading-state">Загрузка банков...</div>
-                </div>
-            </div>
-
-            <!-- Инвестиции -->
-            <div class="region-section">
-                <div class="region-header">
-                    <div class="region-info">
-                        <h3>Инвестиции</h3>
-                    </div>
-                </div>
-                <div class="banks-list" id="investment-banks">
-                    <div class="loading-state">Загрузка банков...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Banks Tab -->
-        <div id="banks" class="tab-content">
-            <div class="banks-management">
-                <div class="banks-header">
-                    <h2>Управление банками</h2>
-                </div>
-                
-                <!-- Методы подключения банков -->
-                <div class="integration-methods">
-                    <!-- Plaid -->
-                    <div class="method-card active" id="plaid-method" onclick="showPlaidManagement()">
-                        <div class="method-header">
-                            <h3>Plaid</h3>
-                            <div class="method-status">Активно</div>
-                        </div>
-                        <div class="method-content">
-                            <div class="method-description">
-                                <p>Подключение банков через Plaid API</p>
-                                <p>Доступно сейчас</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Прямые API -->
-                    <div class="method-card" id="api-method" onclick="showApiManagement()">
-                        <div class="method-header">
-                            <h3>Прямые API</h3>
-                            <div class="method-status">В разработке</div>
-                        </div>
-                        <div class="method-content">
-                            <div class="method-description">
-                                <p>Интеграция с банками через прямые API</p>
-                                <p>Скоро будет доступно</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Скраппинг -->
-                    <div class="method-card" id="scraping-method" onclick="showScrapingManagement()">
-                        <div class="method-header">
-                            <h3>Скраппинг</h3>
-                            <div class="method-status">В разработке</div>
-                        </div>
-                        <div class="method-content">
-                            <div class="method-description">
-                                <p>Автоматическое извлечение данных с сайтов банков</p>
-                                <p>Скоро будет доступно</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Ручной ввод -->
-                    <div class="method-card" id="manual-method" onclick="showManualManagement()">
-                        <div class="method-header">
-                            <h3>Ручной ввод</h3>
-                            <div class="method-status">В разработке</div>
-                        </div>
-                        <div class="method-content">
-                            <div class="method-description">
-                                <p>Добавление банков и счетов вручную</p>
-                                <p>Скоро будет доступно</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Plaid Management Tab -->
-        <div id="plaid-management" class="tab-content">
-            <div class="plaid-management-content">
-                <button class="plaid-add" onclick="openPlaidLink()">+</button>
-                <div class="plaid-status">Загрузка банков...</div>
-            </div>
-        </div>
-
-        <!-- Accounts Tab -->
-        <div id="accounts" class="tab-content">
-            <div class="accounts-management">
-                <div class="accounts-header">
-                    <h2>Добавить счет</h2>
-                </div>
-                
-                <div class="add-account-form">
-                    <div class="form-group">
-                        <label>Банк</label>
-                        <select class="form-control">
-                            <option>Выберите банк</option>
-                            <option>ПриватБанк</option>
-                            <option>Монобанк</option>
-                            <option>Райффайзен</option>
+            <div class="section">
+                <h4>Курсы валют</h4>
+                <div class="rates">
+                    <div class="rate-item">
+                        <select id="from-1">
+                            <option value="USD" selected>USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CAD">CAD</option>
+                            <option value="UAH">UAH</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Название счета</label>
-                        <input type="text" class="form-control" placeholder="Основной счет">
-                    </div>
-                    <div class="form-group">
-                        <label>Номер счета</label>
-                        <input type="text" class="form-control" placeholder="****1234">
-                    </div>
-                    <div class="form-group">
-                        <label>Баланс</label>
-                        <input type="number" class="form-control" placeholder="0.00">
-                    </div>
-                    <div class="form-group">
-                        <label>Валюта</label>
-                        <select class="form-control">
-                            <option>CAD</option>
-                            <option>USD</option>
-                            <option>EUR</option>
-                            <option>UAH</option>
+                        /
+                        <select id="to-1">
+                            <option value="USD" selected>USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CAD">CAD</option>
+                            <option value="UAH">UAH</option>
                         </select>
+                        <span id="rate-value-1">1.0000</span>
                     </div>
-                    <button class="btn btn-primary">Добавить счет</button>
-                </div>
-                
-                <div class="accounts-list">
-                    <h3>Список счетов</h3>
-                    <div class="loading-state">Загрузка...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Transactions Tab -->
-        <div id="transactions" class="tab-content">
-            <div class="transactions-management">
-                <div class="transactions-header">
-                    <h2>Анализ качества транзакций</h2>
-                    <p>Анализ данных транзакций из подключенных банков</p>
-                    <button class="btn btn-primary" onclick="showTransactions()">Открыть анализ транзакций</button>
-                </div>
-                
-                <div class="transactions-stats">
-                    <h3>Статистика транзакций</h3>
-                    <div class="loading-state">Загрузка...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Advisor Tab -->
-        <div id="advisor" class="tab-content">
-            <div class="advisor-management">
-                <div class="advisor-header">
-                    <h2>Финансовый консультант</h2>
-                    <p>AI-агент для анализа ваших финансов и рекомендаций</p>
-                </div>
-                
-                <div class="advisor-settings">
-                    <div class="form-group">
-                        <label>Выберите AI-агента:</label>
-                        <select class="form-control">
-                            <option>Gemini</option>
-                            <option>DeepSeek</option>
-                            <option>Claude</option>
-                            <option>GPT-4</option>
+                    <div class="rate-item">
+                        <select id="from-2">
+                            <option value="USD" selected>USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CAD">CAD</option>
+                            <option value="UAH">UAH</option>
                         </select>
+                        /
+                        <select id="to-2">
+                            <option value="USD">USD</option>
+                            <option value="EUR" selected>EUR</option>
+                            <option value="CAD">CAD</option>
+                            <option value="UAH">UAH</option>
+                        </select>
+                        <span id="rate-value-2">0.8480</span>
+                    </div>
+                    <div class="rate-item">
+                        <select id="from-3">
+                            <option value="USD" selected>USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CAD">CAD</option>
+                            <option value="UAH">UAH</option>
+                        </select>
+                        /
+                        <select id="to-3">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CAD">CAD</option>
+                            <option value="UAH" selected>UAH</option>
+                        </select>
+                        <span id="rate-value-3">41.38</span>
                     </div>
                 </div>
-                
-                <div class="advisor-chat">
-                    <div class="chat-messages">
-                        <div class="message advisor-message">
-                            <strong>Консультант:</strong> Привет! Я готов помочь вам с анализом ваших финансов. Что вас интересует?
-                        </div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" id="advisor-input" placeholder="Задайте вопрос о ваших финансах...">
-                        <button onclick="sendAdvisorMessage()">Отправить</button>
-                    </div>
+                <button class="btn" onclick="refreshRates()">Обновить курсы</button>
+            </div>
+
+            <div class="section">
+                <h4>Конвертер валют</h4>
+                <div class="converter">
+                    <select id="converter-from">
+                        <option value="USD" selected>USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                    </select>
+                    →
+                    <select id="converter-to">
+                        <option value="USD" selected>USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="CAD">CAD</option>
+                        <option value="UAH">UAH</option>
+                    </select>
+                    <br><br>
+                    <input type="number" id="converter-amount" value="100" oninput="convertCurrency()">
+                    <br><br>
+                    <div id="converter-result">$100.00</div>
                 </div>
             </div>
         </div>
-    </main>
 
-    <footer class="footer">
-        <p class="mb-0">Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
-    </footer>
+        <div class="main-content">
+            <div class="section">
+                <h2>Банки и счета</h2>
+                
+                <h3>Канада</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Банк</th>
+                            <th>Счет</th>
+                            <th>Баланс</th>
+                            <th>Валюта</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="canada-banks">
+                        <tr>
+                            <td colspan="5">Загрузка...</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <script src="static/app.js?v=43"></script>
+                <h3>Украина</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Банк</th>
+                            <th>Счет</th>
+                            <th>Баланс</th>
+                            <th>Валюта</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ukraine-banks">
+                        <tr>
+                            <td colspan="5">Загрузка...</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Другие</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Банк</th>
+                            <th>Счет</th>
+                            <th>Баланс</th>
+                            <th>Валюта</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="other-banks">
+                        <tr>
+                            <td colspan="5">Загрузка...</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Инвестиции</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Банк</th>
+                            <th>Счет</th>
+                            <th>Баланс</th>
+                            <th>Валюта</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="investment-banks">
+                        <tr>
+                            <td colspan="5">Загрузка...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Методы подключения банков</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Метод</th>
+                            <th>Статус</th>
+                            <th>Описание</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Plaid API</td>
+                            <td><span style="color: green;">Активно</span></td>
+                            <td>Подключение банков через Plaid API</td>
+                            <td><a href="plaid_management.html">Открыть</a></td>
+                        </tr>
+                        <tr>
+                            <td>Прямые API</td>
+                            <td><span style="color: orange;">В разработке</span></td>
+                            <td>Интеграция с банками через прямые API</td>
+                            <td><a href="api_scraping.html">Открыть</a></td>
+                        </tr>
+                        <tr>
+                            <td>Скраппинг</td>
+                            <td><span style="color: orange;">В разработке</span></td>
+                            <td>Автоматическое извлечение данных</td>
+                            <td><a href="api_scraping.html">Открыть</a></td>
+                        </tr>
+                        <tr>
+                            <td>Ручной ввод</td>
+                            <td><span style="color: orange;">В разработке</span></td>
+                            <td>Добавление банков вручную</td>
+                            <td><a href="manual_input.html">Открыть</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
+    </div>
+
+    <script>
+        // Простые функции для базовой функциональности
+        function refreshPlaidCounter() {
+            document.getElementById('plaid-counter').textContent = '18/100';
+            alert('Счетчик Plaid обновлен');
+        }
+
+        function refreshRates() {
+            alert('Курсы валют обновлены (заглушка - в будущем через Plaid API)');
+        }
+
+        function convertCurrency() {
+            const amount = document.getElementById('converter-amount').value;
+            const from = document.getElementById('converter-from').value;
+            const to = document.getElementById('converter-to').value;
+            
+            // Простая заглушка для конвертации
+            let rate = 1;
+            if (from === 'USD' && to === 'EUR') rate = 0.85;
+            if (from === 'USD' && to === 'CAD') rate = 1.35;
+            if (from === 'USD' && to === 'UAH') rate = 41.38;
+            
+            const result = (amount * rate).toFixed(2);
+            document.getElementById('converter-result').textContent = `${to} ${result}`;
+        }
+
+        // Загрузка банков (заглушка)
+        function loadBanks() {
+            // Заглушка - в будущем будет загружать реальные данные
+            setTimeout(() => {
+                document.getElementById('canada-banks').innerHTML = `
+                    <tr>
+                        <td>RBC</td>
+                        <td>Основной счет</td>
+                        <td>4,661.00</td>
+                        <td>CAD</td>
+                        <td><button class="btn">Обновить</button></td>
+                    </tr>
+                    <tr>
+                        <td>BMO</td>
+                        <td>Сберегательный</td>
+                        <td>100.00</td>
+                        <td>CAD</td>
+                        <td><button class="btn">Обновить</button></td>
+                    </tr>
+                `;
+                
+                document.getElementById('ukraine-banks').innerHTML = `
+                    <tr>
+                        <td>ПриватБанк</td>
+                        <td>Основной счет</td>
+                        <td>12,450.00</td>
+                        <td>UAH</td>
+                        <td><button class="btn">Обновить</button></td>
+                    </tr>
+                `;
+                
+                document.getElementById('other-banks').innerHTML = `
+                    <tr>
+                        <td colspan="5">Нет подключенных банков</td>
+                    </tr>
+                `;
+                
+                document.getElementById('investment-banks').innerHTML = `
+                    <tr>
+                        <td colspan="5">Нет инвестиционных счетов</td>
+                    </tr>
+                `;
+            }, 1000);
+        }
+
+        // Запуск при загрузке страницы
+        window.onload = function() {
+            loadBanks();
+        };
+    </script>
 </body>
 </html>
