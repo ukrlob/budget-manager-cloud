@@ -309,19 +309,27 @@
                         
                         // Обновляем строку с реальными данными
                         if (accounts.length > 0) {
-                            const firstAccount = accounts[0];
                             const lastUpdate = bank.last_transaction_date ? 
                                 new Date(bank.last_transaction_date).toLocaleDateString('ru-RU') : 
                                 'Неизвестно';
                             
-                            row.innerHTML = `
-                                <td>${bank.name}</td>
-                                <td>${firstAccount.name || 'Основной счет'}</td>
-                                <td>${firstAccount.balance ? firstAccount.balance.toFixed(2) : '0.00'}</td>
-                                <td>${firstAccount.currency || 'CAD'}</td>
-                                <td><span class="status-active">${bank.status}</span><br><small>Обновлено: ${lastUpdate}</small></td>
-                                <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
-                            `;
+                            // Показываем все счета
+                            accounts.forEach((account, accountIndex) => {
+                                const accountRow = accountIndex === 0 ? row : document.createElement('tr');
+                                
+                                accountRow.innerHTML = `
+                                    <td>${accountIndex === 0 ? bank.name : ''}</td>
+                                    <td>${account.name || 'Основной счет'}</td>
+                                    <td>${account.balance ? account.balance.toFixed(2) : '0.00'}</td>
+                                    <td>${account.currency || 'CAD'}</td>
+                                    <td>${accountIndex === 0 ? `<span class="status-active">${bank.status}</span><br><small>Обновлено: ${lastUpdate}</small>` : ''}</td>
+                                    <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
+                                `;
+                                
+                                if (accountIndex > 0) {
+                                    tableBody.appendChild(accountRow);
+                                }
+                            });
                         } else {
                             row.innerHTML = `
                                 <td>${bank.name}</td>
