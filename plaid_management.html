@@ -61,16 +61,32 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            border: 2px solid red !important;
-            background-color: yellow !important;
+            border: 1px solid #ddd;
+            background-color: white;
         }
         
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
-            background-color: lightblue !important;
-            color: black !important;
+            background-color: white;
+            color: #333;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .bank-group {
+            border-top: 2px solid #007bff;
+        }
+        
+        .bank-group:first-child {
+            border-top: none;
         }
         
         th {
@@ -107,7 +123,7 @@
         }
         
         .status-error {
-            color: red;
+            color: #f44336;
             font-weight: bold;
         }
         
@@ -302,23 +318,44 @@
                                 new Date(bank.last_transaction_date).toLocaleDateString('ru-RU') : 
                                 'Неизвестно';
                             
-                            // Показываем все счета
+                            // Показываем все счета с rowspan для группировки
                             accounts.forEach((account, accountIndex) => {
                                 const row = document.createElement('tr');
                                 
-                                row.innerHTML = `
-                                    <td>${accountIndex === 0 ? bank.name : ''}</td>
-                                    <td>${account.name || 'Основной счет'}</td>
-                                    <td>${account.balance ? account.balance.toFixed(2) : '0.00'}</td>
-                                    <td>${account.currency || 'CAD'}</td>
-                                    <td>${accountIndex === 0 ? `<span class="status-active">${bank.status}</span><br><small>Обновлено: ${lastUpdate}</small>` : ''}</td>
-                                    <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
-                                `;
+                                // Добавляем класс для группировки банков
+                                if (accountIndex === 0) {
+                                    row.classList.add('bank-group');
+                                }
+                                
+                                if (accountIndex === 0) {
+                                    // Первый счет - показываем всю информацию о банке с rowspan
+                                    row.innerHTML = `
+                                        <td rowspan="${accounts.length}">${bank.name}</td>
+                                        <td>${account.name || 'Основной счет'}</td>
+                                        <td>${account.balance ? account.balance.toFixed(2) : '0.00'}</td>
+                                        <td>${account.currency || 'CAD'}</td>
+                                        <td rowspan="${accounts.length}">
+                                            <span class="status-active">${bank.status}</span><br>
+                                            <small>Обновлено: ${lastUpdate}</small>
+                                        </td>
+                                        <td rowspan="${accounts.length}">
+                                            <button class="btn" onclick="updateBank('${bank.code}')">Обновить</button>
+                                        </td>
+                                    `;
+                                } else {
+                                    // Остальные счета - только информация о счете
+                                    row.innerHTML = `
+                                        <td>${account.name || 'Основной счет'}</td>
+                                        <td>${account.balance ? account.balance.toFixed(2) : '0.00'}</td>
+                                        <td>${account.currency || 'CAD'}</td>
+                                    `;
+                                }
                                 
                                 tableBody.appendChild(row);
                             });
                         } else {
                             const row = document.createElement('tr');
+                            row.classList.add('bank-group');
                             row.innerHTML = `
                                 <td>${bank.name}</td>
                                 <td>Нет счетов</td>
@@ -333,6 +370,7 @@
                 } catch (error) {
                     console.error(`Ошибка загрузки счетов для ${bank.code}:`, error);
                     const row = document.createElement('tr');
+                    row.classList.add('bank-group');
                     row.innerHTML = `
                         <td>${bank.name}</td>
                         <td>Ошибка загрузки</td>
