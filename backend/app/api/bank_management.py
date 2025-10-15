@@ -606,15 +606,38 @@ async def get_plaid_usage():
         
         connector = PlaidBankConnector(credentials)
         
-        # ВОЗВРАЩАЕМ СТАТИЧНЫЕ ДАННЫЕ БЕЗ ОБРАЩЕНИЯ К PLAID
-        return {
-            "used": 18,  # Статичное значение
-            "limit": 100,
-            "percentage": 18,
-            "remaining": 82,
-            "reset_date": "2024-10-01",
-            "status": "ok"
-        }
+        # Получаем реальную информацию о лимитах из Plaid
+        try:
+            # Делаем запрос к Plaid для получения информации о лимитах
+            from plaid.model.accounts_get_request import AccountsGetRequest
+            request = AccountsGetRequest(access_token=credentials["access_token"])
+            response = connector.client.accounts_get(request)
+            
+            # Получаем реальный счетчик из глобального кэша
+            from ..banks.plaid_integration import _global_monthly_cache
+            current_month = datetime.now().strftime('%Y-%m')
+            month_key = f"requests_{current_month}"
+            used_requests = _global_monthly_cache.get(month_key, 0)
+            
+            return {
+                "used": used_requests,
+                "limit": 100,
+                "percentage": round((used_requests / 100) * 100, 1),
+                "remaining": 100 - used_requests,
+                "reset_date": f"{current_month}-01",
+                "status": "ok"
+            }
+        except Exception as plaid_error:
+            logger.error(f"Ошибка получения лимитов Plaid: {plaid_error}")
+            # Fallback к статичным данным
+            return {
+                "used": 0,
+                "limit": 100,
+                "percentage": 0,
+                "remaining": 100,
+                "reset_date": "2024-10-01",
+                "status": "error"
+            }
             
     except Exception as e:
         return {"error": str(e)}

@@ -1,6 +1,6 @@
 {
-  "cache_key": "transactions_fallback_WALMART_item_oJLdMdqx7rIkz5ymL90ECY3QO0PpxLUBnnoRp_1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
-  "data_type": "transactions_fallback",
+  "cache_key": "transactions_WALMART_item_oJLdMdqx7rIkz5ymL90ECY3QO0PpxLUBnnoRp_1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY_end_date_2025-10-14_start_date_2025-09-14",
+  "data_type": "transactions",
   "bank_code": "WALMART",
   "account_id": "1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
   "data": [
@@ -32,7 +32,7 @@
       "currency": "CAD"
     }
   ],
-  "created_at": "2025-10-15T03:38:06.742285",
-  "expires_at": "2025-10-15T04:08:06.742241",
-  "last_updated": "2025-10-15T03:38:06.742301"
+  "created_at": "2025-10-15T03:38:06.740104",
+  "expires_at": "2025-10-15T04:08:06.740049",
+  "last_updated": "2025-10-15T03:38:06.740135"
 }
