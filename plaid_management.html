@@ -184,12 +184,11 @@
                         <th>Баланс</th>
                         <th>Валюта</th>
                         <th>Статус</th>
-                        <th>Статус обновления</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="6" style="text-align: center; color: #666;">
+                        <td colspan="5" style="text-align: center; color: #666;">
                             Загрузка данных...
                         </td>
                     </tr>
@@ -268,7 +267,7 @@
                 if (tableBody) {
                     tableBody.innerHTML = `
                         <tr>
-                            <td colspan="6" style="text-align: center; color: #f44336;">
+                            <td colspan="5" style="text-align: center; color: #f44336;">
                                 Ошибка подключения к Backend. Убедитесь что сервер запущен на порту 8004.
                             </td>
                         </tr>
@@ -342,12 +341,7 @@
                                         <td>${account.balance ? account.balance.toFixed(2) : '0.00'}</td>
                                         <td>${account.currency || 'CAD'}</td>
                                         <td rowspan="${accounts.length}">
-                                            <span class="status-active">${bank.status}</span><br>
-                                            <small>Обновлено: ${lastUpdate}</small><br>
-                                            <small style="color: #28a745;">✓ Актуальные данные</small>
-                                        </td>
-                                        <td rowspan="${accounts.length}">
-                                            <small style="color: #6c757d;">Обновляется автоматически</small>
+                                            <small>Обновлено: ${lastUpdate}</small>
                                         </td>
                                     `;
                                 } else {
@@ -370,11 +364,7 @@
                                 <td>0.00</td>
                                 <td>CAD</td>
                                 <td>
-                                    <span class="status-active">${bank.status}</span><br>
-                                    <small style="color: #28a745;">✓ Актуальные данные</small>
-                                </td>
-                                <td>
-                                    <small style="color: #6c757d;">Обновляется автоматически</small>
+                                    <small>Обновлено: ${lastUpdate}</small>
                                 </td>
                             `;
                             tableBody.appendChild(row);
@@ -390,11 +380,7 @@
                         <td>0.00</td>
                         <td>CAD</td>
                         <td>
-                            <span class="status-error">Ошибка</span><br>
-                            <small style="color: #dc3545;">✗ Plaid недоступен</small>
-                        </td>
-                        <td>
-                            <small style="color: #dc3545;">Требует внимания</small>
+                            <small style="color: #dc3545;">Ошибка подключения</small>
                         </td>
                     `;
                     tableBody.appendChild(row);
@@ -409,7 +395,7 @@
             if (workingBanks.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center; color: #666;">
+                        <td colspan="5" style="text-align: center; color: #666;">
                             Нет подключенных банков. Нажмите кнопку "+" для добавления банка.
                         </td>
                     </tr>
