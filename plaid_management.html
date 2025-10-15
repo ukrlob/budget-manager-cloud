@@ -272,11 +272,13 @@
             if (!tableBody) return;
             
             // Очищаем таблицу
+            console.log('Очищаем таблицу, текущее содержимое:', tableBody.innerHTML);
             tableBody.innerHTML = '';
+            console.log('Таблица очищена, новое содержимое:', tableBody.innerHTML);
             
             // Добавляем все банки (показываем все, так как API не возвращает has_token)
-            banks.forEach(bank => {
-                console.log('Добавляем банк:', bank);
+            banks.forEach((bank, index) => {
+                console.log(`Добавляем банк ${index + 1}:`, bank);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${bank.name}</td>
@@ -287,7 +289,10 @@
                     <td><button class="btn" onclick="updateBank('${bank.name}')">Обновить</button></td>
                 `;
                 tableBody.appendChild(row);
+                console.log(`Банк ${index + 1} добавлен, строк в таблице:`, tableBody.children.length);
             });
+            
+            console.log('Все банки добавлены, финальное содержимое tbody:', tableBody.innerHTML);
             
             // Если нет банков, показываем сообщение
             if (banks.length === 0) {
