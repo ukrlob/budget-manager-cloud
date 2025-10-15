@@ -285,20 +285,9 @@
             console.log('Банки со статусом working:', workingBanks);
             
             // Добавляем банки и загружаем детали счетов
-            workingBanks.forEach(async (bank, index) => {
+            for (let index = 0; index < workingBanks.length; index++) {
+                const bank = workingBanks[index];
                 console.log(`Добавляем банк ${index + 1}:`, bank);
-                
-                // Сначала добавляем строку с базовой информацией
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${bank.name}</td>
-                    <td>Загрузка счетов...</td>
-                    <td>Загрузка...</td>
-                    <td>CAD</td>
-                    <td><span class="status-active">${bank.status}</span></td>
-                    <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
-                `;
-                tableBody.appendChild(row);
                 
                 // Загружаем детали счетов
                 try {
@@ -307,7 +296,7 @@
                         const accounts = await accountsResponse.json();
                         console.log(`Счета для ${bank.code}:`, accounts);
                         
-                        // Обновляем строку с реальными данными
+                        // Добавляем все счета для этого банка
                         if (accounts.length > 0) {
                             const lastUpdate = bank.last_transaction_date ? 
                                 new Date(bank.last_transaction_date).toLocaleDateString('ru-RU') : 
@@ -315,9 +304,9 @@
                             
                             // Показываем все счета
                             accounts.forEach((account, accountIndex) => {
-                                const accountRow = accountIndex === 0 ? row : document.createElement('tr');
+                                const row = document.createElement('tr');
                                 
-                                accountRow.innerHTML = `
+                                row.innerHTML = `
                                     <td>${accountIndex === 0 ? bank.name : ''}</td>
                                     <td>${account.name || 'Основной счет'}</td>
                                     <td>${account.balance ? account.balance.toFixed(2) : '0.00'}</td>
@@ -326,11 +315,10 @@
                                     <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
                                 `;
                                 
-                                if (accountIndex > 0) {
-                                    tableBody.appendChild(accountRow);
-                                }
+                                tableBody.appendChild(row);
                             });
                         } else {
+                            const row = document.createElement('tr');
                             row.innerHTML = `
                                 <td>${bank.name}</td>
                                 <td>Нет счетов</td>
@@ -339,10 +327,12 @@
                                 <td><span class="status-active">${bank.status}</span></td>
                                 <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
                             `;
+                            tableBody.appendChild(row);
                         }
                     }
                 } catch (error) {
                     console.error(`Ошибка загрузки счетов для ${bank.code}:`, error);
+                    const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${bank.name}</td>
                         <td>Ошибка загрузки</td>
@@ -351,10 +341,11 @@
                         <td><span class="status-error">Ошибка</span></td>
                         <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
                     `;
+                    tableBody.appendChild(row);
                 }
                 
                 console.log(`Банк ${index + 1} добавлен, строк в таблице:`, tableBody.children.length);
-            });
+            }
             
             console.log('Все банки добавлены, финальное содержимое tbody:', tableBody.innerHTML);
             
