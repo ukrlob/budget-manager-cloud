@@ -142,8 +142,8 @@
             </div>
             
             <div id="plaid-status">
-                <p><strong>Статус:</strong> <span class="status-active">Активен</span></p>
-                <p><strong>Использовано:</strong> 7/100 запросов</p>
+                <p><strong>Статус:</strong> <span class="status-active">Загрузка...</span></p>
+                <p><strong>Использовано:</strong> Загрузка...</p>
             </div>
         </div>
 
@@ -162,28 +162,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>RBC</td>
-                        <td>Основной счет</td>
-                        <td>4,661.00</td>
-                        <td>CAD</td>
-                        <td><span class="status-active">Активен</span></td>
-                        <td><button class="btn">Обновить</button></td>
-                    </tr>
-                    <tr>
-                        <td>BMO</td>
-                        <td>Сберегательный</td>
-                        <td>100.00</td>
-                        <td>CAD</td>
-                        <td><span class="status-active">Активен</span></td>
-                        <td><button class="btn">Обновить</button></td>
-                    </tr>
-                    <tr>
-                        <td>ПриватБанк</td>
-                        <td>Основной счет</td>
-                        <td>12,450.00</td>
-                        <td>UAH</td>
-                        <td><span class="status-active">Активен</span></td>
-                        <td><button class="btn">Обновить</button></td>
+                        <td colspan="6" style="text-align: center; color: #666;">
+                            Загрузка данных...
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -195,18 +176,146 @@
     </div>
 
     <script>
+        // Конфигурация API
+        const API_BASE_URL = 'http://127.0.0.1:8004';
+        
         // Простые функции для работы с Plaid
-        function connectNewBank() {
-            alert('Функция подключения нового банка будет реализована позже');
+        async function connectNewBank() {
+            try {
+                // Получаем конфигурацию Plaid Link
+                const response = await fetch(`${API_BASE_URL}/api/plaid/link/config`);
+                const config = await response.json();
+                
+                console.log('Plaid Link конфигурация:', config);
+                
+                // Здесь будет интеграция с Plaid Link SDK
+                alert('Функция подключения нового банка будет реализована с Plaid Link SDK');
+                
+            } catch (error) {
+                console.error('Ошибка получения конфигурации Plaid:', error);
+                alert('Ошибка подключения к Plaid API');
+            }
         }
         
-        function refreshData() {
-            alert('Данные обновлены');
+        async function refreshData() {
+            try {
+                // Обновляем статус Plaid API
+                const statusResponse = await fetch(`${API_BASE_URL}/api/banks/plaid/usage`);
+                if (statusResponse.ok) {
+                    const statusData = await statusResponse.json();
+                    updatePlaidStatus(statusData);
+                } else {
+                    throw new Error(`HTTP ${statusResponse.status}`);
+                }
+                
+                // Обновляем список банков
+                const banksResponse = await fetch(`${API_BASE_URL}/api/banks`);
+                if (banksResponse.ok) {
+                    const banksData = await banksResponse.json();
+                    updateBanksTable(banksData.banks);
+                } else {
+                    throw new Error(`HTTP ${banksResponse.status}`);
+                }
+                
+                console.log('Данные обновлены');
+                
+            } catch (error) {
+                console.error('Ошибка обновления данных:', error);
+                
+                // Показываем ошибку в интерфейсе
+                const statusElement = document.getElementById('plaid-status');
+                if (statusElement) {
+                    statusElement.innerHTML = `
+                        <p><strong>Статус:</strong> <span class="status-error">Ошибка подключения</span></p>
+                        <p><strong>Ошибка:</strong> Backend недоступен (${error.message})</p>
+                    `;
+                }
+                
+                const tableBody = document.querySelector('#banks-table tbody');
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #f44336;">
+                                Ошибка подключения к Backend. Убедитесь что сервер запущен на порту 8004.
+                            </td>
+                        </tr>
+                    `;
+                }
+                
+                alert('Ошибка подключения к Backend. Убедитесь что сервер запущен на порту 8004.');
+            }
+        }
+        
+        function updatePlaidStatus(statusData) {
+            const statusElement = document.getElementById('plaid-status');
+            if (statusElement) {
+                const statusClass = statusData.status === 'ok' ? 'status-active' : 'status-error';
+                const statusText = statusData.status === 'ok' ? 'Активен' : 'Ошибка';
+                
+                statusElement.innerHTML = `
+                    <p><strong>Статус:</strong> <span class="${statusClass}">${statusText}</span></p>
+                    <p><strong>Использовано:</strong> ${statusData.used}/${statusData.limit} запросов (${statusData.percentage}%)</p>
+                `;
+            }
+        }
+        
+        function updateBanksTable(banks) {
+            const tableBody = document.querySelector('#banks-table tbody');
+            if (!tableBody) return;
+            
+            // Очищаем таблицу
+            tableBody.innerHTML = '';
+            
+            // Добавляем банки с токенами
+            banks.forEach(bank => {
+                if (bank.has_token) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${bank.name}</td>
+                        <td>Основной счет</td>
+                        <td>${bank.balance || '0.00'}</td>
+                        <td>${bank.currency || 'CAD'}</td>
+                        <td><span class="status-active">Активен</span></td>
+                        <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+            
+            // Если нет банков, показываем сообщение
+            if (banks.filter(bank => bank.has_token).length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #666;">
+                            Нет подключенных банков. Нажмите кнопку "+" для добавления банка.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        async function updateBank(bankCode) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/banks/${bankCode}/accounts`);
+                if (response.ok) {
+                    const accounts = await response.json();
+                    console.log(`Обновлены счета для ${bankCode}:`, accounts);
+                    alert(`Счета для ${bankCode} обновлены`);
+                } else {
+                    throw new Error('Ошибка обновления счетов');
+                }
+            } catch (error) {
+                console.error(`Ошибка обновления банка ${bankCode}:`, error);
+                alert(`Ошибка обновления банка ${bankCode}`);
+            }
         }
         
         // Загрузка данных при открытии страницы
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Plaid Management страница загружена');
+            
+            // Загружаем начальные данные
+            refreshData();
         });
     </script>
 </body>
