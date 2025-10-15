@@ -237,7 +237,7 @@
                     const banksData = await banksResponse.json();
                     console.log('Загружены банки:', banksData);
                     console.log('Количество банков:', banksData.length);
-                    updateBanksTable(banksData);
+                    await updateBanksTable(banksData);
                 } else {
                     console.error('Ошибка HTTP:', banksResponse.status, banksResponse.statusText);
                     throw new Error(`HTTP ${banksResponse.status}`);
@@ -285,7 +285,7 @@
             }
         }
         
-        function updateBanksTable(banks) {
+        async function updateBanksTable(banks) {
             console.log('updateBanksTable вызвана с банками:', banks);
             const tableBody = document.querySelector('#banks-table tbody');
             console.log('Найден tableBody:', tableBody);
