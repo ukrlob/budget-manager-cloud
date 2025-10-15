@@ -209,12 +209,17 @@
                 }
                 
                 // Обновляем список банков
+                console.log('Отправляем запрос к /api/banks...');
                 const banksResponse = await fetch(`${API_BASE_URL}/api/banks`);
+                console.log('Ответ от /api/banks:', banksResponse.status, banksResponse.ok);
+                
                 if (banksResponse.ok) {
                     const banksData = await banksResponse.json();
-                    console.log('Загружены банки:', banksData.banks);
+                    console.log('Загружены банки:', banksData);
+                    console.log('Количество банков:', banksData.banks ? banksData.banks.length : 'undefined');
                     updateBanksTable(banksData.banks);
                 } else {
+                    console.error('Ошибка HTTP:', banksResponse.status, banksResponse.statusText);
                     throw new Error(`HTTP ${banksResponse.status}`);
                 }
                 
