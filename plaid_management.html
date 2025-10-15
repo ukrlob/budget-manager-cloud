@@ -212,6 +212,7 @@
                 const banksResponse = await fetch(`${API_BASE_URL}/api/banks`);
                 if (banksResponse.ok) {
                     const banksData = await banksResponse.json();
+                    console.log('Загружены банки:', banksData.banks);
                     updateBanksTable(banksData.banks);
                 } else {
                     throw new Error(`HTTP ${banksResponse.status}`);
@@ -260,30 +261,31 @@
         }
         
         function updateBanksTable(banks) {
+            console.log('updateBanksTable вызвана с банками:', banks);
             const tableBody = document.querySelector('#banks-table tbody');
+            console.log('Найден tableBody:', tableBody);
             if (!tableBody) return;
             
             // Очищаем таблицу
             tableBody.innerHTML = '';
             
-            // Добавляем банки с токенами
+            // Добавляем все банки (показываем все, так как API не возвращает has_token)
             banks.forEach(bank => {
-                if (bank.has_token) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${bank.name}</td>
-                        <td>Основной счет</td>
-                        <td>${bank.balance || '0.00'}</td>
-                        <td>${bank.currency || 'CAD'}</td>
-                        <td><span class="status-active">Активен</span></td>
-                        <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
-                    `;
-                    tableBody.appendChild(row);
-                }
+                console.log('Добавляем банк:', bank);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${bank.name}</td>
+                    <td>Основной счет</td>
+                    <td>0.00</td>
+                    <td>${bank.currency}</td>
+                    <td><span class="status-active">Активен</span></td>
+                    <td><button class="btn" onclick="updateBank('${bank.name}')">Обновить</button></td>
+                `;
+                tableBody.appendChild(row);
             });
             
             // Если нет банков, показываем сообщение
-            if (banks.filter(bank => bank.has_token).length === 0) {
+            if (banks.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
                         <td colspan="6" style="text-align: center; color: #666;">
