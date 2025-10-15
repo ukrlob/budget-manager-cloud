@@ -37,6 +37,7 @@ class BankAccount(BaseModel):
     credit_limit: Optional[float] = None
     used_credit: Optional[float] = None
     available_balance: Optional[float] = None
+    last_updated: Optional[str] = None  # Время последнего обновления из Plaid
 
 class BankTransaction(BaseModel):
     id: str
@@ -204,6 +205,9 @@ class BankManager:
                         if hasattr(account.get('subtype'), 'value'):
                             account_subtype = account.get('subtype').value
                         
+                        from datetime import datetime
+                        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        
                         result.append(BankAccount(
                             id=account.get('id', ''),
                             name=account.get('name', 'Unknown Account'),
@@ -215,7 +219,8 @@ class BankManager:
                             balance_type=account.get('balance_type'),
                             credit_limit=account.get('credit_limit'),
                             used_credit=account.get('used_credit'),
-                            available_balance=account.get('available_balance')
+                            available_balance=account.get('available_balance'),
+                            last_updated=current_time  # Время получения данных из Plaid
                         ))
                     except Exception as account_error:
                         logger.error(f"Ошибка обработки счета: {account_error}")

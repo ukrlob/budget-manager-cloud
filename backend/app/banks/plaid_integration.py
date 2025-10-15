@@ -127,31 +127,15 @@ class PlaidBankConnector(BankConnector):
     
     async def get_accounts(self) -> List[Dict[str, Any]]:
         """
-        Получение счетов с персистентным кэшированием
+        Получение счетов БЕЗ кэширования - всегда актуальные данные из Plaid
         """
         try:
             bank_code = self.credentials.get('bank_code', 'UNKNOWN')
             
-            # Проверяем кэш
-            cached_data = await self.cache_service.get_cached_data(
-                data_type='accounts',
-                bank_code=bank_code,
-                item_id=self.credentials.get('item_id')
-            )
-            
-            if cached_data and cached_data.get('data'):
-                logger.info(f"Счета получены из кэша для банка {bank_code}")
-                return cached_data['data']
-            
             # Проверяем лимиты
             if not await self._check_rate_limit():
-                logger.warning("Используем кэшированные данные из-за лимитов")
-                fallback_data = await self.cache_service.get_cached_data(
-                    data_type='accounts_fallback',
-                    bank_code=bank_code,
-                    item_id=self.credentials.get('item_id')
-                )
-                return fallback_data.get('data', []) if fallback_data else []
+                logger.warning("Превышен лимит запросов к Plaid API")
+                raise DataError("Превышен лимит запросов к Plaid API")
             
             # Получаем access_token из credentials
             access_token = self.credentials.get('access_token')
@@ -209,34 +193,14 @@ class PlaidBankConnector(BankConnector):
                         'balance_type': 'deposit'  # Тип баланса для фронтенда
                     })
             
-            # Сохраняем в кэш
-            await self.cache_service.cache_data(
-                data_type='accounts',
-                data=accounts,
-                bank_code=bank_code,
-                item_id=self.credentials.get('item_id')
-            )
-            
-            # Сохраняем fallback данные
-            await self.cache_service.cache_data(
-                data_type='accounts_fallback',
-                data=accounts,
-                bank_code=bank_code,
-                item_id=self.credentials.get('item_id')
-            )
-            
-            logger.info(f"Получено {len(accounts)} счетов через Plaid")
+            # НЕ сохраняем в кэш - всегда актуальные данные!
+            logger.info(f"Получено {len(accounts)} счетов через Plaid (актуальные данные)")
             return accounts
             
         except Exception as e:
             logger.error(f"Ошибка получения счетов Plaid: {e}")
-            # Возвращаем кэшированные данные в случае ошибки
-            fallback_data = await self.cache_service.get_cached_data(
-                data_type='accounts_fallback',
-                bank_code=self.credentials.get('bank_code', 'UNKNOWN'),
-                item_id=self.credentials.get('item_id')
-            )
-            return fallback_data.get('data', []) if fallback_data else []
+            # НЕ возвращаем кэшированные данные - показываем ошибку
+            raise DataError(f"Не удалось получить актуальные данные счетов: {e}")
     
     async def get_transactions(self, account_id: str, start_date: Optional[datetime] = None, end_date: Optional[datetime] = None) -> List[Dict[str, Any]]:
         """
