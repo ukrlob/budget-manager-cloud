@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plaid Management - Budget Manager Cloud</title>
+    
+    <!-- Plaid Link SDK -->
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -205,21 +209,79 @@
         // Конфигурация API
         const API_BASE_URL = 'http://127.0.0.1:8004';
         
-        // Простые функции для работы с Plaid
+        // Переменная для хранения экземпляра Plaid Link
+        let plaidLink = null;
+        
+        // Функция для подключения нового банка через Plaid Link
         async function connectNewBank() {
             try {
+                console.log('Инициализация Plaid Link...');
+                
                 // Получаем конфигурацию Plaid Link
                 const response = await fetch(`${API_BASE_URL}/api/plaid/link/config`);
-                const config = await response.json();
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
                 
+                const config = await response.json();
                 console.log('Plaid Link конфигурация:', config);
                 
-                // Здесь будет интеграция с Plaid Link SDK
-                alert('Функция подключения нового банка будет реализована с Plaid Link SDK');
+                // Создаем экземпляр Plaid Link
+                plaidLink = Plaid.create({
+                    token: config.link_token,
+                    onSuccess: async (public_token, metadata) => {
+                        console.log('Plaid Link успешно завершен:', { public_token, metadata });
+                        
+                        try {
+                            // Обмениваем public_token на access_token
+                            const exchangeResponse = await fetch(`${API_BASE_URL}/api/plaid/link/exchange`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    public_token: public_token,
+                                    institution_id: metadata.institution.institution_id,
+                                    institution_name: metadata.institution.name
+                                })
+                            });
+                            
+                            if (!exchangeResponse.ok) {
+                                throw new Error(`Ошибка обмена токена: ${exchangeResponse.status}`);
+                            }
+                            
+                            const exchangeResult = await exchangeResponse.json();
+                            console.log('Токен успешно обменян:', exchangeResult);
+                            
+                            // Показываем успешное сообщение
+                            alert(`Банк "${metadata.institution.name}" успешно подключен!`);
+                            
+                            // Обновляем список банков
+                            await refreshData();
+                            
+                        } catch (exchangeError) {
+                            console.error('Ошибка обмена токена:', exchangeError);
+                            alert('Ошибка при сохранении подключения банка');
+                        }
+                    },
+                    onExit: (err, metadata) => {
+                        console.log('Plaid Link закрыт:', { err, metadata });
+                        if (err) {
+                            console.error('Ошибка Plaid Link:', err);
+                            alert('Ошибка подключения банка: ' + err.error_message);
+                        }
+                    },
+                    onEvent: (eventName, metadata) => {
+                        console.log('Plaid Link событие:', eventName, metadata);
+                    }
+                });
+                
+                // Открываем Plaid Link
+                plaidLink.open();
                 
             } catch (error) {
-                console.error('Ошибка получения конфигурации Plaid:', error);
-                alert('Ошибка подключения к Plaid API');
+                console.error('Ошибка инициализации Plaid Link:', error);
+                alert('Ошибка подключения к Plaid API: ' + error.message);
             }
         }
         
