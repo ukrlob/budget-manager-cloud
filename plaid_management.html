@@ -212,16 +212,16 @@
                     throw new Error(`HTTP ${statusResponse.status}`);
                 }
                 
-                // Обновляем список банков
-                console.log('Отправляем запрос к /api/banks...');
-                const banksResponse = await fetch(`${API_BASE_URL}/api/banks`);
-                console.log('Ответ от /api/banks:', banksResponse.status, banksResponse.ok);
+                // Обновляем список банков (используем правильный endpoint)
+                console.log('Отправляем запрос к /api/banks/status...');
+                const banksResponse = await fetch(`${API_BASE_URL}/api/banks/status`);
+                console.log('Ответ от /api/banks/status:', banksResponse.status, banksResponse.ok);
                 
                 if (banksResponse.ok) {
                     const banksData = await banksResponse.json();
                     console.log('Загружены банки:', banksData);
-                    console.log('Количество банков:', banksData.banks ? banksData.banks.length : 'undefined');
-                    updateBanksTable(banksData.banks);
+                    console.log('Количество банков:', banksData.length);
+                    updateBanksTable(banksData);
                 } else {
                     console.error('Ошибка HTTP:', banksResponse.status, banksResponse.statusText);
                     throw new Error(`HTTP ${banksResponse.status}`);
@@ -280,17 +280,20 @@
             tableBody.innerHTML = '';
             console.log('Таблица очищена, новое содержимое:', tableBody.innerHTML);
             
-            // Добавляем все банки (показываем все, так как API не возвращает has_token)
-            banks.forEach((bank, index) => {
+            // Добавляем только банки со статусом "working" (подключенные через Plaid)
+            const workingBanks = banks.filter(bank => bank.status === 'working');
+            console.log('Банки со статусом working:', workingBanks);
+            
+            workingBanks.forEach((bank, index) => {
                 console.log(`Добавляем банк ${index + 1}:`, bank);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${bank.name}</td>
-                    <td>Основной счет</td>
-                    <td>0.00</td>
-                    <td>${bank.currency}</td>
-                    <td><span class="status-active">Активен</span></td>
-                    <td><button class="btn" onclick="updateBank('${bank.name}')">Обновить</button></td>
+                    <td>${bank.accounts_count} счетов</td>
+                    <td>Обновлено</td>
+                    <td>CAD</td>
+                    <td><span class="status-active">${bank.status}</span></td>
+                    <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
                 `;
                 tableBody.appendChild(row);
                 console.log(`Банк ${index + 1} добавлен, строк в таблице:`, tableBody.children.length);
@@ -298,8 +301,8 @@
             
             console.log('Все банки добавлены, финальное содержимое tbody:', tableBody.innerHTML);
             
-            // Если нет банков, показываем сообщение
-            if (banks.length === 0) {
+            // Если нет подключенных банков, показываем сообщение
+            if (workingBanks.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
                         <td colspan="6" style="text-align: center; color: #666;">
