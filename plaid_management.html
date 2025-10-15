@@ -156,9 +156,16 @@
             <h2>Plaid API Status</h2>
             <p>Подключение банков через официальный Plaid API</p>
             
-            <div style="margin-bottom: 20px;">
-                <button class="btn btn-success" onclick="connectNewBank()">+ Подключить новый банк</button>
-                <button class="btn" onclick="refreshData()">Обновить данные</button>
+            <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+                <h4 style="margin-top: 0; color: #495057;">Действия:</h4>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button class="btn btn-success" onclick="connectNewBank()">+ Подключить новый банк</button>
+                    <button class="btn" onclick="refreshData()">🔄 Обновить данные</button>
+                </div>
+                <div style="font-size: 14px; color: #6c757d;">
+                    <strong>Подключить новый банк:</strong> Открывает Plaid Link для добавления нового банка<br>
+                    <strong>Обновить данные:</strong> Запрашивает актуальные балансы всех подключенных банков из Plaid API
+                </div>
             </div>
             
             <div id="plaid-status">
@@ -177,7 +184,7 @@
                         <th>Баланс</th>
                         <th>Валюта</th>
                         <th>Статус</th>
-                        <th>Действия</th>
+                        <th>Статус обновления</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -336,10 +343,11 @@
                                         <td>${account.currency || 'CAD'}</td>
                                         <td rowspan="${accounts.length}">
                                             <span class="status-active">${bank.status}</span><br>
-                                            <small>Обновлено: ${lastUpdate}</small>
+                                            <small>Обновлено: ${lastUpdate}</small><br>
+                                            <small style="color: #28a745;">✓ Актуальные данные</small>
                                         </td>
                                         <td rowspan="${accounts.length}">
-                                            <button class="btn" onclick="updateBank('${bank.code}')">Обновить</button>
+                                            <small style="color: #6c757d;">Обновляется автоматически</small>
                                         </td>
                                     `;
                                 } else {
@@ -361,8 +369,13 @@
                                 <td>Нет счетов</td>
                                 <td>0.00</td>
                                 <td>CAD</td>
-                                <td><span class="status-active">${bank.status}</span></td>
-                                <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
+                                <td>
+                                    <span class="status-active">${bank.status}</span><br>
+                                    <small style="color: #28a745;">✓ Актуальные данные</small>
+                                </td>
+                                <td>
+                                    <small style="color: #6c757d;">Обновляется автоматически</small>
+                                </td>
                             `;
                             tableBody.appendChild(row);
                         }
@@ -376,8 +389,13 @@
                         <td>Ошибка загрузки</td>
                         <td>0.00</td>
                         <td>CAD</td>
-                        <td><span class="status-error">Ошибка</span></td>
-                        <td><button class="btn" onclick="updateBank('${bank.code}')">Обновить</button></td>
+                        <td>
+                            <span class="status-error">Ошибка</span><br>
+                            <small style="color: #dc3545;">✗ Plaid недоступен</small>
+                        </td>
+                        <td>
+                            <small style="color: #dc3545;">Требует внимания</small>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 }
