@@ -1,0 +1,38 @@
+{
+  "cache_key": "transactions_WALMART_item_oJLdMdqx7rIkz5ymL90ECY3QO0PpxLUBnnoRp_1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY_end_date_2025-10-15_start_date_2025-09-15",
+  "data_type": "transactions",
+  "bank_code": "WALMART",
+  "account_id": "1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
+  "data": [
+    {
+      "id": "oJLdMdqx7rIkz5ymL90qhbVdXe7pyBtOg8ng5",
+      "amount": 28.61,
+      "name": "CURSOR, AI POWERED IDE: Approved Shopping Purchase",
+      "date": "2025-09-29",
+      "category": null,
+      "account_id": "1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
+      "currency": "CAD"
+    },
+    {
+      "id": "6arqjq8R3eTq6OQLAYgqhq4LMVY3bviy3DeM5",
+      "amount": -94.46,
+      "name": "PAYMENT - THANK YOU: Approved Miscellaneous Payment",
+      "date": "2025-09-23",
+      "category": null,
+      "account_id": "1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
+      "currency": "CAD"
+    },
+    {
+      "id": "NLvOeOgPE3FM6njyLkv8Umz4Q4a3BYFx0Zre1",
+      "amount": 94.46,
+      "name": "Walmart",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "1v46K6kQDnf64Eor8YjDtkxejwKvMXIYJ31yY",
+      "currency": "CAD"
+    }
+  ],
+  "created_at": "2025-10-16T01:40:05.194399",
+  "expires_at": "2025-10-16T02:10:05.194310",
+  "last_updated": "2025-10-16T01:40:05.194462"
+}

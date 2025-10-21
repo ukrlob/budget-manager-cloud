@@ -1,9 +1,7 @@
 # Банковские интеграции
 from .base import BankConnector
-from .rbc import RBCBank
-from .bmo import BMOBank
-from .interactive_brokers import InteractiveBrokers
+from .plaid_integration import PlaidBankConnector
 
-__all__ = ['BankConnector', 'RBCBank', 'BMOBank', 'InteractiveBrokers']
+__all__ = ['BankConnector', 'PlaidBankConnector']
 
 

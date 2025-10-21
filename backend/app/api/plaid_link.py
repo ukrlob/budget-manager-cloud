@@ -117,6 +117,18 @@ async def exchange_public_token(request: PlaidLinkTokenRequest):
         
         response = client.item_public_token_exchange(exchange_request)
         
+        # Save bank to BankManager and database
+        from ..api.bank_management import bank_manager
+
+        await bank_manager.add_bank(
+            name=request.institution_name,
+            access_token=response['access_token'],
+            plaid_institution_id=request.institution_id,
+            item_id=response['item_id']
+        )
+        
+        print(f"Bank {request.institution_name} ({request.institution_id}) successfully added to BankManager and DB")
+        
         return PlaidLinkTokenResponse(
             access_token=response['access_token'],
             item_id=response['item_id'],

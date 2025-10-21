@@ -1,0 +1,83 @@
+{
+  "cache_key": "transactions_fallback_WRMC_item_VmManpNRo9hBY6P5Bjo6SpLBee4w8EIrkVPOy_6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+  "data_type": "transactions_fallback",
+  "bank_code": "WRMC",
+  "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+  "data": [
+    {
+      "id": "vBOv8bzkA0TK9861Kxg8cPkNxpw7kdujeE7m0",
+      "amount": -157.76,
+      "name": "PAYMENT - THANK YOU: Approved Miscellaneous Payment",
+      "date": "2025-10-14",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "qLo38bzOBvTPnXvdP0yXFvmYqQkemniv0QrJ7",
+      "amount": 1.7,
+      "name": "BALANCE INS 866-995-8705: Approved Miscellaneous Purchase",
+      "date": "2025-10-08",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "BD3nPXrY48SPZMQLPDoMF4xoZynVxeikb1j9z",
+      "amount": 7.67,
+      "name": "Walmart",
+      "date": "2025-10-07",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "3o0JBX61L8HOqEbAOZaEc1y8O6KwyBsBga0Ke",
+      "amount": 148.39,
+      "name": "Walmart",
+      "date": "2025-10-07",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "yKRr8bz5j9uvaPxBvZ8PsqBYdQ0nBVtxBmoOX",
+      "amount": -28.24,
+      "name": "PAYMENT - THANK YOU: Approved Miscellaneous Payment",
+      "date": "2025-10-03",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "KAQB0YbM8atjzDgLjVMDfAvLbQoZv6I7orvQQ",
+      "amount": 28.61,
+      "name": "CURSOR, AI POWERED IDE: Approved Shopping Purchase",
+      "date": "2025-09-29",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "kJgLAOmR6nTzPDd6z3vDSPEJ9k17EXuBeQDRo",
+      "amount": -94.46,
+      "name": "PAYMENT - THANK YOU: Approved Miscellaneous Payment",
+      "date": "2025-09-23",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    },
+    {
+      "id": "ALKQ1XjnrETYE4vmYVz4Tq56kRVM5Zt04KB6w",
+      "amount": 94.46,
+      "name": "Walmart",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "6ob5KX1ZPmHbJqXjbRoqcPy9j8V3BYsyexv7x",
+      "currency": "CAD"
+    }
+  ],
+  "created_at": "2025-10-21T17:02:54.182430",
+  "expires_at": "2025-10-21T17:32:54.182368",
+  "last_updated": "2025-10-21T17:02:54.182445"
+}

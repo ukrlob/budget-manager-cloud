@@ -150,35 +150,32 @@
     <div class="container">
         <div class="nav">
             <a href="index.html">Главная</a>
-            <a href="banks.html">Банки</a>
+            <a href="plaid_management.html" class="active">Банки</a>
             <a href="transactions.html">Транзакции</a>
             <a href="advisor.html">Финконсультант</a>
-            <a href="plaid_management.html" class="active">Plaid</a>
+        </div>
+        
+        <h1>Управление Plaid</h1>
+        <p>Подключение банков через официальный Plaid API</p>
+
+        <div class="card">
+            <h2>Действия:</h2>
+            <div class="actions">
+                <button class="btn btn-add" onclick="connectNewBank()">+ Подключить новый банк</button>
+                <button class="btn" onclick="refreshData()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 5px;">
+                        <path d="M12 4V20M4 12H20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Обновить данные
+                </button>
+            </div>
+            <p class="description">
+                <b>Подключить новый банк:</b> Открывает Plaid Link для добавления нового банка.<br>
+                <b>Обновить данные:</b> Запрашивает актуальные балансы всех подключенных банков из Plaid API.
+            </p>
         </div>
 
-        <div class="section">
-            <h2>Plaid API Status</h2>
-            <p>Подключение банков через официальный Plaid API</p>
-            
-            <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
-                <h4 style="margin-top: 0; color: #495057;">Действия:</h4>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
-                    <button class="btn btn-success" onclick="connectNewBank()">+ Подключить новый банк</button>
-                    <button class="btn" onclick="refreshData()">🔄 Обновить данные</button>
-                </div>
-                <div style="font-size: 14px; color: #6c757d;">
-                    <strong>Подключить новый банк:</strong> Открывает Plaid Link для добавления нового банка<br>
-                    <strong>Обновить данные:</strong> Запрашивает актуальные балансы всех подключенных банков из Plaid API
-                </div>
-            </div>
-            
-            <div id="plaid-status">
-                <p><strong>Статус:</strong> <span class="status-active">Загрузка...</span></p>
-                <p><strong>Использовано:</strong> Загрузка...</p>
-            </div>
-        </div>
-
-        <div class="section">
+        <div class="card">
             <h2>Подключенные банки</h2>
             <table id="banks-table">
                 <thead>
@@ -207,7 +204,7 @@
 
     <script>
         // Конфигурация API
-        const API_BASE_URL = 'https://budget-manager-cloud-527220375721.us-central1.run.app';
+        const API_BASE_URL = 'http://127.0.0.1:8004';
         
         // Переменная для хранения экземпляра Plaid Link
         let plaidLink = null;
@@ -287,56 +284,60 @@
         
         async function refreshData() {
             try {
-                // Обновляем статус Plaid API
-                const statusResponse = await fetch(`${API_BASE_URL}/api/banks/plaid/usage`);
-                if (statusResponse.ok) {
-                    const statusData = await statusResponse.json();
-                    updatePlaidStatus(statusData);
-                } else {
-                    throw new Error(`HTTP ${statusResponse.status}`);
-                }
+                console.log('Отправляем запрос на принудительное обновление данных...');
                 
-                // Обновляем список банков (используем правильный endpoint)
+                // Показываем индикатор загрузки
+                const tableBody = document.querySelector('#banks-table tbody');
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #666;">
+                                <div class="spinner"></div>
+                                Обновляем данные от Plaid... Это может занять до минуты...
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                const refreshResponse = await fetch(`${API_BASE_URL}/api/banks/plaid/refresh`, {
+                    method: 'POST',
+                });
+
+                if (!refreshResponse.ok) {
+                    throw new Error(`HTTP ${refreshResponse.status}: ${await refreshResponse.text()}`);
+                }
+
+                const refreshResult = await refreshResponse.json();
+                console.log('Результат принудительного обновления:', refreshResult);
+
+                // После успешного обновления, запрашиваем новый статус банков
                 console.log('Отправляем запрос к /api/banks/status...');
                 const banksResponse = await fetch(`${API_BASE_URL}/api/banks/status`);
-                console.log('Ответ от /api/banks/status:', banksResponse.status, banksResponse.ok);
                 
                 if (banksResponse.ok) {
                     const banksData = await banksResponse.json();
-                    console.log('Загружены банки:', banksData);
-                    console.log('Количество банков:', banksData.length);
+                    console.log('Загружены обновленные банки:', banksData);
                     await updateBanksTable(banksData);
                 } else {
-                    console.error('Ошибка HTTP:', banksResponse.status, banksResponse.statusText);
-                    throw new Error(`HTTP ${banksResponse.status}`);
+                    throw new Error(`HTTP ${banksResponse.status} при получении статуса банков`);
                 }
                 
-                console.log('Данные обновлены');
+                console.log('Данные успешно обновлены');
                 
             } catch (error) {
                 console.error('Ошибка обновления данных:', error);
-                
-                // Показываем ошибку в интерфейсе
-                const statusElement = document.getElementById('plaid-status');
-                if (statusElement) {
-                    statusElement.innerHTML = `
-                        <p><strong>Статус:</strong> <span class="status-error">Ошибка подключения</span></p>
-                        <p><strong>Ошибка:</strong> Backend недоступен (${error.message})</p>
-                    `;
-                }
                 
                 const tableBody = document.querySelector('#banks-table tbody');
                 if (tableBody) {
                     tableBody.innerHTML = `
                         <tr>
                             <td colspan="5" style="text-align: center; color: #f44336;">
-                                Ошибка подключения к Backend. Убедитесь что сервер запущен на порту 8004.
+                                Ошибка при обновлении данных. Подробности в консоли.
                             </td>
                         </tr>
                     `;
                 }
-                
-                alert('Ошибка подключения к Backend. Убедитесь что сервер запущен на порту 8004.');
+                alert('Ошибка при обновлении данных: ' + error.message);
             }
         }
         

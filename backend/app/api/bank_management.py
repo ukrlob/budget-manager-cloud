@@ -2,7 +2,7 @@
 API для управления банками через веб-интерфейс
 """
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import asyncio
@@ -11,6 +11,8 @@ from datetime import datetime, date, timedelta
 from ..banks.plaid_integration import PlaidBankConnector
 import os
 from dotenv import load_dotenv
+from ..services.bank_service import BankService, BankCreate
+from ..models.bank import Bank, BankCreate, BankBase
 
 load_dotenv()
 
@@ -56,45 +58,61 @@ class BankManager:
     """Менеджер банков для веб-интерфейса"""
     
     def __init__(self):
-        self.banks = {
-            "RBC": {
-                "name": "Royal Bank of Canada",
-                "access_token": os.getenv("RBC_ACCESS_TOKEN"),
-                "item_id": os.getenv("RBC_ITEM_ID"),
-            },
-            "BMO": {
-                "name": "Bank of Montreal", 
-                "access_token": os.getenv("BMO_ACCESS_TOKEN"),
-                "item_id": os.getenv("BMO_ITEM_ID"),
-            },
-            "WALMART": {
-                "name": "Walmart Rewards",
-                "access_token": os.getenv("WALMART_ACCESS_TOKEN"),
-                "item_id": os.getenv("WALMART_ITEM_ID"),
-            },
-            "CIBC": {
-                "name": "Canadian Imperial Bank of Commerce",
-                "access_token": None,  # CIBC не подключен
-                "item_id": None,
-            }
-        }
-        
+        self.bank_service = BankService()
+        self.banks: Dict[str, Dict[str, Any]] = {}
         self.plaid_credentials = {
             "client_id": os.getenv("PLAID_CLIENT_ID"),
             "secret": os.getenv("PLAID_SECRET"),
             "environment": os.getenv("PLAID_ENVIRONMENT", "production")
         }
+        # Load banks from DB at startup
+        logger.info("Scheduling loading banks from DB...")
+        asyncio.create_task(self._load_banks_from_db())
+
+    async def _load_banks_from_db(self):
+        """Load banks from the database"""
+        logger.info("Loading banks from database...")
+        try:
+            db_banks = await self.bank_service.get_all_banks()
+            for bank in db_banks:
+                # Use a generated short code as the key for in-memory cache
+                if bank.plaid_institution_id:
+                    # Create a short, readable code from the name
+                    short_code = "".join(filter(str.isupper, bank.name))
+                    if not short_code:
+                        short_code = bank.name.split(' ')[0].upper()
+
+                    self.banks[short_code] = {
+                        "name": bank.name,
+                        "access_token": bank.access_token,
+                        "item_id": bank.item_id,
+                        "plaid_institution_id": bank.plaid_institution_id
+                    }
+            logger.info(f"Loaded {len(self.banks)} banks from database.")
+        except Exception as e:
+            logger.error(f"Error loading banks from database: {e}")
+
+    async def _save_banks_to_cache(self):
+        """Сохраняем банки в кэш"""
+        try:
+            await self.cache_service.cache_data("banks", self.banks)
+            logger.info("Банки сохранены в кэш")
+        except Exception as e:
+            logger.warning(f"Не удалось сохранить банки в кэш: {e}")
     
-    async def check_bank_status(self, bank_code: str) -> BankStatus:
-        """Проверяем статус конкретного банка"""
-        if bank_code not in self.banks:
-            raise HTTPException(status_code=404, detail="Bank not found")
+    async def check_bank_status(self, bank_key: str) -> BankStatus:
+        """Проверяем статус конкретного банка по ключу (plaid_institution_id)"""
+        if bank_key not in self.banks:
+            # This might happen if banks are not loaded yet, let's try loading them.
+            await self._load_banks_from_db()
+            if bank_key not in self.banks:
+                 raise HTTPException(status_code=404, detail=f"Bank with key {bank_key} not found")
         
-        bank_info = self.banks[bank_code]
+        bank_info = self.banks[bank_key]
         
         if not bank_info['access_token']:
             return BankStatus(
-                code=bank_code,
+                code=bank_key,
                 name=bank_info['name'],
                 status="no_token",
                 accounts_count=0,
@@ -108,7 +126,7 @@ class BankManager:
                 "access_token": bank_info['access_token'],
                 "item_id": bank_info['item_id'],
                 "bank_name": bank_info['name'],
-                "bank_code": bank_code
+                "bank_code": bank_key
             }
             
             connector = PlaidBankConnector(credentials)
@@ -132,7 +150,7 @@ class BankManager:
                         pass
                 
                 return BankStatus(
-                    code=bank_code,
+                    code=bank_key,
                     name=bank_info['name'],
                     status="working",
                     accounts_count=accounts_count,
@@ -141,7 +159,7 @@ class BankManager:
                 )
             else:
                 return BankStatus(
-                    code=bank_code,
+                    code=bank_key,
                     name=bank_info['name'],
                     status="connection_failed",
                     accounts_count=0,
@@ -151,7 +169,7 @@ class BankManager:
                 
         except Exception as e:
             return BankStatus(
-                code=bank_code,
+                code=bank_key,
                 name=bank_info['name'],
                 status="error",
                 accounts_count=0,
@@ -159,12 +177,12 @@ class BankManager:
                 error_message=str(e)
             )
     
-    async def get_bank_accounts(self, bank_code: str) -> List[BankAccount]:
+    async def get_bank_accounts(self, bank_key: str) -> List[BankAccount]:
         """Получаем счета банка"""
-        if bank_code not in self.banks:
+        if bank_key not in self.banks:
             raise HTTPException(status_code=404, detail="Bank not found")
         
-        bank_info = self.banks[bank_code]
+        bank_info = self.banks[bank_key]
         
         if not bank_info['access_token']:
             return []  # Возвращаем пустой список вместо ошибки
@@ -175,7 +193,7 @@ class BankManager:
                 "access_token": bank_info['access_token'],
                 "item_id": bank_info['item_id'],
                 "bank_name": bank_info['name'],
-                "bank_code": bank_code
+                "bank_code": bank_key
             }
             
             connector = PlaidBankConnector(credentials)
@@ -184,7 +202,7 @@ class BankManager:
                 accounts = await connector.get_accounts()
                 
                 # Отладочная информация
-                logger.info(f"Получено счетов для {bank_code}: {len(accounts)}")
+                logger.info(f"Получено счетов для {bank_key}: {len(accounts)}")
                 for i, account in enumerate(accounts):
                     logger.info(f"Счет {i+1}: {account.get('name', 'N/A')} ({account.get('type', 'N/A')})")
                 
@@ -205,7 +223,6 @@ class BankManager:
                         if hasattr(account.get('subtype'), 'value'):
                             account_subtype = account.get('subtype').value
                         
-                        from datetime import datetime
                         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                         
                         result.append(BankAccount(
@@ -234,15 +251,15 @@ class BankManager:
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Ошибка получения счетов для {bank_code}: {str(e)}")
+            logger.error(f"Ошибка получения счетов для {bank_key}: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Ошибка получения счетов: {str(e)}")
     
-    async def get_bank_transactions(self, bank_code: str, account_id: str, days: int = 30) -> List[BankTransaction]:
+    async def get_bank_transactions(self, bank_key: str, account_id: str, days: int = 30) -> List[BankTransaction]:
         """Получаем транзакции банка"""
-        if bank_code not in self.banks:
+        if bank_key not in self.banks:
             raise HTTPException(status_code=404, detail="Bank not found")
         
-        bank_info = self.banks[bank_code]
+        bank_info = self.banks[bank_key]
         
         if not bank_info['access_token']:
             raise HTTPException(status_code=400, detail="Access Token не найден")
@@ -253,7 +270,7 @@ class BankManager:
                 "access_token": bank_info['access_token'],
                 "item_id": bank_info['item_id'],
                 "bank_name": bank_info['name'],
-                "bank_code": bank_code
+                "bank_code": bank_key
             }
             
             connector = PlaidBankConnector(credentials)
@@ -280,13 +297,13 @@ class BankManager:
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Ошибка получения транзакций: {str(e)}")
     
-    async def get_transactions_analysis(self, bank_code: str, days: int = 30) -> Dict[str, Any]:
+    async def get_transactions_analysis(self, bank_key: str, days: int = 30) -> Dict[str, Any]:
         """Получаем анализ качества транзакций банка"""
         try:
-            if bank_code not in self.banks:
+            if bank_key not in self.banks:
                 raise HTTPException(status_code=404, detail="Банк не найден")
             
-            bank_info = self.banks[bank_code]
+            bank_info = self.banks[bank_key]
             if not bank_info["access_token"]:
                 raise HTTPException(status_code=400, detail="Access token не найден")
             
@@ -295,7 +312,7 @@ class BankManager:
                 **self.plaid_credentials,
                 'access_token': bank_info["access_token"],
                 'bank_name': bank_info["name"],
-                'bank_code': bank_code
+                'bank_code': bank_key
             })
             
             # Подключаемся
@@ -306,7 +323,7 @@ class BankManager:
             
             # Простая структура анализа с базовыми типами
             analysis = {
-                "bank_code": str(bank_code),
+                "bank_code": str(bank_key),
                 "bank_name": str(bank_info["name"]),
                 "analysis_date": "2024-01-01 12:00:00",
                 "period_days": int(days),
@@ -492,15 +509,35 @@ class BankManager:
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Ошибка анализа транзакций: {str(e)}")
     
-    def add_bank(self, code: str, name: str, access_token: str, plaid_institution_id: str = None, item_id: str = None):
-        """Добавляет новый банк в менеджер"""
-        self.banks[code] = {
-            "name": name,
-            "access_token": access_token,
-            "item_id": item_id,
-            "plaid_institution_id": plaid_institution_id
-        }
-        logger.info(f"Добавлен банк {name} с кодом {code}")
+    async def add_bank(self, name: str, access_token: str, plaid_institution_id: str, item_id: str):
+        """Adds a new bank and saves it to the database"""
+        
+        bank_create = BankCreate(
+            name=name,
+            country="CA", # Defaulting to CA for now
+            currency="CAD", # Defaulting to CAD for now
+            access_token=access_token,
+            item_id=item_id,
+            plaid_institution_id=plaid_institution_id
+        )
+        
+        created_bank = await self.bank_service.create_bank(bank_create)
+        
+        if created_bank and created_bank.plaid_institution_id:
+            # Create a short, readable code from the name
+            short_code = "".join(filter(str.isupper, name))
+            if not short_code:
+                short_code = name.split(' ')[0].upper()
+
+            self.banks[short_code] = {
+                "name": created_bank.name,
+                "access_token": created_bank.access_token,
+                "item_id": created_bank.item_id,
+                "plaid_institution_id": created_bank.plaid_institution_id
+            }
+            logger.info(f"Bank {name} with institution_id {plaid_institution_id} was added/updated in the database.")
+        else:
+            logger.error(f"Failed to add/update bank {name} in the database.")
 
 # Создаем экземпляр менеджера
 bank_manager = BankManager()
@@ -508,6 +545,9 @@ bank_manager = BankManager()
 @router.get("/status", response_model=List[BankStatus])
 async def get_all_banks_status():
     """Получаем статус всех банков"""
+    # Ensure banks are loaded before checking status
+    if not bank_manager.banks:
+        await bank_manager._load_banks_from_db()
     tasks = [bank_manager.check_bank_status(bank_code) for bank_code in bank_manager.banks.keys()]
     return await asyncio.gather(*tasks)
 
@@ -524,12 +564,12 @@ async def get_bank_accounts(bank_code: str):
 @router.get("/{bank_code}/accounts/{account_id}/transactions", response_model=List[BankTransaction])
 async def get_bank_transactions(bank_code: str, account_id: str, days: int = 30):
     """Получаем транзакции банка"""
-    return await bank_manager.get_bank_transactions(bank_code.upper(), account_id, days)
+    return await bank_manager.get_bank_transactions(bank_code, account_id, days)
 
 @router.get("/{bank_code}/transactions/analysis")
 async def get_transactions_analysis(bank_code: str, days: int = 30):
     """Получаем анализ качества транзакций банка"""
-    return await bank_manager.get_transactions_analysis(bank_code.upper(), days)
+    return await bank_manager.get_transactions_analysis(bank_code, days)
 
 @router.post("/update")
 async def update_bank_token(request: BankUpdateRequest):
@@ -593,7 +633,14 @@ async def get_plaid_usage():
                 break
         
         if not test_bank:
-            return {"error": "Нет банков с токенами для получения информации"}
+            return {
+                "used": 0,
+                "limit": 100,
+                "percentage": 0,
+                "remaining": 100,
+                "reset_date": (datetime.now().replace(day=1) + timedelta(days=32)).replace(day=1).strftime('%Y-%m-%d'),
+                "status": "no_active_banks"
+            }
         
         # Создаем коннектор для получения информации о лимитах
         credentials = {
@@ -619,13 +666,17 @@ async def get_plaid_usage():
             month_key = f"requests_{current_month}"
             used_requests = _global_monthly_cache.get(month_key, 0)
             
+            # Вычисляем дату сброса (первое число следующего месяца)
+            next_month = datetime.now().replace(day=1) + timedelta(days=32)
+            reset_date = next_month.replace(day=1).strftime('%Y-%m-%d')
+            
             return {
                 "used": used_requests,
                 "limit": 100,
                 "percentage": round((used_requests / 100) * 100, 1),
                 "remaining": 100 - used_requests,
-                "reset_date": f"{current_month}-01",
-                "status": "ok"
+                "reset_date": reset_date,
+                "status": "active"
             }
         except Exception as plaid_error:
             logger.error(f"Ошибка получения лимитов Plaid: {plaid_error}")
@@ -643,9 +694,13 @@ async def get_plaid_usage():
         return {"error": str(e)}
 
 @router.post("/plaid/refresh")
-async def refresh_plaid_data():
+async def refresh_plaid_data(request: Request):
     """Принудительное обновление данных Plaid API для всех банков"""
     try:
+        logger.info("="*50)
+        logger.info(">>> ПОЛУЧЕН ЗАПРОС НА ПРИНУДИТЕЛЬНОЕ ОБНОВЛЕНИЕ ДАННЫХ <<<")
+        logger.info("="*50)
+        
         # Получаем все банки с токенами
         banks_with_tokens = []
         for bank_code, bank_info in bank_manager.banks.items():
@@ -653,6 +708,7 @@ async def refresh_plaid_data():
                 banks_with_tokens.append(bank_code)
         
         if not banks_with_tokens:
+            logger.warning(">>> ОБНОВЛЕНИЕ НЕ ВЫПОЛНЕНО: не найдено банков для обновления.")
             return {"error": "Нет банков с токенами для обновления"}
         
         # Обновляем данные для всех банков
@@ -661,6 +717,7 @@ async def refresh_plaid_data():
         
         for bank_code in banks_with_tokens:
             try:
+                logger.info(f"--> Начинаем обновление для банка: {bank_manager.banks[bank_code]['name']} ({bank_code})")
                 # Создаем коннектор для каждого банка
                 credentials = {
                     **bank_manager.plaid_credentials,
@@ -677,6 +734,7 @@ async def refresh_plaid_data():
                     # Принудительно увеличиваем счетчик запросов
                     await connector._increment_request_count()
                     accounts = await connector.get_accounts()
+                    logger.info(f"<-- УСПЕШНО. Получено {len(accounts)} счетов для {bank_manager.banks[bank_code]['name']}.")
                     updated_banks.append({
                         "bank_code": bank_code,
                         "bank_name": bank_manager.banks[bank_code]['name'],
@@ -685,6 +743,7 @@ async def refresh_plaid_data():
                     total_accounts += len(accounts)
                     
             except Exception as bank_error:
+                logger.error(f"!!! ОШИБКА обновления для {bank_manager.banks[bank_code]['name']}: {bank_error}")
                 updated_banks.append({
                     "bank_code": bank_code,
                     "bank_name": bank_manager.banks[bank_code]['name'],
@@ -704,9 +763,11 @@ async def refresh_plaid_data():
             connector = PlaidBankConnector(credentials)
             rate_limit_status = await connector.get_rate_limit_status()
             
+            logger.info(f">>> ОБНОВЛЕНИЕ ЗАВЕРШЕНО. Обновлено банков: {len(updated_banks)}, счетов: {total_accounts}.")
+
             return {
                 "success": True,
-                "message": f"Данные обновлены для {len(updated_banks)} банков",
+                "message": f"ОБНОВЛЕНИЕ ВЕРСИИ 2 ПРОШЛО УСПЕШНО для {len(updated_banks)} банков",
                 "updated_banks": updated_banks,
                 "total_accounts": total_accounts,
                 "used": rate_limit_status['requests_used'],
@@ -715,10 +776,12 @@ async def refresh_plaid_data():
                 "status": "refreshed"
             }
         else:
+            logger.warning(">>> ОБНОВЛЕНИЕ НЕ ВЫПОЛНЕНО: не найдено банков для обновления.")
             return {"error": "Не удалось обновить данные ни для одного банка"}
             
     except Exception as e:
-        return {"error": f"Ошибка обновления: {str(e)}"}
+        logger.critical(f"!!! КРИТИЧЕСКАЯ ОШИБКА в процессе обновления: {e}")
+        raise HTTPException(status_code=500, detail=f"Внутренняя ошибка сервера: {str(e)}")
 
 @router.get("/{bank_code}/transactions/incremental")
 async def get_incremental_transactions(
@@ -822,17 +885,20 @@ async def exchange_public_token(request: TokenExchangeRequest):
         access_token = await plaid_connector.exchange_public_token(request.public_token)
         
         if access_token:
+            item_id_response = await plaid_connector.get_item_id(access_token)
+            item_id = item_id_response.get('item', {}).get('item_id', 'unknown_item_id')
+
             # Сохраняем access_token в банковском менеджере
             institution_name = request.metadata.get('institution', {}).get('name', 'Unknown Bank')
             institution_id = request.metadata.get('institution', {}).get('institution_id', 'unknown')
             
             # Добавляем новый банк в менеджер
             bank_code = institution_id.lower().replace(' ', '_')
-            bank_manager.add_bank(
-                code=bank_code,
+            await bank_manager.add_bank(
                 name=institution_name,
                 access_token=access_token,
-                plaid_institution_id=institution_id
+                plaid_institution_id=institution_id,
+                item_id=item_id
             )
             
             logger.info(f"Банк {institution_name} успешно добавлен с токеном")

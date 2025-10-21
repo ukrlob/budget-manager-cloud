@@ -10,10 +10,25 @@ from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 import logging
 import uvicorn
+import sys
+import asyncio
+
+# --- Windows-specific event loop policy fix for UVicorn reload ---
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+# --- Logging Configuration ---
+# Must be configured BEFORE other modules are imported.
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    stream=sys.stdout,
+)
+# --- End of Logging Configuration ---
 
 # Импорты модулей
 from .models.database import db
-from .services.bank_service import BankService
+# from .services.bank_service import BankService  # Удален во время очистки
 from .services.account_service import AccountService
 from .services.transaction_service import TransactionService
 from .services.ai_service import AIService
@@ -22,7 +37,7 @@ from .api.cache_management import router as cache_management_router
 from .api.plaid_link import router as plaid_link_router
 
 # Настройка логирования
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO) # This is now at the top of the file
 logger = logging.getLogger(__name__)
 
 
@@ -78,7 +93,7 @@ app.include_router(cache_management_router)
 app.include_router(plaid_link_router)
 
 # Инициализация сервисов
-bank_service = BankService()
+# bank_service = BankService()  # Удален во время очистки
 account_service = AccountService()
 transaction_service = TransactionService()
 ai_service = AIService()
@@ -90,6 +105,16 @@ ai_service = AIService()
 async def root():
     """Главная страница"""
     return FileResponse("index.html")
+
+@app.get("/index.html")
+async def index_page():
+    """Явная главная страница для тестирования"""
+    return FileResponse("index.html")
+
+@app.get("/banks.html")
+async def banks_page():
+    """Страница банков для тестирования"""
+    return FileResponse("banks.html")
 
 
 @app.get("/api")
@@ -116,7 +141,7 @@ async def health_check():
             "status": "healthy",
             "database": db_health,
             "services": {
-                "bank_service": "active",
+                # "bank_service": "active",  # Удален во время очистки
                 "account_service": "active", 
                 "transaction_service": "active",
                 "ai_service": "active"
@@ -150,7 +175,8 @@ async def transactions_analysis():
 async def get_banks():
     """Получение списка банков"""
     try:
-        banks = await bank_service.get_all_banks()
+        # banks = await bank_service.get_all_banks()  # Удален во время очистки
+        banks = []  # Временная заглушка
         return {"banks": [bank.dict() for bank in banks]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -162,8 +188,9 @@ async def create_bank(bank_data: dict):
     try:
         from .models.bank import BankCreate
         bank = BankCreate(**bank_data)
-        created_bank = await bank_service.create_bank(bank)
-        return {"id": created_bank.id, "message": "Bank created successfully"}
+        # created_bank = await bank_service.create_bank(bank)  # Удален во время очистки
+        # return {"id": created_bank.id, "message": "Bank created successfully"}  # Удален во время очистки
+        return {"id": 1, "message": "Bank service temporarily disabled"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -172,10 +199,11 @@ async def create_bank(bank_data: dict):
 async def get_bank(bank_id: int):
     """Получение банка по ID"""
     try:
-        bank = await bank_service.get_bank(bank_id)
-        if not bank:
-            raise HTTPException(status_code=404, detail="Bank not found")
-        return bank.dict()
+        # bank = await bank_service.get_bank(bank_id)  # Удален во время очистки
+        # if not bank:  # Удален во время очистки
+        #     raise HTTPException(status_code=404, detail="Bank not found")  # Удален во время очистки
+        # return bank.dict()  # Удален во время очистки
+        raise HTTPException(status_code=404, detail="Bank service temporarily disabled")
     except HTTPException:
         raise
     except Exception as e:
@@ -186,8 +214,9 @@ async def get_bank(bank_id: int):
 async def sync_bank(bank_id: int):
     """Синхронизация данных банка"""
     try:
-        result = await bank_service.sync_bank_data(bank_id)
-        return result
+        # result = await bank_service.sync_bank_data(bank_id)  # Удален во время очистки
+        # return result  # Удален во время очистки
+        return {"message": "Bank service temporarily disabled"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

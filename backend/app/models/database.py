@@ -9,6 +9,26 @@ from contextlib import asynccontextmanager
 from typing import Optional, Dict, Any
 import logging
 import os
+from dotenv import load_dotenv
+
+# --- Environment and DB Initialization ---
+# Load .env file at the top-level of the module.
+# This is the single source of truth for configuration.
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path=dotenv_path)
+    logging.info(f".env file found at {dotenv_path} and loaded.")
+else:
+    # CRITICAL: If .env file is missing, we must not proceed with a fallback.
+    # This prevents silent failures with wrong credentials.
+    logging.error(f"FATAL: .env file not found at path: {dotenv_path}. Application cannot start.")
+    raise FileNotFoundError(f".env file not found at path: {dotenv_path}")
+
+DB_URL_FROM_ENV = os.getenv("DATABASE_URL")
+if not DB_URL_FROM_ENV:
+    logging.error("FATAL: DATABASE_URL not found in the loaded .env file. Application cannot start.")
+    raise ValueError("DATABASE_URL not found in the loaded .env file.")
+# --- End of Initialization ---
 
 logger = logging.getLogger(__name__)
 
@@ -24,31 +44,24 @@ class Database:
     - Логирование операций
     """
     
-    def __init__(self, connection_string: Optional[str] = None):
+    def __init__(self, connection_string: str):
         """
         Инициализация подключения к базе данных
         
         Args:
-            connection_string: Строка подключения (опционально)
+            connection_string: Строка подключения (обязательно)
         """
-        self.connection_string = connection_string or self._get_connection_string()
+        if not connection_string:
+            raise ValueError("Connection string cannot be None or empty.")
+        self.connection_string = connection_string
+        logging.info(f"Database class initialized to use the provided connection string.")
         self._connection_pool = []
         self._max_connections = 10
         
     def _get_connection_string(self) -> str:
-        """Получение строки подключения из переменных окружения"""
-        # В продакшене используем переменные окружения
-        if os.getenv("DATABASE_URL"):
-            return os.getenv("DATABASE_URL")
-        
-        # Для разработки используем хардкод (временно)
-        return {
-            "host": "34.46.9.135",
-            "database": "budget_cloud", 
-            "user": "postgres",
-            "password": "BudgetCloud2025!",
-            "port": "5432"
-        }
+        # This method is no longer needed as connection string is passed directly.
+        # Kept for compatibility in case it's called somewhere else, but it should not be.
+        return self.connection_string
     
     @asynccontextmanager
     async def get_connection(self):
@@ -102,13 +115,13 @@ class Database:
                     except:
                         pass
     
-    async def execute_query(self, query: str, params: Optional[tuple] = None) -> list:
+    async def execute_query(self, query: str, params: Optional[Dict] = None) -> list:
         """
-        Выполнение SELECT запроса
+        Выполнение SELECT запроса, а также INSERT/UPDATE с возвратом данных (RETURNING)
         
         Args:
             query: SQL запрос
-            params: Параметры запроса
+            params: Параметры запроса в виде словаря
             
         Returns:
             list: Результаты запроса
@@ -116,9 +129,23 @@ class Database:
         async with self.get_connection() as conn:
             cursor = conn.cursor()
             try:
+                logger.debug(f"Executing query: {query} with params: {params}")
                 cursor.execute(query, params)
-                results = cursor.fetchall()
-                return [dict(row) for row in results]
+                
+                # Если это изменяющий запрос, коммитим его
+                if query.strip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+                    conn.commit()
+                    logger.info(f"Query committed successfully. Row count: {cursor.rowcount}")
+
+                # Если есть что возвращать (RETURNING), то возвращаем
+                if cursor.description:
+                    results = cursor.fetchall()
+                    return [dict(row) for row in results]
+                return []
+            except Exception as e:
+                logger.error(f"Error executing query: {query} - {e}")
+                conn.rollback()
+                raise
             finally:
                 cursor.close()
     
@@ -230,7 +257,8 @@ class Database:
         logger.info("Все подключения к базе данных закрыты")
 
 
-# Глобальный экземпляр базы данных
-db = Database()
+# Глобальный экземпляр базы данных.
+# This is now created with the guaranteed-to-be-loaded DB_URL_FROM_ENV.
+db = Database(connection_string=DB_URL_FROM_ENV)
 
 

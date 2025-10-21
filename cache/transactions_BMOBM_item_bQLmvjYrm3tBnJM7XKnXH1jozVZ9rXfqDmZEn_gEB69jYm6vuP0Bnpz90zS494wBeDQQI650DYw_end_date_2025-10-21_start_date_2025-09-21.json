@@ -1,0 +1,218 @@
+{
+  "cache_key": "transactions_BMOBM_item_bQLmvjYrm3tBnJM7XKnXH1jozVZ9rXfqDmZEn_gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw_end_date_2025-10-21_start_date_2025-09-21",
+  "data_type": "transactions",
+  "bank_code": "BMOBM",
+  "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+  "data": [
+    {
+      "id": "RZgBPKY7Bes5OPQARKORUZoqZ3vakbsd8DJgN",
+      "amount": 100.0,
+      "name": "IMMIGRATION CANADA ONL OTTAWA ON",
+      "date": "2025-10-20",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "M4gLwbV9LesaMA0QZPMZCKxpKmE3XjTkQ34w3",
+      "amount": 40.17,
+      "name": "ISAAC'S NO FRILLS 7966 WAINWRIGHT AB",
+      "date": "2025-10-20",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "EyjMA48XMeiK9dXBjr9jfMynM9LR8ZH5wBjNg",
+      "amount": -282.0,
+      "name": "TRSF FROM/DE ACCT/CPT 2601-XXXX-415",
+      "date": "2025-10-20",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "VEgkvxYRkeu7R9Q8OAROCMqjM7e0D1HaQNZKp",
+      "amount": -282.0,
+      "name": "BMO Transit",
+      "date": "2025-10-19",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "OxE1L4YZ1ehJbPxmOLbOCOogOvePa0iNMKL9k",
+      "amount": 141.85,
+      "name": "Walmart",
+      "date": "2025-10-19",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "qM4kYg6Ok5ILA4BKaVAaCzdJznBwxMuraVwAD",
+      "amount": 12.98,
+      "name": "IGA PROVOST #5226 PROVOST AB",
+      "date": "2025-09-24",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "BqAREOaYRecBR8NagrRgHLp7LeRvk3TjxYyOv",
+      "amount": -13.0,
+      "name": "TRSF FROM/DE ACCT/CPT 2601-XXXX-415",
+      "date": "2025-09-24",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "PJgPDaYEPec8Z31BoEZoiq4AqKrPadI7Mevbm",
+      "amount": 46.42,
+      "name": "Walmart",
+      "date": "2025-09-23",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "nn03xrY53Jh0Ynm59AY9T83A89zoveiq8eOV9",
+      "amount": 20.99,
+      "name": "CORNERSTONE CO-OP FOOD WAINWRIGHT AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "pMrKYVwoKZILyrOVXDyXCANJAq9PxMcQOkPmo",
+      "amount": 10.04,
+      "name": "CORNERSTONE LIQUOR@WW WAINWRIGHT AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "Q8gq17YyqeSZwMe5zdwzCP74PbjvmDSbkm3P8",
+      "amount": 8.81,
+      "name": "DOLLARAMA #1651 WAINWRIGHT AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "6JwMN7qZMgcMyP6aZxyZHKwrKmVEx8T96xQp4",
+      "amount": 4.79,
+      "name": "HALLS FOODS PROVOST AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "NamD6XO4DYIeZr6Xz1Zzf6Br65Ap4qTbKaN86",
+      "amount": 40.09,
+      "name": "ISAAC'S NO FRILLS 7966 WAINWRIGHT AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "YEg0xoY40duARXBgnMRnfMyAMxk6Z1HprBAE5",
+      "amount": 11.74,
+      "name": "McDonald's",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "epPdvbYrdkS1zP4jmyzmCMpdMPVEgDHejEyNZ",
+      "amount": 15.0,
+      "name": "McDonald's",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "XEgv0oY7veuVojxAYDoYTNKaNb3BV9sP7mvKL",
+      "amount": 13.5,
+      "name": "TOWN OF WAINWRIGHT WAINWRIGHT AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "zMPJjEKyJYI6RjeqnYRnS1qO173pk8FB49p5y",
+      "amount": 13.5,
+      "name": "TOWN OF WAINWRIGHT WAINWRIGHT AB",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "LrM6dY976ec431b7Zx3ZIKjBKvoyLYTPYekRv",
+      "amount": -354.3,
+      "name": "TRSF FROM/DE ACCT/CPT 2601-XXXX-415",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "1jrMNm6LM8sXmn41bpmbiZNXZrj0ydsq1pM6b",
+      "amount": -131.96,
+      "name": "TRSF FROM/DE ACCT/CPT 2601-XXXX-415",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "wML49EBm4VIQjgY81Kj1FDzoDVqmJMTMZYmD7",
+      "amount": 17.82,
+      "name": "Walmart",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "dp1b4jYXbKSVOMXYb3ObTvmbvMp0g4s19ez4z",
+      "amount": 19.76,
+      "name": "Walmart",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "D30Mv4J5MesyakjDzBazIJyRJBLZXPTqoDjOo",
+      "amount": 68.62,
+      "name": "Walmart",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    },
+    {
+      "id": "mEvBr8YRBxuoxJXrBwxBCVeMVXRZnpu4dxoZw",
+      "amount": 75.45,
+      "name": "Walmart",
+      "date": "2025-09-22",
+      "category": null,
+      "account_id": "gEB69jYm6vuP0Bnpz90zS494wBeDQQI650DYw",
+      "currency": "CAD"
+    }
+  ],
+  "created_at": "2025-10-21T17:21:36.414349",
+  "expires_at": "2025-10-21T17:51:36.414304",
+  "last_updated": "2025-10-21T17:21:36.414370"
+}

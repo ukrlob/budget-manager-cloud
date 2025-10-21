@@ -1,0 +1,10 @@
+{
+  "cache_key": "transactions_fallback_IBCA_item_RXNw5rw8a9Sa5VMoez34TgKgMwkjkwhyqjoEX_aOeqNMq73jcKrVvknOmDsZQ609qypyC1n0v9j",
+  "data_type": "transactions_fallback",
+  "bank_code": "IBCA",
+  "account_id": "aOeqNMq73jcKrVvknOmDsZQ609qypyC1n0v9j",
+  "data": [],
+  "created_at": "2025-10-18T19:10:11.669022",
+  "expires_at": "2025-10-18T19:40:11.668616",
+  "last_updated": "2025-10-18T19:10:11.669079"
+}

@@ -12,6 +12,9 @@ class BankBase(BaseModel):
     name: str = Field(..., description="Название банка")
     country: str = Field(..., description="Страна банка")
     currency: str = Field(..., description="Основная валюта банка")
+    access_token: Optional[str] = Field(None, description="Plaid access token")
+    item_id: Optional[str] = Field(None, description="Plaid item ID")
+    plaid_institution_id: Optional[str] = Field(None, description="Plaid institution ID")
 
 
 class BankCreate(BankBase):
