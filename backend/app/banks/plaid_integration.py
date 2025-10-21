@@ -185,14 +185,6 @@ class PlaidBankConnector(BankConnector):
             
             await self._increment_request_count()
             
-            # --- Временный код для вывода полной информации по счету ---
-            if response['accounts']:
-                import pprint
-                print("\n--- RAW PLAID ACCOUNT DATA (START) ---")
-                pprint.pprint(response['accounts'][0].to_dict())
-                print("--- RAW PLAID ACCOUNT DATA (END) ---\n")
-            # --- Конец временного кода ---
-            
             # Обработка ответа
             accounts = []
             for account in response['accounts']:
