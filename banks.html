@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление банками - Budget Manager Cloud</title>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -105,6 +106,14 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
+
+        .btn-add { /* Добавим стиль для кнопки "добавить" */
+            background-color: #4CAF50;
+        }
+
+        .btn-add:hover {
+            background-color: #45a049;
+        }
         
         .method-grid {
             display: grid;
@@ -136,6 +145,14 @@
         .method-card p {
             color: #666;
             margin-bottom: 15px;
+        }
+
+        .bank-group { /* Стиль для группировки счетов одного банка */
+            border-top: 2px solid #007bff;
+        }
+        
+        .bank-group:first-child {
+            border-top: none;
         }
         
         .status-active {
@@ -214,7 +231,7 @@
 
             <div class="section">
                 <h2>Подключенные банки</h2>
-                <table>
+                <table id="banks-table">
                     <thead>
                         <tr>
                             <th>Метод</th>
@@ -228,40 +245,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Plaid</td>
-                            <td>RBC</td>
-                            <td>Основной счет</td>
-                            <td>4,661.00</td>
-                            <td>CAD</td>
-                            <td><span class="status-active">Активен</span></td>
-                            <td><button class="btn">Обновить</button></td>
-                        </tr>
-                        <tr>
-                            <td>Plaid</td>
-                            <td>BMO</td>
-                            <td>Сберегательный</td>
-                            <td>100.00</td>
-                            <td>CAD</td>
-                            <td><span class="status-active">Активен</span></td>
-                            <td><button class="btn">Обновить</button></td>
-                        </tr>
-                        <tr>
-                            <td>Plaid</td>
-                            <td>ПриватБанк</td>
-                            <td>Основной счет</td>
-                            <td>12,450.00</td>
-                            <td>UAH</td>
-                            <td><span class="status-active">Активен</span></td>
-                            <td><button class="btn">Обновить</button></td>
-                        </tr>
-                        <tr>
-                            <td>Plaid</td>
-                            <td>Монобанк</td>
-                            <td>Карточный счет</td>
-                            <td>8,920.00</td>
-                            <td>UAH</td>
-                            <td><span class="status-active">Активен</span></td>
-                            <td><button class="btn">Обновить</button></td>
+                            <td colspan="7" style="text-align: center; color: #666;">
+                                Загрузка данных...
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -272,5 +258,122 @@
     <div class="footer">
         <p>Budget Manager Cloud © 2024 - Управление личными финансами в облаке</p>
     </div>
+
+    <script>
+        // Конфигурация API
+        const API_BASE_URL = 'http://127.0.0.1:8004';
+
+        /**
+         * Обновляет таблицу с банками, загружая актуальные данные о счетах.
+         */
+        async function updateBanksTable(banks) {
+            const tableBody = document.querySelector('#banks-table tbody');
+            if (!tableBody) return;
+
+            tableBody.innerHTML = ''; // Очищаем таблицу
+
+            // Отображаем только банки, подключенные через Plaid
+            const workingBanks = banks.filter(bank => bank.status === 'working');
+
+            if (workingBanks.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #666;">
+                            Нет подключенных банков. Перейдите в раздел Plaid API для добавления.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            for (const bank of workingBanks) {
+                try {
+                    const accountsResponse = await fetch(`${API_BASE_URL}/api/banks/${bank.code}/accounts`);
+                    if (!accountsResponse.ok) throw new Error('Network response was not ok');
+                    
+                    const accounts = await accountsResponse.json();
+
+                    if (accounts.length > 0) {
+                        accounts.forEach((account, accountIndex) => {
+                            const row = document.createElement('tr');
+                            if (accountIndex === 0) {
+                                // Первая строка для банка содержит всю основную информацию
+                                row.innerHTML = `
+                                    <td rowspan="${accounts.length}">Plaid</td>
+                                    <td rowspan="${accounts.length}">${bank.name}</td>
+                                    <td>${account.name || 'N/A'}</td>
+                                    <td>${account.balance ? account.balance.toFixed(2) : 'N/A'}</td>
+                                    <td>${account.currency || 'N/A'}</td>
+                                    <td rowspan="${accounts.length}"><span class="status-active">Активен</span></td>
+                                    <td rowspan="${accounts.length}"><button class="btn btn-secondary" disabled>Детали</button></td>
+                                `;
+                            } else {
+                                // Последующие строки содержат только данные по счетам
+                                row.innerHTML = `
+                                    <td>${account.name || 'N/A'}</td>
+                                    <td>${account.balance ? account.balance.toFixed(2) : 'N/A'}</td>
+                                    <td>${account.currency || 'N/A'}</td>
+                                `;
+                            }
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        // Если у банка нет счетов
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>Plaid</td>
+                            <td>${bank.name}</td>
+                            <td colspan="3">Счетов не найдено</td>
+                            <td><span class="status-active">Активен</span></td>
+                            <td><button class="btn btn-secondary" disabled>Детали</button></td>
+                        `;
+                        tableBody.appendChild(row);
+                    }
+                } catch (error) {
+                    console.error(`Ошибка загрузки счетов для ${bank.code}:`, error);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>Plaid</td>
+                        <td>${bank.name}</td>
+                        <td colspan="3" style="color: #dc3545;">Ошибка загрузки счетов</td>
+                        <td><span style="color: #dc3545;">Ошибка</span></td>
+                        <td><button class="btn btn-secondary" disabled>Детали</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            }
+        }
+
+        /**
+         * Загружает начальные данные при загрузке страницы.
+         */
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Страница управления банками загружена.');
+            try {
+                const tableBody = document.querySelector('#banks-table tbody');
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center;">Загрузка списка банков...</td></tr>`;
+
+                const banksResponse = await fetch(`${API_BASE_URL}/api/banks/status`);
+                if (!banksResponse.ok) {
+                    throw new Error(`HTTP ${banksResponse.status} при получении статуса банков`);
+                }
+                
+                const banksData = await banksResponse.json();
+                console.log('Загружены банки:', banksData);
+                await updateBanksTable(banksData);
+
+            } catch (error) {
+                console.error('Ошибка при начальной загрузке данных:', error);
+                const tableBody = document.querySelector('#banks-table tbody');
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #f44336;">
+                                Ошибка загрузки данных. Убедитесь, что сервер запущен.
+                            </td>
+                        </tr>`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
